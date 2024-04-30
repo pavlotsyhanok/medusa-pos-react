@@ -1,8 +1,6 @@
-# Point of Sale (POS) Application
+# MedusaJS Point of Sale (POS) Application
 
 ![POS Application Interface](https://github.com/pavlotsyhanok/medusa-pos-react/blob/main/Coming%20Soon/thumbnail-image.jpg)
-
-## Introduction
 
 This Point of Sale (POS) application, built using React, is designed to support B2B flows and integrates seamlessly with the Medusa backend through API interfaces. It supports Stripe POS devices for efficient payment processing, catering to both mobile and desktop platforms as a Progressive Web App (PWA).
 

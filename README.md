@@ -1,1 +1,1 @@
-![Medusa POS React Diagram](./architecture/medusa-pos-react.drawio.svg)
+![Medusa POS React Diagram](./medusa-pos-react.drawio.svg)

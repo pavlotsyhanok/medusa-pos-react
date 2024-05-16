@@ -1,44 +1,40 @@
-# MedusaJS Point of Sale (POS) Application
+## Install Stripe Plugin to your Medusa backend:
 
-![POS Application Interface](https://github.com/pavlotsyhanok/medusa-pos-react/blob/main/Coming%20Soon/thumbnail-image.jpg)
+Once you have set up your Medusa server, navigate to your Medusa backend (server):
 
-This Point of Sale (POS) application, built using React, is designed to support B2B flows and integrates seamlessly with the Medusa backend through API interfaces. It supports Stripe POS devices for efficient payment processing, catering to both mobile and desktop platforms as a Progressive Web App (PWA).
+`cd my-medusa`
 
-## Key Features
+Install official Stripe plug-in:
 
-- **Customer Onboarding:** Facilitate in-store new customer registration and securely store payment methods via Stripe.
-- **B2B Optimized Flows:** Full support for unique customer group properties and tailored price lists.
-- **Pre-orders and Backorders:** Authenticate funds and securely store payment methods for future charges.
-- **Order Management:** Supports draft orders and provides shipping quotes based on the Medusa backend configuration.
-- **Sales Rep Analytics:** Track sales performance and establish goals through configurable events.
+`npm install medusa-payment-stripe`
 
-## Tech Stack
+You can follow directions here: [https://medusajs.com/plugins/medusa-payment-stripe/](https://medusajs.com/plugins/medusa-payment-stripe/)
 
-- **Platforms:** Mobile, Tablet, Desktop (PWA)
-- **Frameworks:** React for UI, CapacitorJS for device API interactions
-- **Future Development:** Plans to incorporate React Native
+## Add routes to your Medusa server (backend):
 
-## Project Status
+This repository contains backend routes for integrating Stripe terminal functionality into a Medusa server. To set up these routes, follow the instructions below:
 
-**Current Phase:** In Development
+1. Navigate to your Medusa server backend directory, typically found at `/path/to/your/medusa/server`.
+2. Within the backend directory, locate or create the `/api` directory.
+3. Inside the `/api` directory, check if there is an existing `/store` directory. If it exists, proceed to the next step. If not, create the `/store` directory.
+4. Within the `/store` directory, create a new directory named `/terminal`.
+5. Copy the following files from the `medusa-pos-react/api/store/terminal` directory into the newly created `/terminal` directory in your Medusa server backend:
 
-### Completed Workflows
+   - `connection-token/route.ts`
+   - `locations.js`
+   - `capture-payment-intent/route.ts`
+   - `create-payment-intent/route.ts`
+6. Ensure that you have set the `STRIPE_API_KEY` in your Medusa server's `.env` file. This key is necessary for the Stripe integration to function correctly.
+7. After copying the files and setting the environment variable, restart your Medusa server to apply the changes.
 
-- **Security:** Authentication and route protection, including admin login.
-- **Checkout Processes:** Integration with Medusa checkout flows and Stripe POS terminal.
-- **Customer Handling:** Supports both guest and B2B checkout flows with applied price lists.
-- **Promotions:** Implementation of manual discounts and coupon applications.
-- **Operational Tools:** Features like order tracking, barcode scanning, and product search.
+## Configure your Medusa Server CORS:
 
-## To-Do
+Ensure that the CORS configuration and API keys are correctly set in your Medusa server's `.env` file. The settings should be as follows:
 
-- **Performance Metrics:** Implement scoring systems for sales representatives.
-- **Payment Expansion:** Integration with Square POS functionalities.
+- `STORE_CORS` should include the URL where your POS will run. For example, it can be set to "http://localhost:3000".
+- `ADMIN_CORS` should include the URL where your POS will run. For example, it can be set to "http://localhost:3000".
+- `STRIPE_API_KEY` should be set to your Stripe secret key.
 
-## Coming Soon
+The example is in `.env.template` file
 
-This repository will soon be updated with the full project under the "Coming Soon" folder. Stay tuned for the release!
-
-## Stay Tuned
-
-Stay tuned for further updates as we progress towards general availability, aiming to enhance the retail experience with innovative technology solutions.
+By following these steps, you will have successfully added Stripe terminal routes to your Medusa server backend, allowing for payment processing through Stripe's terminal devices.

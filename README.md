@@ -111,7 +111,7 @@ Now you should be able to use your POS app.
 
 By default, the settings are set to use the Stripe Simulated Terminal. To connect your live terminal:
 
-1. Edit the following line of code in your Medusa server backend located at `./src/terminal.js` (line 35):
+1. Edit the following line of code in your `./src/terminal.js` located at (line 35):
 
    ```javascript
    var config = {

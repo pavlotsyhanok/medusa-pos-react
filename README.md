@@ -1,44 +1,121 @@
-# MedusaJS Point of Sale (POS) Application
+# ⚠️ Legacy POS Application (NextJS)
 
-![POS Application Interface](https://github.com/pavlotsyhanok/medusa-pos-react/blob/main/Coming%20Soon/thumbnail-image.jpg)
+This is a legacy version built with NextJS for testing API flows between the POS application, Medusa Server API, and Stripe POS.
 
-This Point of Sale (POS) application, built using React, is designed to support B2B flows and integrates seamlessly with the Medusa backend through API interfaces. It supports Stripe POS devices for efficient payment processing, catering to both mobile and desktop platforms as a Progressive Web App (PWA).
+**Note:** This version is not intended for production use and serves as an exploration blueprint for the production version that we are building in the `develop` branch. Expect bugs, spaghetti code, and some broken features.
 
-## Key Features
+## Development Branch
 
-- **Customer Onboarding:** Facilitate in-store new customer registration and securely store payment methods via Stripe.
-- **B2B Optimized Flows:** Full support for unique customer group properties and tailored price lists.
-- **Pre-orders and Backorders:** Authenticate funds and securely store payment methods for future charges.
-- **Order Management:** Supports draft orders and provides shipping quotes based on the Medusa backend configuration.
-- **Sales Rep Analytics:** Track sales performance and establish goals through configurable events.
+If you wish to commit to the development of the POS application, please see the `develop` branch.
 
-## Tech Stack
+## Features
 
-- **Platforms:** Mobile, Tablet, Desktop (PWA)
-- **Frameworks:** React for UI, CapacitorJS for device API interactions
-- **Future Development:** Plans to incorporate React Native
+- Create orders for both new and existing customers.
+- Scan QR codes of products.
+- View list of orders on the Medusa backend.
+- Select existing customers and load their price list.
+- Add notes to orders.
+- Use Stripe POS device to checkout and collect payment.
 
-## Project Status
+## Known Issues
 
-**Current Phase:** In Development
+- **Laggy User Authentication**: Login route may be delayed, causing delayed redirects.
+- **No Support for Product Variants**: You must select the base product and add it to the cart; otherwise, it throws an error.
+- **Customer-Specific Pricing**: Selecting a specific customer does not update product pricing according to the price list in the main app layout (unstable in the cart).
+- **Unstable Stripe Terminal Connection**: You might need to reconnect the device time to time.
 
-### Completed Workflows
+## Set Up Guide
 
-- **Security:** Authentication and route protection, including admin login.
-- **Checkout Processes:** Integration with Medusa checkout flows and Stripe POS terminal.
-- **Customer Handling:** Supports both guest and B2B checkout flows with applied price lists.
-- **Promotions:** Implementation of manual discounts and coupon applications.
-- **Operational Tools:** Features like order tracking, barcode scanning, and product search.
+### 1. Set Up API Routes and CORS Configuration (Medusa Server)
 
-## To-Do
+Please refer to the `medusa/api` branch for detailed instructions on configuring your Medusa backend to work with the POS application.
 
-- **Performance Metrics:** Implement scoring systems for sales representatives.
-- **Payment Expansion:** Integration with Square POS functionalities.
+1. Copy the folders with routes to your Medusa server directory `./src/api`. (More details can be found in the `medusa/api` branch.)
+2. Configure CORS settings, Stripe API Secret Key, Medusa Admin, and Medusa Store. (More details can be found in the `medusa/api` branch.)
 
-## Coming Soon
+### 2. Run Medusa Server
 
-This repository will soon be updated with the full project under the "Coming Soon" folder. Stay tuned for the release!
+Once you have completed the configuration of your Medusa server, run it in production mode. The server will be accessible at `http://localhost:9000`.
 
-## Stay Tuned
+To start the server:
 
-Stay tuned for further updates as we progress towards general availability, aiming to enhance the retail experience with innovative technology solutions.
+1. Navigate to your Medusa server repository:
+
+   ```sh
+   cd my-medusa
+   ```
+2. Start the server:
+
+   ```sh
+   medusa start
+   ```
+
+   or
+
+   ```sh
+   npm run start
+   ```
+
+This will expose your Medusa server on `http://localhost:9000`.
+
+### 3. Clone POS Repository and Deploy Your POS Application
+
+With the Medusa server running, you can now clone the legacy application repository to your local machine and run it.
+
+1. Clone the application from the legacy branch:
+
+   ```sh
+   git clone -b pos/legacy https://github.com/pavlotsyhanok/medusa-pos-react.git
+   ```
+2. Navigate to the application folder:
+
+   ```sh
+   cd medusa-pos-react
+   ```
+3. Install dependencies:
+
+   ```sh
+   npm install
+   ```
+4. Configure CORS:
+
+   - If your Medusa server runs on `http://localhost:9000`, you can leave the default `.env.template` configuration.
+   - If your Medusa admin runs on a different port, update `NEXT_PUBLIC_MEDUSA_BASE_URL` to your admin URL.
+   - Rename the file from `.env.template` to `.env`.
+5. Run your POS application:
+
+   ```sh
+   npm run dev
+   ```
+
+Your POS application should now be available at `http://localhost:3000`. If it runs on a different port, adjust the configuration in your Medusa server accordingly.
+
+### 4. Configure Your REGION ID
+
+When you start running your POS application in the browser, it will request the list of regions from your Medusa backend. To configure the region ID:
+
+<img src="./public/region_id.jpg" alt="Region ID" width="600" height="auo">
+
+1. Open your browser developer tools and go to the console.
+2. Find the printed region ID value.
+3. Copy the region ID value and paste it into your `.env` configuration:
+
+   ```env
+   NEXT_PUBLIC_REGION_ID=your_region_id
+   ```
+4. Restart your POS application.
+
+Now you should be able to use your POS app.
+
+### 5. Stripe Terminal Configuration (Test/Live)
+
+By default, the settings are set to use the Stripe Simulated Terminal. To connect your live terminal:
+
+1. Edit the following line of code in your Medusa server backend located at `./src/terminal.js` (line 35):
+
+   ```javascript
+   var config = {
+      simulated: true // Control Simulated Mode
+   };
+   ```
+2. Comment out the line or set `simulated` to `false`.

@@ -1,0 +1,31 @@
+body {
+    margin: 0;
+    display: grid;
+    grid-template-rows: 8dvh 92dvh;
+    height: 100dvh;
+}
+
+.material-symbols-outlined {
+  font-variation-settings:
+  'FILL' 0,
+  'wght' 400,
+  'GRAD' 0,
+  'opsz' 24
+}
+
+* {
+  color: var(--main-contrast);
+  background-color: var(--main-bg);
+}
+
+[data-radix-collection-item]:not(:hover) span {
+  background-color: var(--bg-base);
+}
+
+[data-radix-collection-item]:hover span {
+  background-color: var(--bg-base-hover);
+}
+
+[aria-label="Notifications (F8)"] > ol {
+  background-color: transparent;
+}

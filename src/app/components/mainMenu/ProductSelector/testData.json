@@ -1,0 +1,62 @@
+[
+    {
+        "id": 1,
+        "name": "Collection 1",
+        "items": [
+            {"id": 1, "name": "Item 1", "SKU": "10001123467789", "price": 10, "image":"https://media-www.canadiantire.ca/product/living/home-decor/furniture/1680145/canvas-holliston-accent-chair-a1e906ac-4798-4716-966d-dfc9915fc669.png"},
+            {"id": 2, "name": "Item 2", "SKU": "10002123468789", "price": 20, "image":"https://media-www.canadiantire.ca/product/living/home-decor/furniture/1680145/canvas-holliston-accent-chair-a1e906ac-4798-4716-966d-dfc9915fc669.png"},
+            {"id": 3, "name": "Item 3", "SKU": "10003123469789", "price": 30, "image":"https://media-www.canadiantire.ca/product/living/home-decor/furniture/1680145/canvas-holliston-accent-chair-a1e906ac-4798-4716-966d-dfc9915fc669.png"},
+            {"id": 4, "name": "Item 4", "SKU": "10004123470789", "price": 40, "image":"https://media-www.canadiantire.ca/product/living/home-decor/furniture/1680145/canvas-holliston-accent-chair-a1e906ac-4798-4716-966d-dfc9915fc669.png"},
+            {"id": 5, "name": "Item 5", "SKU": "10005123471789", "price": 50, "image":"https://media-www.canadiantire.ca/product/living/home-decor/furniture/1680145/canvas-holliston-accent-chair-a1e906ac-4798-4716-966d-dfc9915fc669.png"}
+        ],
+        "image":"https://media-www.canadiantire.ca/product/living/home-decor/furniture/1680145/canvas-holliston-accent-chair-a1e906ac-4798-4716-966d-dfc9915fc669.png"
+    },
+    {
+        "id": 2,
+        "name": "Collection 2",
+        "items": [
+            {"id": 1, "name": "Item 1", "SKU": "20001123477789", "price": 10, "image":"https://media-www.canadiantire.ca/product/living/home-decor/furniture/1680145/canvas-holliston-accent-chair-a1e906ac-4798-4716-966d-dfc9915fc669.png"},
+            {"id": 2, "name": "Item 2", "SKU": "20002123478789", "price": 20, "image":"https://media-www.canadiantire.ca/product/living/home-decor/furniture/1680145/canvas-holliston-accent-chair-a1e906ac-4798-4716-966d-dfc9915fc669.png"},
+            {"id": 3, "name": "Item 3", "SKU": "20003123479789", "price": 30, "image":"https://media-www.canadiantire.ca/product/living/home-decor/furniture/1680145/canvas-holliston-accent-chair-a1e906ac-4798-4716-966d-dfc9915fc669.png"},
+            {"id": 4, "name": "Item 4", "SKU": "20004123480789", "price": 40, "image":"https://media-www.canadiantire.ca/product/living/home-decor/furniture/1680145/canvas-holliston-accent-chair-a1e906ac-4798-4716-966d-dfc9915fc669.png"},
+            {"id": 5, "name": "Item 5", "SKU": "20005123481789", "price": 50, "image":"https://media-www.canadiantire.ca/product/living/home-decor/furniture/1680145/canvas-holliston-accent-chair-a1e906ac-4798-4716-966d-dfc9915fc669.png"}
+        ],
+        "image":"https://media-www.canadiantire.ca/product/living/home-decor/furniture/1680145/canvas-holliston-accent-chair-a1e906ac-4798-4716-966d-dfc9915fc669.png"
+    },
+    {
+        "id": 3,
+        "name": "Collection 3",
+        "items": [
+            {"id": 1, "name": "Item 1", "SKU": "30001123487789", "price": 10, "image":"https://media-www.canadiantire.ca/product/living/home-decor/furniture/1680145/canvas-holliston-accent-chair-a1e906ac-4798-4716-966d-dfc9915fc669.png"},
+            {"id": 2, "name": "Item 2", "SKU": "30002123488789", "price": 20, "image":"https://media-www.canadiantire.ca/product/living/home-decor/furniture/1680145/canvas-holliston-accent-chair-a1e906ac-4798-4716-966d-dfc9915fc669.png"},
+            {"id": 3, "name": "Item 3", "SKU": "30003123489789", "price": 30, "image":"https://media-www.canadiantire.ca/product/living/home-decor/furniture/1680145/canvas-holliston-accent-chair-a1e906ac-4798-4716-966d-dfc9915fc669.png"},
+            {"id": 4, "name": "Item 4", "SKU": "30004123490789", "price": 40, "image":"https://media-www.canadiantire.ca/product/living/home-decor/furniture/1680145/canvas-holliston-accent-chair-a1e906ac-4798-4716-966d-dfc9915fc669.png"},
+            {"id": 5, "name": "Item 5", "SKU": "30005123491789", "price": 50, "image":"https://media-www.canadiantire.ca/product/living/home-decor/furniture/1680145/canvas-holliston-accent-chair-a1e906ac-4798-4716-966d-dfc9915fc669.png"}
+        ],
+        "image":"https://media-www.canadiantire.ca/product/living/home-decor/furniture/1680145/canvas-holliston-accent-chair-a1e906ac-4798-4716-966d-dfc9915fc669.png"
+    },
+    {
+        "id": 4,
+        "name": "Collection 4",
+        "items": [
+            {"id": 1, "name": "Item 1", "SKU": "40001123497789", "price": 10, "image":"https://media-www.canadiantire.ca/product/living/home-decor/furniture/1680145/canvas-holliston-accent-chair-a1e906ac-4798-4716-966d-dfc9915fc669.png"},
+            {"id": 2, "name": "Item 2", "SKU": "40002123498789", "price": 20, "image":"https://media-www.canadiantire.ca/product/living/home-decor/furniture/1680145/canvas-holliston-accent-chair-a1e906ac-4798-4716-966d-dfc9915fc669.png"},
+            {"id": 3, "name": "Item 3", "SKU": "40003123499789", "price": 30, "image":"https://media-www.canadiantire.ca/product/living/home-decor/furniture/1680145/canvas-holliston-accent-chair-a1e906ac-4798-4716-966d-dfc9915fc669.png"},
+            {"id": 4, "name": "Item 4", "SKU": "40004123500789", "price": 40, "image":"https://media-www.canadiantire.ca/product/living/home-decor/furniture/1680145/canvas-holliston-accent-chair-a1e906ac-4798-4716-966d-dfc9915fc669.png"},
+            {"id": 5, "name": "Item 5", "SKU": "40005123501789", "price": 50, "image":"https://media-www.canadiantire.ca/product/living/home-decor/furniture/1680145/canvas-holliston-accent-chair-a1e906ac-4798-4716-966d-dfc9915fc669.png"}
+        ],
+        "image":"https://media-www.canadiantire.ca/product/living/home-decor/furniture/1680145/canvas-holliston-accent-chair-a1e906ac-4798-4716-966d-dfc9915fc669.png"
+    },
+    {
+        "id": 5,
+        "name": "Collection 5",
+        "items": [
+            {"id": 1, "name": "Item 1", "SKU": "50001123507789", "price": 10, "image":"https://media-www.canadiantire.ca/product/living/home-decor/furniture/1680145/canvas-holliston-accent-chair-a1e906ac-4798-4716-966d-dfc9915fc669.png"},
+            {"id": 2, "name": "Item 2", "SKU": "50002123508789", "price": 20, "image":"https://media-www.canadiantire.ca/product/living/home-decor/furniture/1680145/canvas-holliston-accent-chair-a1e906ac-4798-4716-966d-dfc9915fc669.png"},
+            {"id": 3, "name": "Item 3", "SKU": "50003123509789", "price": 30, "image":"https://media-www.canadiantire.ca/product/living/home-decor/furniture/1680145/canvas-holliston-accent-chair-a1e906ac-4798-4716-966d-dfc9915fc669.png"},
+            {"id": 4, "name": "Item 4", "SKU": "50004123510789", "price": 40, "image":"https://media-www.canadiantire.ca/product/living/home-decor/furniture/1680145/canvas-holliston-accent-chair-a1e906ac-4798-4716-966d-dfc9915fc669.png"},
+            {"id": 5, "name": "Item 5", "SKU": "50005123511789", "price": 50, "image":"https://media-www.canadiantire.ca/product/living/home-decor/furniture/1680145/canvas-holliston-accent-chair-a1e906ac-4798-4716-966d-dfc9915fc669.png"}
+        ],
+        "image":"https://media-www.canadiantire.ca/product/living/home-decor/furniture/1680145/canvas-holliston-accent-chair-a1e906ac-4798-4716-966d-dfc9915fc669.png"
+    }
+]

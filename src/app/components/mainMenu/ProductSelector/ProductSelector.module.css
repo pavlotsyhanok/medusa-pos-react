@@ -1,0 +1,198 @@
+div[data-state="active"]:has(.main) {
+    max-height: 92%;
+    overflow-y: auto;
+}
+
+.breadcrumbs {
+    padding: 1rem;
+}
+
+.breadcrumbs > span:not(.bold) {
+    cursor: pointer;
+}
+
+.bold,
+.cardTitle {
+    font-weight: 700;
+}
+
+.menu {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    padding: 1rem;
+    gap: 1rem;
+}
+
+.card {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    border: 2px solid var(--main-contrast-lighter);
+    cursor: pointer;
+    height: 20vh;
+}
+
+.card,
+.card img {
+    border-radius: 5px;
+}
+
+.card img {
+    border-left: 2px solid var(--main-contrast-lighter);
+    height: calc(20vh - 4px);
+    width: 100%;
+    object-fit: cover;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+}
+
+.cardText {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: repeat(4, 1fr);
+    grid-column-gap: 0px;
+    grid-row-gap: 0px;
+    place-items: center start;
+    padding: 1rem;
+    border-radius: 5px;
+}
+
+.collectionTitle {
+    grid-area: 1 / 1 / 5 / 2;
+}
+
+.itemSKU,
+.skeletonText:nth-child(2) {
+    grid-area: 2 / 1 / 4 / 2;
+    align-self: start;
+}
+
+@media (prefers-color-scheme: dark) {
+    .skeletonText,
+    .skeletonImage {
+        background-color: #4b4b4b;
+    }
+}
+@media (prefers-color-scheme: light) {
+    .skeletonText,
+    .skeletonImage {
+        background-color: #cacaca;
+    }
+}
+
+.skeletonText,
+.skeletonImage {
+    height: 1rem;
+    width: 100%;
+    border-radius: 4px;
+    opacity: .7;
+}
+
+@media (prefers-color-scheme: dark) {
+    .skeletonText::after,
+    .skeletonImage::after {
+        background: linear-gradient(90deg, rgba(48,48,48,0) 0%, rgba(104,104,104,1) 25%, rgba(48,48,48,0) 100%);
+    }
+}
+@media (prefers-color-scheme: light) {
+    .skeletonText::after,
+    .skeletonImage::after {
+        background: linear-gradient(90deg, rgba(48,48,48,0) 0%, rgba(172,172,172,1) 25%, rgba(48,48,48,0) 100%);
+    }
+}
+
+.skeletonText::after,
+.skeletonImage::after {
+    content: '';
+    display: block;
+    border-radius: 4px;
+    /* width: 100%; */
+    height: 100%;
+    opacity: .7;
+    background-size: 200% 100%;
+    background-position-x: 0%;
+    animation: bg-anim 2s ease infinite;
+}
+
+@keyframes bg-anim {
+    from, to {
+        background-position-x: 0%;
+    } 50% {
+        background-position-x: 100%;
+    }
+}
+
+.skeletonImage {
+    --_margin: 1rem;
+
+    height: calc(100% - 2 * var(--_margin));
+    width: calc(100% - 2 * var(--_margin));
+    margin: var(--_margin);
+}
+
+.modalBody {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    padding: 1rem;
+    gap: 2rem;
+}
+
+.carousel {
+    display: grid;
+    /* gap: 1rem; */
+    height: 100%;
+}
+
+.carouselImage {
+    display: grid;
+    place-items: center;
+}
+
+.carouselImage[data-state="inactive"] {
+    height: 0;
+}
+
+.carouselImage img {
+    height: 60vh;
+}
+
+.carouselButton {
+    background-color: transparent!important;
+    border: none;
+    box-shadow: none!important;
+}
+
+.carouselButtonContainer {
+    justify-content: center;
+}
+
+.modalInfo {
+    display: flex;
+    height: 90dvh;
+    gap: 1rem;
+    flex-flow: column;
+    overflow-y: auto;
+}
+
+.title {
+    font-size: xx-large;
+}
+
+.quantitySelector {
+    display: flex;
+    justify-content: space-around;
+}
+
+.icon {
+    background-color: var(--button-neutral);
+}
+
+.lineDivider {
+    background-color: var(--main-contrast-lighter);
+    height: 1px;
+    width: 100%;
+}
+
+.select span,
+.select svg {
+    background-color: var(--button-neutral);
+}

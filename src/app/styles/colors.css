@@ -1,0 +1,15 @@
+@media (prefers-color-scheme: dark) {
+    :root {
+        --main-bg: rgba(9, 9, 11, 1);
+        --main-contrast: rgba(255, 255, 255, 1);
+        --main-contrast-lighter: rgba(255, 255, 255, 0.5);
+    }
+}
+
+@media (prefers-color-scheme: light) {
+    :root {
+        --main-bg: rgba(255, 255, 255, 1);
+        --main-contrast: rgba(9, 9, 11, 1);
+        --main-contrast-lighter: rgba(99, 99, 99, 0.5);
+    }
+}

@@ -1,0 +1,57 @@
+.main {
+    display: flex;
+    padding: 2rem;
+    gap: 1rem;
+    width: 100%;
+    flex-flow: column;
+    max-height: 85dvh;
+    overflow-y: auto;
+}
+
+.order {
+    display: grid;
+    grid-template-columns: 3fr 1fr;
+    border: 2px solid var(--main-contrast);
+    padding: 1rem;
+    width: 100%;
+    min-height: 12dvh;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.orderInfo h1 {
+    font-size: x-large;
+    font-weight: 700;
+    margin-bottom: 1rem;
+}
+
+.orderStatus {
+    display: grid;
+    place-items: center;
+}
+
+.statusIcon {
+    height: 80%;
+    aspect-ratio: 1;
+    margin-right: .5rem;
+    border-radius: 2px;
+}
+.statusIcon.pending {
+    background-color: orange;
+}
+
+.statusIcon.completed {
+    background-color: rgb(1, 163, 1);
+}
+
+.statusIcon.archived {
+    background-color: grey;
+}
+
+.statusIcon.canceled {
+    background-color: rgb(206, 0, 0);
+}
+
+.statusIcon.requires_action {
+    background-color: rgb(73, 73, 255);
+}

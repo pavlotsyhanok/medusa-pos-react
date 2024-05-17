@@ -1,0 +1,22 @@
+.main {
+    display: grid;
+    place-items: center;
+    height: 100dvh;
+}
+
+.main form {
+    display: grid;
+    gap: 1rem;
+    width: 30dvh;
+}
+
+.main form > button {
+    width: 100%;
+    background-color: var(--main-contrast);
+    color: var(--main-bg);
+}
+
+.errorMessage {
+    color: rgb(255 75 75);
+    text-align: center;
+}

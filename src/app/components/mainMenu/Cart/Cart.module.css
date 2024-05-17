@@ -1,0 +1,176 @@
+.main {
+    display: grid;
+    grid-template-rows: auto 1fr auto auto;
+    border-left: 2px solid var(--main-contrast-lighter);
+    height: 92vh;
+}
+
+.customerSelector,
+.buttons {
+    display: grid;
+    grid-auto-flow: column;
+    justify-content: space-between;
+    place-items: center;
+}
+
+.main > * {
+    padding: 1rem;
+}
+
+.customerSelector {
+    border-bottom: 2px solid var(--main-contrast-lighter);
+}
+
+.buttons {
+    gap: 1rem;
+}
+
+.buttons button,
+.fakeButton {
+    background-color: var(--main-contrast)!important;
+    color: var(--main-bg)!important;
+}
+
+.customerName {
+    font-weight: 700;
+    display: inline-flex;
+    gap: .25rem;
+}
+
+.cartItem {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    place-items: center start;
+    gap: .5rem;
+    position: relative;
+    margin-bottom: .5rem;
+    padding-bottom: .5rem;
+    box-sizing: border-box;
+}
+
+.cartItem::after {
+    content: '';
+    background-color: var(--main-contrast-lighter);
+    height: 1px;
+    width: calc(1rem * 2 + 100%);
+    position: absolute;
+    bottom: 0;
+    left: -1rem;
+}
+
+.itemDetails { 
+    grid-area: 1 / 2 / 2 / 4; 
+    display: grid;
+    grid-auto-flow: row;
+}
+
+.cartItem input {
+    width: 4rem;
+    text-align: center;
+    border: 1ps solid var(--main-contrast-lighter);
+}
+
+.itemPrice {
+    font-weight: 700;
+}
+
+.itemImg {
+    border: 2px solid var(--main-contrast-lighter);
+}
+
+.itemImg,
+.itemImg > img {
+    border-radius: 5px;
+}
+
+.itemDelete button {
+    background-color: var(--main-contrast);
+    columns: var(--main-bg);
+}
+
+.summary .text {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+.summary .text span:nth-child(even) {
+    font-weight: 700;
+    text-align: end;
+}
+
+.cart {
+    overflow-y: auto;
+}
+
+.controls {
+    padding-top: 1rem;
+    display: flex;
+    justify-content: space-around;
+}
+
+.controls button {
+    background-color: var(--main-contrast);
+    color: var(--main-bg);
+    padding: 1rem 2rem;
+    border-radius: 5px;
+}
+
+.total {
+    background-color: #71AF2D;
+    text-align: end;
+    font-size: xx-large;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+button:has(.customerContainer) {
+    display: block;
+    width: 100%;
+    text-align: start;
+}
+
+.customerContainer {
+    padding: 2rem;
+    border-bottom: 1px solid var(--main-contrast-lighter);
+    cursor: pointer;
+}
+
+.crossed {
+    text-decoration: line-through;
+    background-color: #71AF2D;
+}
+
+.shippingOption {
+    display: flex;
+    gap: 1rem;
+    margin: 1rem 0;
+}
+
+.shippingOption label {
+    font-size: larger;
+}
+
+.fakeButton {
+    padding: .5rem 1rem;
+    border-radius: 10px;
+}
+
+.moreInfoPrompt {
+    width: 50dvw!important;
+    max-width: initial!important;
+}
+
+.moreInfoPrompt p {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    width: 100%;
+    gap: 1rem;
+}
+
+.moreInfoPrompt p > div {
+    display: grid;
+    gap: .5rem;
+}
+
+.flex {
+    display: flex;
+}

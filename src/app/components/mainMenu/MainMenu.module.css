@@ -1,0 +1,24 @@
+.main {
+    height: 92vh;
+}
+
+.header {
+    padding: 1rem;
+}
+
+.header > div {
+    justify-content: space-evenly;
+}
+
+.header button {
+    width: 100%;
+}
+
+.header button:hover:not([data-state="active"]) {
+    color: black;
+}
+
+.tabTrigger[data-state="active"] {
+    background-color: var(--main-contrast)!important;
+    color: var(--main-bg)!important;
+}

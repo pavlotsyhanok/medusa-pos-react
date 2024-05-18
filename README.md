@@ -8,6 +8,13 @@ This is a legacy version built with NextJS for testing API flows between the POS
 
 If you wish to commit to the development of the POS application, please see the `develop` branch.
 
+## 📼 Setup Tutorial (YouTube)
+
+[![Youtube Tutorial](https://img.youtube.com/vi/RuhzsSNI0u8/0.jpg)](https://www.youtube.com/watch?v=RuhzsSNI0u8)
+
+**Click on the image above to watch tutorial 👆**
+
+
 ## Features
 
 - Create orders for both new and existing customers.

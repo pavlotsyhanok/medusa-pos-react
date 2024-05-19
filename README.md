@@ -10,10 +10,9 @@ If you wish to commit to the development of the POS application, please see the 
 
 ## 📼 Setup Tutorial (YouTube)
 
-[![Youtube Tutorial](https://img.youtube.com/vi/RuhzsSNI0u8/0.jpg)](https://www.youtube.com/watch?v=RuhzsSNI0u8)
+[![Youtube Tutorial](https://img.youtube.com/vi/M1N6nEop_YE/0.jpg)](https://www.youtube.com/watch?v=M1N6nEop_YE)
 
 **Click on the image above to watch tutorial 👆**
-
 
 ## Features
 

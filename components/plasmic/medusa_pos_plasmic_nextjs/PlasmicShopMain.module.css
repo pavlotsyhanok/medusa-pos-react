@@ -1,0 +1,17 @@
+.shopMain {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  width: 100%;
+  height: auto;
+  max-width: 100%;
+  position: relative;
+  min-width: 0;
+}
+.shopBreadcrumbs:global(.__wab_instance) {
+  position: relative;
+}
+.shopCatalog:global(.__wab_instance) {
+  position: relative;
+}

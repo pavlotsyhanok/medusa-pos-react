@@ -1,0 +1,42 @@
+.header {
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  justify-content: flex-start;
+  width: 100%;
+  height: auto;
+  max-width: 100%;
+  min-height: 8%;
+  position: relative;
+  min-width: 0;
+  padding: 20px;
+  border-bottom: 1px solid #ebebeb;
+}
+.freeBox__rJkb {
+  display: block;
+  position: relative;
+  width: 100%;
+  height: auto;
+  max-width: 100%;
+  min-height: 10%;
+  min-width: 0;
+  padding: 8px;
+}
+.freeBox__em3Iv {
+  display: block;
+  position: relative;
+  width: 100%;
+  height: auto;
+  max-width: 100%;
+  min-width: 0;
+  padding: 8px;
+}
+.freeBox__efBa8 {
+  display: block;
+  position: relative;
+  width: 100%;
+  height: auto;
+  max-width: 100%;
+  min-width: 0;
+  padding: 8px;
+}

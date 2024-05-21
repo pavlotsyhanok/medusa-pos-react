@@ -1,0 +1,20 @@
+.cart {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  width: 35vw;
+  height: auto;
+  max-width: 100%;
+  position: relative;
+  border-left: 1px solid var(--token-MtrqXt1i0zab);
+}
+.cartCustomer:global(.__wab_instance) {
+  position: relative;
+}
+.cartProducts:global(.__wab_instance) {
+  position: relative;
+}
+.cartTotals:global(.__wab_instance) {
+  position: relative;
+}

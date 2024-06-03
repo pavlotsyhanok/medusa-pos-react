@@ -1,91 +1,33 @@
-# MedusaJS Point of Sale (POS) Application
+# POS application
 
-![POS Application Interface](./Coming%20Soon/thumbnail-image.jpg)
+## Setup and Installation
 
-This Point of Sale (POS) application, built using React, is designed to support B2B flows and integrates seamlessly with the Medusa backend through API interfaces. It supports Stripe POS devices for efficient payment processing, catering to both mobile and desktop platforms as a Progressive Web App (PWA).
+1. Clone the repository: 
+`git clone [your-repo-link]`
 
-## ⚠️ Branching Information
+2. Navigate into the project directory: 
+`cd POS-application`
 
-Please note that the latest production build is being built in the `pos/develop` branch.
+3. Install the dependencies: 
+`npm install`
 
-If you wish to run the legacy version of the non-production application, please check out the `pos/legacy` branch.
+4. You can run the following commands to create your Android and iOS projects for your native application.
+`npx cap add android`
+`npx cap add ios`
 
-Each branch contains instructions in its respective `readme.md` file.
+5. Start the server: `npm start dev`
 
-### Branches
+The application will start running at `http://localhost:5173/` (or your specified port).
 
-- **`pos/develop`** - Current POS application development.
-- **`medusa/api`** - Necessary routes for your Medusa server.
-- **`medusa/legacy`** - Legacy version of the application designed for testing routes and Stripe terminal integration.
-- **`pos/architecture`** - Visual architecture reference and design of the application.
+## Adding New Components
 
-This is a Next.js project bootstrapped with [`create-plasmic-app`](https://www.npmjs.com/package/create-plasmic-app).
+1. Navigate to the `components` directory.
+2. Create a new file with the `.tsx` extension.
+3. In this file, define your React component.
+4. Export your component and import it where it's needed.
 
-## How to Start
+## Sync your web code to your native project
+Once you've created your native projects, you can sync your web application to your native project by running the following command.
+`npx cap sync` 
+It will copy your built web application, by default www, to your native project and install the native projects dependencies.
 
-First, run the development server:
-
-```bash
-npm run dev
-```
-
-Open your browser to see the result.
-
-You can start editing your project in Plasmic Studio. The page auto-updates as you edit the project.
-
-## Learn More
-
-With Plasmic, you can enable non-developers on your team to publish pages and content into your website or app.
-
-To learn more about Plasmic, take a look at the following resources:
-
-- [Plasmic Website](https://www.plasmic.app/)
-- [Plasmic Documentation](https://docs.plasmic.app/learn/)
-- [Plasmic Community Forum](https://forum.plasmic.app/)
-
-You can check out [the Plasmic GitHub repository](https://github.com/plasmicapp/plasmic) - your feedback and contributions are welcome!
-
-## Key Features
-
-- **Customer Onboarding:** Facilitate in-store new customer registration and securely store payment methods via Stripe.
-- **B2B Optimized Flows:** Full support for unique customer group properties and tailored price lists.
-- **Pre-orders and Backorders:** Authenticate funds and securely store payment methods for future charges.
-- **Order Management:** Supports draft orders and provides shipping quotes based on the Medusa backend configuration.
-- **Sales Rep Analytics:** Track sales performance and establish goals through configurable events.
-
-## Tech Stack
-
-- **Platforms:** Mobile, Tablet, Desktop (PWA)
-- **Frameworks:** React for UI, CapacitorJS for device API interactions
-- **Future Development:** Plans to incorporate React Native
-
-![POS Flows](./Coming%20Soon/pos-layout.png)
-
-## Project Status
-
-**Current Phase:** In Development
-
-![POS Flows](./Coming%20Soon/preview.png)
-
-### Completed Workflows
-
-- **Security:** Authentication and route protection, including admin login.
-- **Checkout Processes:** Integration with Medusa checkout flows and Stripe POS terminal.
-- **Customer Handling:** Supports both guest and B2B checkout flows with applied price lists.
-- **Promotions:** Implementation of manual discounts and coupon applications.
-- **Operational Tools:** Features like order tracking, barcode scanning, and product search.
-
-![POS Flows](./Coming%20Soon/pos-flows.png)
-
-## To-Do
-
-- **Performance Metrics:** Implement scoring systems for sales representatives.
-- **Payment Expansion:** Integration with Square POS functionalities.
-
-## Coming Soon
-
-This repository will soon be updated with the full project under the "Coming Soon" folder. Stay tuned for the release!
-
-## Stay Tuned
-
-Stay tuned for further updates as we progress towards general availability, aiming to enhance the retail experience with innovative technology solutions.

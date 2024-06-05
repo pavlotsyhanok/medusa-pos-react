@@ -1,6 +1,6 @@
 # MedusaJS Point of Sale (POS) Application
 
-![POS Application Interface](./Coming%20Soon/thumbnail-image.jpg)
+![POS Application Interface](./public/coming-soon/thumbnail-image.jpg)
 
 This Point of Sale (POS) application, built using React, is designed to support B2B flows and integrates seamlessly with the Medusa backend through API interfaces. It supports Stripe POS devices for efficient payment processing, catering to both mobile and desktop platforms as a Progressive Web App (PWA).
 
@@ -59,13 +59,13 @@ You can check out [the Plasmic GitHub repository](https://github.com/plasmicapp/
 - **Frameworks:** React for UI, CapacitorJS for device API interactions
 - **Future Development:** Plans to incorporate React Native
 
-![POS Flows](./Coming%20Soon/pos-layout.png)
+![POS Flows](./public/coming-soon/pos-layout.png)
 
 ## Project Status
 
 **Current Phase:** In Development
 
-![POS Flows](./Coming%20Soon/preview.png)
+![POS Flows](./public/coming-soon/preview.png)
 
 ### Completed Workflows
 
@@ -75,7 +75,7 @@ You can check out [the Plasmic GitHub repository](https://github.com/plasmicapp/
 - **Promotions:** Implementation of manual discounts and coupon applications.
 - **Operational Tools:** Features like order tracking, barcode scanning, and product search.
 
-![POS Flows](./Coming%20Soon/pos-flows.png)
+![POS Flows](./public/coming-soon/pos-flows.png)
 
 ## To-Do
 

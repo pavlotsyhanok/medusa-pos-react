@@ -19,8 +19,6 @@ Each branch contains instructions in its respective `readme.md` file.
 - **`medusa/legacy`** - Legacy version of the application designed for testing routes and Stripe terminal integration.
 - **`pos/architecture`** - Visual architecture reference and design of the application.
 
-This is a Next.js project bootstrapped with [`create-plasmic-app`](https://www.npmjs.com/package/create-plasmic-app).
-
 ## How to Start
 
 1. Clone the repository:

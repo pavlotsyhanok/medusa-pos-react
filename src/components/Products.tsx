@@ -1,4 +1,4 @@
-const Product = (props: any) => {
+export default function Product(props: any) {
   const { title, id, uniqueId } = props;
 
   return (
@@ -8,4 +8,3 @@ const Product = (props: any) => {
   );
 };
 
-export default Product;

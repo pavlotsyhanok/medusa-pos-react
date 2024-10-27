@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useNavigate, Link } from "react-router-dom";
 import { medusa } from "../lib/medusa-provider";
@@ -6,7 +6,7 @@ import Cookies from "js-cookie";
 import "../styles/index.css";
 import "../styles/login.css";
 
-const Login = ({ setIsLogged }: { setIsLogged: (isLogged: any) => void }) => {
+const Login = ({ setIsLogged, isLogged }: { isLogged: boolean, setIsLogged: (isLogged: boolean) => void }) => {
 
     const [visiability, setVisiability] = useState(true);
     const [loginPassword, setLoginPassword] = useState({
@@ -15,18 +15,21 @@ const Login = ({ setIsLogged }: { setIsLogged: (isLogged: any) => void }) => {
     });
     const [errorMsg, setErrorMsg] = useState("");
 
-    // Navigation
-    const navigation = useNavigate();
-
+    const navigate = useNavigate();
     const queryClient = useQueryClient();
+
+    useEffect(() => {
+        if (isLogged) {
+            navigate("/main");
+        }
+    }, [isLogged, navigate]);
 
     const mutation = useMutation({
         mutationFn: (credentials: { email: string; password: string }) =>
             medusa.admin.auth.createSession(credentials, { withCredentials: true }),
         onSuccess: () => {
-            createToken();
+            createToken()
             queryClient.invalidateQueries({ queryKey: ['admin'] });
-            navigation("/");
         },
         onError: () => {
             setErrorMsg("Invalid credentials");
@@ -35,13 +38,17 @@ const Login = ({ setIsLogged }: { setIsLogged: (isLogged: any) => void }) => {
 
 
     function createToken() {
-        medusa.admin.auth.getToken({
-            email: loginPassword.login,
-            password: loginPassword.password
-        }).then(({ access_token }) => {
-            const setCookie = Cookies.set("token", access_token, { expires: 7, });
-            setIsLogged(!!setCookie);
-        })
+        try {
+            medusa.admin.auth.getToken({
+                email: loginPassword.login,
+                password: loginPassword.password
+            }).then(({ access_token }) => {
+                const setCookie = Cookies.set("token", access_token, { expires: 7, });
+                setIsLogged(!!setCookie);
+            })
+        } catch (error) {
+            setErrorMsg("failed to create token");
+        }
     }
     const showPassword = () => {
         setVisiability(!visiability);
@@ -53,6 +60,7 @@ const Login = ({ setIsLogged }: { setIsLogged: (isLogged: any) => void }) => {
             email: loginPassword.login,
             password: loginPassword.password,
         });
+        navigate("/main");
     };
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {

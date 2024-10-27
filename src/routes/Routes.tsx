@@ -11,10 +11,11 @@ import CreditCard from '../pages/CreditCard';
 import Success from '../pages/Success';
 import OrderNote from '../pages/OrderNote';
 import TestProduct from '../pages/TestProduct';
+import DraftOrders from '../pages/DraftOrders';
 
 export const appRoutes = [
     {
-        path: "/",
+        path: "/main",
         component: Main,
         requiresAuth: true,
     },
@@ -78,4 +79,9 @@ export const appRoutes = [
         component: TestProduct,
         requiresAuth: false,
     },
+    {
+        path: "/draft-orders",
+        component: DraftOrders,
+        requiresAuth: true,
+    }
 ]

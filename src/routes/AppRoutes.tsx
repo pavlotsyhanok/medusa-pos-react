@@ -13,7 +13,7 @@ const AppRoutes = () => {
     const [detectTerminal, setDetectTerminal] = useState("Please select the terminal");
     const [disable, setEnable] = useState(true);
     const [client, setClient] = useState("")
-    console.log(client);
+    const [newOrder, setDraftOrder] = useState(true);
     useEffect(() => {
         if (Object.keys(client).length !== 0) {
             localStorage.setItem('client', JSON.stringify(client));
@@ -21,9 +21,9 @@ const AppRoutes = () => {
     }, [client]);
 
     useEffect(() => {
-        setIsLogged(!!Cookies.get('token'));
-    }, [Cookies]);
-
+        const token = Cookies.get('token');
+        setIsLogged(!!token);
+    }, []);
 
     return (
         <QueryClientProvider client={queryClient}>
@@ -32,7 +32,8 @@ const AppRoutes = () => {
                     {appRoutes.map((route) => (
                         route.requiresAuth && !isLogged ? (
                             <Route key={route.path} path={route.path} element={<Navigate replace to="/login" />} />
-                        ) : (<Route key={route.path} path={route.path} element={<route.component setEnable={setEnable} setClient={setClient} disable={disable} setIsLogged={setIsLogged} detectTerminal={detectTerminal} setDetectTerminal={setDetectTerminal} client={client} />} />)
+                        ) : (
+                            <Route key={route.path} path={route.path} element={<route.component isLogged={isLogged} newOrder={newOrder} setDraftOrder={setDraftOrder} setEnable={setEnable} setClient={setClient} disable={disable} setIsLogged={setIsLogged} detectTerminal={detectTerminal} setDetectTerminal={setDetectTerminal} client={client} />} />)
                     ))}
                 </Routes>
             </Router>

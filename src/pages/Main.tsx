@@ -22,7 +22,8 @@ const Main = ({ setEnable, setClient, detectTerminal, disable, setIsLogged }: { 
                     <Link className="color" to="/login" onClick={() => {
                         setEnable(true);
                         setClient("");
-                        setIsLogged(Cookies.set("token", ""));
+                        setIsLogged(Cookies.remove("token"));
+                        localStorage.clear();
                         medusa.admin.auth.deleteSession();
                     }}><li>Log Out</li></Link>
                     <Link to="/draft-orders"><li>Draft Orders</li></Link>

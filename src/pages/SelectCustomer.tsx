@@ -6,7 +6,7 @@ import { medusa } from "../lib/medusa-provider";
 import "../styles/selectCustome.css";
 
 
-const SelectCustomer = ({ setClient, setEnable }: { setClient: any, setEnable: (enable: boolean) => void }) => {
+const SelectCustomer = ({ setClient, setEnable, setDraftOrder }: { setDraftOrder: (newOrder: boolean) => void; setClient: any, setEnable: (enable: boolean) => void }) => {
     const navigate = useNavigate();
 
     const [searchQuery, setSearchQuery] = useState("");
@@ -38,6 +38,7 @@ const SelectCustomer = ({ setClient, setEnable }: { setClient: any, setEnable: (
     function handleClick(id: string) {
         setClient(data?.find((client: any) => client.id === id));
         setEnable(false);
+        setDraftOrder(true);
         navigate('/shopping-panel');
     }
 

@@ -72,3 +72,36 @@ li {
 #disable:hover {
     border: none;
 }
+
+.draft-orders-list {
+    width: 100%;
+    display: flex;
+    gap: 35px;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+}
+
+.list-draft-orders {
+    padding: 20px 25px;
+    box-sizing: border-box;
+    display: flex;
+    gap: 15px;
+    flex-direction: column;
+    align-items: center;
+    border: 2px solid transparent;
+    transition: 0.5s ease;
+}
+
+.list-draft-orders:hover {
+    border-color: black;
+    border-radius: 8px;
+}
+
+.list-draft-orders p,
+button {
+    margin-top: 11px;
+    font-weight: 500;
+}

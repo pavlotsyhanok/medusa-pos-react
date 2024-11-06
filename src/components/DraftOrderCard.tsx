@@ -6,7 +6,7 @@ export default function DraftOrderCard(props: any) {
                 <p>Draft-order ID: <b>{id}</b></p>
                 <p>Draft-order email: <b>{email}</b></p>
                 <p>Draft-order Status: <b>{status}</b></p>
-                <p>Draft-order Price: <b>{price}</b></p>
+                <p>Draft-order Price: <b>{price} $</b></p>
             </div>
             <div>
                 <button className="btn-register" onClick={deleteOrder}>Delete</button>

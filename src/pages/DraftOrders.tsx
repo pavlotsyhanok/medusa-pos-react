@@ -34,7 +34,7 @@ export default function DraftOrders({ setClient, setDraftOrder, setEnable }: { s
         const totalPrice = items
             .map((item: any) => item.unit_price)
             .reduce((acc: number, current: number) => acc + current, 0);
-        return totalPrice;
+        return (totalPrice / 100).toFixed(2);
     }
 
     const deleteOrder = (draftOrderId: string) => {
@@ -47,7 +47,7 @@ export default function DraftOrders({ setClient, setDraftOrder, setEnable }: { s
                 setClient(draftOrderId.draft_order);
                 setDraftOrder(false);
                 navigate('/shopping-panel');
-                setEnable(false);
+                setEnable(true);
             });
     };
 

@@ -24,7 +24,7 @@ const Register = () => {
 
   const newCustomerMutation = useMutation({
     mutationFn: async (newCustomer: any) => {
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+      await new Promise((resolve) => setTimeout(resolve, 500));
 
       // Call the Medusa admin API to create a new customer
       const response = await medusa.admin.customers.create({

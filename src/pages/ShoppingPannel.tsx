@@ -10,7 +10,6 @@ import Product from "../components/Products";
 const ShoppingPanel = ({ client, disable, setClient, setEnable, newOrder, setDraftOrder }: { setDraftOrder: (newOrder: boolean) => void; newOrder: boolean; client: any; disable: boolean; setClient: any; setEnable: (enable: boolean) => void; }) => {
     const [search, setSearch] = useState("")
     const navigate = useNavigate();
-
     useEffect(() => {
         const storedClient = localStorage.getItem("client");
         if (storedClient) {
@@ -53,7 +52,6 @@ const ShoppingPanel = ({ client, disable, setClient, setEnable, newOrder, setDra
     function selectProduct(productId: string) {
         if (!newOrder) {
             const selectedProduct = productQuery?.find((product: any) => product.id === productId);
-            console.log(selectedProduct);
             const updatedCart = client.cart.items ? [...client.cart.items, selectedProduct] : [selectedProduct];
             const orderLength = updatedCart.length;
             updatedCart[updatedCart.length - 1] = { ...selectedProduct, uniqueId: orderLength };
@@ -143,6 +141,7 @@ const ShoppingPanel = ({ client, disable, setClient, setEnable, newOrder, setDra
             ],
         })
         console.log(createDraftOrder);
+        navigate("/checkout");
     };
     //Search Product engine
     const searchEngine = (e: any) => {
@@ -198,6 +197,7 @@ const ShoppingPanel = ({ client, disable, setClient, setEnable, newOrder, setDra
         } catch (error) {
             console.error('Error updating draft order:', error);
         }
+        navigate("/draft-orders")
     };
 
     return (
@@ -217,7 +217,7 @@ const ShoppingPanel = ({ client, disable, setClient, setEnable, newOrder, setDra
                     <p>🔎 Search Product</p>
                     <input type="text" placeholder="Search Product..." onChange={searchEngine} value={search} />
                 </div>
-                {!disable ? (
+                {!disable && newOrder ? (
                     <Link to="/order-note">
                         <li>📝 Order Note</li>
                     </Link>

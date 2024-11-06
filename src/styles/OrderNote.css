@@ -32,3 +32,9 @@
 .notes li:hover {
     cursor: pointer;
 }
+
+.notes ul {
+    display: flex;
+    flex-direction: column;
+    width: auto;
+}

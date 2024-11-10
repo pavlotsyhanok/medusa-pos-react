@@ -50,8 +50,8 @@ const ShoppingPanel = ({ client, disable, setClient, setEnable, newOrder, setDra
 
     // Update selectProduct to use the API-based draft order mutation
     function selectProduct(productId: string) {
+        const selectedProduct = productQuery?.find((product: any) => product.id === productId);
         if (!newOrder) {
-            const selectedProduct = productQuery?.find((product: any) => product.id === productId);
             const updatedCart = client.cart.items ? [...client.cart.items, selectedProduct] : [selectedProduct];
             const orderLength = updatedCart.length;
             updatedCart[updatedCart.length - 1] = { ...selectedProduct, uniqueId: orderLength };
@@ -64,7 +64,6 @@ const ShoppingPanel = ({ client, disable, setClient, setEnable, newOrder, setDra
                 }
             }));
         } else {
-            const selectedProduct = productQuery?.find((product: any) => product.id === productId);
             const updatedCart = client.customerOrder ? [...client.customerOrder, selectedProduct] : [selectedProduct];
             const orderLength = updatedCart.length;
             updatedCart[updatedCart.length - 1] = { ...selectedProduct, uniqueId: orderLength };
@@ -74,6 +73,7 @@ const ShoppingPanel = ({ client, disable, setClient, setEnable, newOrder, setDra
                 customerOrder: updatedCart
             }));
         }
+
     }
 
     // Handle client selection
@@ -102,47 +102,11 @@ const ShoppingPanel = ({ client, disable, setClient, setEnable, newOrder, setDra
         }
     }
 
-    // Checkoout to use the API-based draft order PUT request
+    // navigate to Checkoout 
     const handleCheckout = async () => {
-        const regionsResponse = await medusa.admin.regions.list();
-        const regions = regionsResponse.regions;
-        console.log("Available regions:", regions);
-
-        const items = client.customerOrder.map((product: any) => ({
-            variant_id: product.variants[0].id,
-            title: product.title,
-            quantity: 1,
-            unit_price: product.variants[0].prices[0].amount,
-        }));
-
-        const region_id = regions[0].id;
-
-        const shippingOptionsResponse = await medusa.admin.shippingOptions.list({
-            region_id: region_id,
-        });
-        const shippingOptions = shippingOptionsResponse.shipping_options
-
-        const createDraftOrder = await medusa.admin.draftOrders.create({
-            email: client.email,
-            billing_address: {
-                first_name: client.first_name,
-                last_name: client.last_name,
-                address_1: "N/A",
-                city: "N/A",
-                country_code: "ca",
-                postal_code: "00000"
-            },
-            region_id,
-            items,
-            shipping_methods: [
-                {
-                    option_id: shippingOptions[0].id,
-                },
-            ],
-        })
-        console.log(createDraftOrder);
         navigate("/checkout");
     };
+
     //Search Product engine
     const searchEngine = (e: any) => {
         setSearch(e.target.value);

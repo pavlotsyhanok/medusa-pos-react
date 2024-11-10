@@ -29,3 +29,11 @@
     gap: 10px;
     width: 334px;
 }
+
+.payment {
+    margin: 25px;
+}
+
+.form-element {
+    width: 75%;
+}

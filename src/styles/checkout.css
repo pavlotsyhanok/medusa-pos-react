@@ -22,12 +22,12 @@ li .btn-option {
 #continue {
     background-color: black;
     color: white;
-    margin-top: 150px;
+    margin-top: 20px;
 }
 
-#continue:hover {
+/* #continue:hover {
     border: 1px solid white;
-}
+} */
 
 .selected {
     border: 1px solid black;

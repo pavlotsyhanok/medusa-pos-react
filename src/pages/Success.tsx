@@ -8,7 +8,7 @@ const Success = () => {
             <h1>Order No. 1 Placed</h1>
             <nav className="checkout-options">
                 <ul className="checkout-options">
-                    <li><Link to="/" className="btn-option" id="continue">Back to main menu</Link></li>
+                    <li><Link to="/main" className="btn-option" id="continue">Back to main menu</Link></li>
                 </ul>
             </nav>
         </div>

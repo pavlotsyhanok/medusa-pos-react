@@ -12,6 +12,8 @@
   "dependencies": {
     "@capacitor/core": "^6.0.0",
     "@medusajs/medusa": "^1.20.9",
+    "@stripe/react-stripe-js": "^2.8.1",
+    "@stripe/stripe-js": "^4.9.0",
     "@tanstack/react-query": "^4.36.1",
     "@tanstack/react-query-devtools": "^4.36.1",
     "axios": "^1.7.4",

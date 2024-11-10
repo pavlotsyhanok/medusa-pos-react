@@ -10,7 +10,7 @@ import ShoppingPanel from '../pages/ShoppingPannel';
 import CreditCard from '../pages/CreditCard';
 import Success from '../pages/Success';
 import OrderNote from '../pages/OrderNote';
-import TestProduct from '../pages/TestProduct';
+import TestProduct from '../test/TestProduct';
 import DraftOrders from '../pages/DraftOrders';
 
 export const appRoutes = [

@@ -4,7 +4,7 @@ import { useQueryClient, useMutation, useQuery } from "@tanstack/react-query";
 import Note from "../components/Notes";
 import "../styles/OrderNote.css";
 
-const OrderNote = ({ setClient, client, setEnable }: { setEnable: any, client: any, setClient: (client: any) => void }) => {
+const DraftOrderNote = ({ setClient, client }: { setDraftOrder: (newOrder: boolean) => void; newOrder: boolean; client: any, setClient: (client: any) => void }) => {
     const navigate = useNavigate();
     const [note, setNote] = useState("");
     const queryClient = useQueryClient();
@@ -13,32 +13,30 @@ const OrderNote = ({ setClient, client, setEnable }: { setEnable: any, client: a
         const storedClient = localStorage.getItem("client");
         if (storedClient) {
             setClient(JSON.parse(storedClient));
-            setEnable(false);
         }
-    }, [setClient, setEnable]);
+    }, [setClient]);
 
     const { isLoading: draftsIsLoading, isError: draftsIsError, data: draftsData, error: draftsError } = useQuery(
-        ["notes", client?.id],
+        ["draftNotes", client?.cart.id],
         async () => {
-            if (!client?.id) throw new Error("Client ID is not defined");
-            const response = await fetch(`http://localhost:9000/admin/custom/customer/${client.id}`, {
+            if (!client?.cart.id) throw new Error("Client ID is not defined");
+            const response = await fetch(`http://localhost:9000/admin/custom/cartOrderNote/${client.cart.id}`, {
                 method: "GET",
                 credentials: 'include',
             });
+
             if (!response.ok) {
                 throw new Error("Failed to fetch data");
             }
             return response.json();
+        },
+        {
+            enabled: !!client?.cart?.id, // Runs only when client.id is defined
         }
-        // {
-        //     enabled: !!client?.id,
-        //     cacheTime: 0
-        // }
     );
-
     const submitNoteMutation = useMutation({
         mutationFn: async (bodyNote: { title: string }) => {
-            const response = await fetch(`http://localhost:9000/admin/custom/customer/${client.id}`, {
+            const response = await fetch(`http://localhost:9000/admin/custom/cartOrderNote/${client.cart.id}`, {
                 method: "PUT",
                 credentials: "include",
                 body: JSON.stringify({ bodyNote }),
@@ -53,15 +51,14 @@ const OrderNote = ({ setClient, client, setEnable }: { setEnable: any, client: a
             }
             return response.json();
         },
-        onSuccess: (data) => {
-            queryClient.invalidateQueries(["notes", client.id]);
+        onSuccess: () => {
             setNote("");
-            console.log("Note added:", data);
-        },
+            queryClient.invalidateQueries(["draftNotes", client.cart.id]);
+        }
     });
     const deleteNotes = useMutation({
         mutationFn: async (noteId) => {
-            const response = await fetch(`http://localhost:9000/admin/custom/customer/${client.id}`, {
+            const response = await fetch(`http://localhost:9000/admin/custom/cartOrderNote/${client.cart.id}`, {
                 method: "DELETE",
                 body: JSON.stringify({ noteId }),
                 headers: {
@@ -77,7 +74,7 @@ const OrderNote = ({ setClient, client, setEnable }: { setEnable: any, client: a
             return response.json();
         },
         onSuccess: ((data) => {
-            queryClient.invalidateQueries({ queryKey: ["notes", client.id] });
+            queryClient.invalidateQueries({ queryKey: ["draftNotes", client.cart.id] });
             console.log("Note Deleted:", data);
         }),
         onError: (error) => {
@@ -102,7 +99,6 @@ const OrderNote = ({ setClient, client, setEnable }: { setEnable: any, client: a
     const deleteNote = (noteId: any) => {
         deleteNotes.mutate(noteId);
     }
-
     return (
         <>
             <header>
@@ -128,4 +124,4 @@ const OrderNote = ({ setClient, client, setEnable }: { setEnable: any, client: a
     );
 };
 
-export default OrderNote;
+export default DraftOrderNote;

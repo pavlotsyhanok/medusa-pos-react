@@ -16,7 +16,6 @@ const SelectCustomer = ({ setClient, setEnable, setDraftOrder }: { setDraftOrder
         queryKey: ['customer'],
         queryFn: async () => {
             const response = await medusa.admin.customers.list();
-            console.log(response.customers)
             return response.customers;
         },
         staleTime: 60000, // 1 minute

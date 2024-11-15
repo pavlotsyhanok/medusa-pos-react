@@ -9,7 +9,7 @@ import CheckoutForm from "../components/CheckoutForm";
 const STRIPE_KEY = import.meta.env.VITE_PUBLIC_STRIPE_API_KEY;
 const stripePromise = loadStripe(STRIPE_KEY);
 
-const CreditCard = ({ client }: { client: any }) => {
+const CreditCard = ({ client, setClient }: { setClient: (client: any) => void, client: any }) => {
     const navigate = useNavigate();
     const [clientSecret, setClientSecret] = useState<string | null>(null);
 
@@ -18,12 +18,13 @@ const CreditCard = ({ client }: { client: any }) => {
             let existingCartId = localStorage.getItem("cart_id");
 
             if (!existingCartId) {
-                localStorage.setItem("cart_id", client.cart.id);
-                existingCartId = client.cart.id;
+                // localStorage.setItem("cart_id", client.id);
+                existingCartId = client.id;
             } else {
                 try {
                     const { cart } = await medusa.carts.retrieve(existingCartId);
                     console.log("Retrieved existing cart:", cart);
+                    setClient(cart);
                 } catch (error) {
                     console.error("Error retrieving existing cart:", error);
                     return null;
@@ -34,25 +35,34 @@ const CreditCard = ({ client }: { client: any }) => {
         // Here is an ERROR !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! line 37,57
         const setupStripePayment = async (cartId: string) => {
             try {
-                const { cart } = await medusa.carts.createPaymentSessions(cartId);
-                const isStripeAvailable = cart.payment_sessions?.some(
-                    (session) => session.provider_id === "stripe"
-                );
-
-                if (!isStripeAvailable) {
-                    console.warn("Stripe is not available for this cart");
-                    return;
+                try {
+                    await medusa.carts.createPaymentSessions(cartId)
+                        .then(({ cart }) => {
+                            // check if stripe is selected
+                            const isStripeAvailable = cart.payment_sessions?.some(
+                                (session) =>
+                                    session.provider_id === "stripe"
+                            );
+                            if (!isStripeAvailable) {
+                                console.warn("Stripe is not available for this cart");
+                                return;
+                            }
+                        })
+                } catch (error) {
+                    console.error("Error creating payment sessions:", error);
                 }
 
+                // select stripe payment session
                 const { cart: updatedCart } = await medusa.carts.setPaymentSession(cartId, {
                     provider_id: "stripe",
                 });
-
+                setClient(updatedCart);
                 if (updatedCart.payment_session?.data?.client_secret) {
                     setClientSecret(updatedCart.payment_session.data.client_secret as string);
                 } else {
                     console.error("Stripe client secret not found");
                 }
+
             } catch (error) {
                 console.error("Error setting up Stripe payment session:", error);
             }
@@ -64,7 +74,6 @@ const CreditCard = ({ client }: { client: any }) => {
             }
         });
     }, []);
-
 
     return (
         <>

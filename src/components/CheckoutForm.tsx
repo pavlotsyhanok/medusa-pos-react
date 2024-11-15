@@ -8,16 +8,7 @@ const CheckoutForm = (props: any) => {
     const navigate = useNavigate();
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
     const [isProcessing, setIsProcessing] = useState(false);
-    const { clientSecret, client, cardId } = props;
-    console.log(client);
-    // const isElementsLoaded = stripe && elements;
-
-    // useEffect(() => {
-    //     if (!isElementsLoaded) {
-    //         setErrorMessage("Stripe elements not fully loaded.");
-    //     }
-    // }, [isElementsLoaded]);
-    // console.log(elements);
+    const { clientSecret, client } = props;
 
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
@@ -31,41 +22,45 @@ const CheckoutForm = (props: any) => {
         setErrorMessage(null);
 
         const cardElement = elements.getElement(CardElement);
+        console.log(cardElement);
         if (!cardElement) {
             setErrorMessage("Card information not provided.");
             setIsProcessing(false);
             return;
         }
-
-        //     navigate("/success");
-        return stripe.confirmCardPayment(clientSecret, {
+        return (stripe.confirmCardPayment(clientSecret, {
             payment_method: {
                 card: cardElement,
                 billing_details: {
-                    name: client.cart.billing_address.first_name,
-                    email: client.cart.email,
-                    phone: client.cart.billing_address.phone,
+                    name: client.billing_address.first_name,
+                    email: client.email,
+                    phone: client.shipping_address.phone,
                     address: {
-                        city: client.cart.billing_address.city,
-                        country: client.cart.billing_address.country_code,
-                        line1: client.cart.billing_address.address_1,
-                        line2: client.cart.billing_address.address_2,
-                        postal_code: client.cart.billing_address.postal_code,
+                        city: client.billing_address.city,
+                        country: client.billing_address.country_code,
+                        line1: client.billing_address.address_1,
+                        line2: client.billing_address.address_2,
+                        postal_code: client.billing_address.postal_code,
                     },
 
                 }
             },
-        }).then(({ error, paymentIntent }) => {
-            // TODO handle errors
-            console.log(paymentIntent);
-            //HERE is An Error !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-            setErrorMessage("Payment processing failed. Please try again. " + error);
+        }).then(({ error }) => {
+            if (error) {
+                setErrorMessage("Payment processing failed. Please try again. " + error.message);
+            } else {
+                medusa.carts.complete(client.id)
+                    .then(() => {
+                        console.log(client.id)
+                        localStorage.removeItem("cart_id");
+                        navigate("/success");
+                    })
+                    .catch(completeError => {
+                        setErrorMessage("Error completing order: " + completeError.message);
+                    });
+            }
             setIsProcessing(false);
-            medusa.carts.complete(client.cart.id).then(
-                (resp: any) => console.log(resp),
-                // navigate("/success")
-            )
-        })
+        }))
     }
     return (
         <form onSubmit={handleSubmit} className="form-element">

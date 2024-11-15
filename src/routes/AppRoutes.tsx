@@ -12,13 +12,21 @@ const AppRoutes = () => {
     const [isLogged, setIsLogged] = useState(() => !!Cookies.get('token'));
     const [detectTerminal, setDetectTerminal] = useState("Please select the terminal");
     const [disable, setEnable] = useState(true);
-    const [client, setClient] = useState("")
+    const [client, setClient] = useState(() => {
+        const storedClient = localStorage.getItem('client');
+        return storedClient ? JSON.parse(storedClient) : {};
+    });
     const [newOrder, setDraftOrder] = useState(true);
     useEffect(() => {
-        if (Object.keys(client).length !== 0) {
+        if (client && Object.keys(client).length !== 0) {
             localStorage.setItem('client', JSON.stringify(client));
+            if (client.cart) {
+                setDraftOrder(false);
+            }
+        } else {
+            localStorage.removeItem('client');
         }
-    }, [client]);
+    }, [client, setDraftOrder]);
 
     useEffect(() => {
         const token = Cookies.get('token');

@@ -10,6 +10,7 @@ import Product from "../components/Products";
 const ShoppingPanel = ({ client, disable, setClient, setEnable, newOrder, setDraftOrder }: { setDraftOrder: (newOrder: boolean) => void; newOrder: boolean; client: any; disable: boolean; setClient: any; setEnable: (enable: boolean) => void; }) => {
     const [search, setSearch] = useState("")
     const navigate = useNavigate();
+
     useEffect(() => {
         const storedClient = localStorage.getItem("client");
         if (storedClient) {
@@ -111,58 +112,6 @@ const ShoppingPanel = ({ client, disable, setClient, setEnable, newOrder, setDra
     const searchEngine = (e: any) => {
         setSearch(e.target.value);
     };
-    //Updating Draft Order to use the API-based draft order POST request
-    const updateDraftOrder = async (draftOrderId: string) => {
-        try {
-            // Retrieve the current draft order
-            const response = await medusa.admin.draftOrders.retrieve(draftOrderId);
-            const currentItems = response.draft_order.cart.items;
-
-            // Remove each existing line item
-            for (const item of currentItems) {
-                try {
-                    await medusa.admin.draftOrders.removeLineItem(draftOrderId, item.id);
-                    console.log(`Removed item with ID: ${item.id}`);
-                } catch (error) {
-                    break
-                }
-            }
-
-            const itemsToAdd = client.cart.items.map((product: any) => {
-                let unitPrice;
-
-                if (product.total) {
-                    unitPrice = product.total;
-                } else if (product.variants[0]?.prices[0]?.amount) {
-                    unitPrice = product.variants[0].prices[0].amount;
-                }
-                return {
-                    variant_id: product.id,
-                    title: product.title,
-                    quantity: 1,
-                    unit_price: unitPrice,
-                };
-            });
-
-            for (const item of itemsToAdd) {
-                try {
-                    await medusa.admin.draftOrders.addLineItem(draftOrderId, {
-                        variant_id: item.product_id,
-                        title: item.title,
-                        unit_price: item.unit_price,
-                        quantity: item.quantity,
-                    }).then((response) => console.log(response));
-                    console.log(`Added item with variant ID: ${item.variant_id}`);
-                } catch (error) {
-                    console.error(`Failed to add item with variant ID ${item.variant_id}:, error`);
-                }
-            }
-            console.log('Draft order updated successfully.');
-        } catch (error) {
-            console.error('Error updating draft order:', error);
-        }
-        navigate("/draft-orders")
-    };
 
     return (
         <div>
@@ -181,15 +130,11 @@ const ShoppingPanel = ({ client, disable, setClient, setEnable, newOrder, setDra
                     <p>🔎 Search Product</p>
                     <input type="text" placeholder="Search Product..." onChange={searchEngine} value={search} />
                 </div>
-                {!disable && newOrder ? (
-                    <Link to="/order-note">
-                        <li>📝 Order Note</li>
-                    </Link>
-                ) : (
-                    <Link to="#" id="disable">
-                        <li id="disable">📝 Order Note</li>
-                    </Link>
-                )}
+                {newOrder ? <Link to="/customer-order-note">
+                    <li>📝 Order Note</li>
+                </Link> : <Link to="/draft-order-note">
+                    <li>📝 Order Note</li>
+                </Link>}
             </nav>
             <main className="main-panel">
                 <div className="panel-left-side">
@@ -227,52 +172,54 @@ const ShoppingPanel = ({ client, disable, setClient, setEnable, newOrder, setDra
                     <div className="search-bar">
                         <p>🛒 Cart</p>
 
-                        {!disable ? (client.order === null ? (
-                            <div className="summery">
-                                <div className="summery-customer">
-                                    <h2>🗂️ Managing draft order for {client.cart.customer.first_name} {client.cart.customer.last_name}</h2>
-                                </div>
-                                <div className="panel-product">
-                                    {client.cart.items?.map((e: any) => (
-                                        <Products
-                                            key={e.id}
-                                            title={e.title}
-                                            selectProduct={() => deleteProduct(e.id)}
-                                        />
-                                    ))}
-                                </div>
-                                <div className="panel-product">
-                                    <div className="cart-totals">
-                                        <p>Cart Totals</p>
+                        {!disable ? (client.order === null ?
+                            (
+                                <div className="summery">
+                                    <div className="summery-customer">
+                                        <h2>🗂️ Managing draft order for {client.cart.customer.first_name} {client.cart.customer.last_name}</h2>
                                     </div>
-                                </div>
-                                <button className="btn-checkout" onClick={() => updateDraftOrder(client.id)}>Update Draft Order</button>
-                            </div>
-                        ) : (
-                            <div className="summery">
-                                <div className="summery-customer">
-                                    <h2>
-                                        👨 Customer is {client.first_name} {client.last_name}
-                                    </h2>
-                                </div>
-                                <div className="panel-product">
-                                    {client.customerOrder?.map((e: any) => (
-                                        <Products
-                                            key={e.id}
-                                            title={e.title}
-                                            selectProduct={() => deleteProduct(e.uniqueId)}
-                                        />
-                                    ))}
-                                </div>
-                                <div className="panel-product">
-                                    <div className="cart-totals">
-                                        <p>Cart Totals</p>
+                                    <div className="panel-product">
+                                        {client.cart.items?.map((e: any) => (
+                                            <Products
+                                                key={e.id}
+                                                title={e.title}
+                                                selectProduct={() => deleteProduct(e.id)}
+                                            />
+                                        ))}
                                     </div>
+                                    <div className="panel-product">
+                                        <div className="cart-totals">
+                                            <p>Cart Totals</p>
+                                        </div>
+                                    </div>
+                                    <button className="btn-checkout" onClick={handleCheckout}>Checkout</button>
                                 </div>
-                                <button className="btn-checkout" onClick={handleCheckout}>Checkout</button>
-                            </div>
+                            )
+                            : (
+                                <div className="summery">
+                                    <div className="summery-customer">
+                                        <h2>
+                                            👨 Customer is {client.first_name} {client.last_name}
+                                        </h2>
+                                    </div>
+                                    <div className="panel-product">
+                                        {client.customerOrder?.map((e: any) => (
+                                            <Products
+                                                key={e.id}
+                                                title={e.title}
+                                                selectProduct={() => deleteProduct(e.uniqueId)}
+                                            />
+                                        ))}
+                                    </div>
+                                    <div className="panel-product">
+                                        <div className="cart-totals">
+                                            <p>Cart Totals</p>
+                                        </div>
+                                    </div>
+                                    <button className="btn-checkout" onClick={handleCheckout}>Checkout</button>
+                                </div>
 
-                        )) : (
+                            )) : (
                             <div className="summery">
                                 <div className="customer-results shopping-cart">
                                     {customersData.map((e: any) => (

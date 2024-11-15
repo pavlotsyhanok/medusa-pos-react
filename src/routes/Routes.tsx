@@ -9,9 +9,10 @@ import NotFound from '../components/NotFound';
 import ShoppingPanel from '../pages/ShoppingPannel';
 import CreditCard from '../pages/CreditCard';
 import Success from '../pages/Success';
-import OrderNote from '../pages/OrderNote';
+import OrderNote from '../pages/CustomerOrderNote';
 import TestProduct from '../test/TestProduct';
 import DraftOrders from '../pages/DraftOrders';
+import DraftOrderNote from '../pages/DraftOrderNote';
 
 export const appRoutes = [
     {
@@ -70,7 +71,7 @@ export const appRoutes = [
         requiresAuth: true,
     },
     {
-        path: "/order-note",
+        path: "/customer-order-note",
         component: OrderNote,
         requiresAuth: true,
     },
@@ -82,6 +83,11 @@ export const appRoutes = [
     {
         path: "/draft-orders",
         component: DraftOrders,
+        requiresAuth: true,
+    },
+    {
+        path: "/draft-order-note",
+        component: DraftOrderNote,
         requiresAuth: true,
     }
 ]

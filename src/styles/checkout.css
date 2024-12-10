@@ -25,10 +25,6 @@ li .btn-option {
     margin-top: 20px;
 }
 
-/* #continue:hover {
-    border: 1px solid white;
-} */
-
 .selected {
     border: 1px solid black;
 }

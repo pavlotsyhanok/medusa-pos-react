@@ -7,6 +7,12 @@
     width: 100%;
 }
 
+@media (max-width: 768px) {
+    .container-login {
+        flex-direction: column;
+    }
+}
+
 .left-side {
     background-color: #D9D9D9;
     display: flex;
@@ -15,6 +21,13 @@
     justify-content: space-around;
     flex: 1;
     box-sizing: border-box;
+    padding: 20px;
+}
+
+@media (max-width: 768px) {
+    .left-side {
+        padding: 30px 20px;
+    }
 }
 
 .left-side>h1,
@@ -22,16 +35,19 @@ h2 {
     text-align: center;
     font-weight: 500;
     margin: 0;
+    font-size: clamp(1.5rem, 3vw, 2rem);
 }
 
 .square {
     background-color: black;
-    width: 289px;
-    height: 339px;
+    width: min(289px, 80%);
+    height: min(339px, 40vh);
 }
 
 .left-side>img {
     padding-top: 25px;
+    max-width: 100%;
+    height: auto;
 }
 
 .right-side {
@@ -39,23 +55,26 @@ h2 {
     justify-content: center;
     align-items: center;
     flex: 1.3;
+    padding: 20px;
 }
 
 .login-form {
-    width: 440px;
-    height: 520px;
+    width: min(440px, 100%);
+    height: auto;
+    min-height: 520px;
     background-color: #D9D9D9;
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
     align-items: flex-start;
-    padding: 40px 55px;
+    padding: clamp(20px, 5vw, 40px) clamp(20px, 5vw, 55px);
     border-radius: 11px;
 }
 
 .password-container {
     position: relative;
     display: flex;
+    width: 100%;
 }
 
 .icon-toggle-eye {
@@ -67,11 +86,8 @@ h2 {
 }
 
 input {
-    padding: 11px 6px;
     border: none;
     width: 100%;
-    margin: 7px 0px;
-    border-radius: 7px;
 }
 
 .form input:first-child {
@@ -85,7 +101,7 @@ input {
 .form>a {
     padding: 0;
     display: block;
-    font-size: 12px;
+    font-size: clamp(10px, 2vw, 12px);
 }
 
 .policies {
@@ -93,6 +109,15 @@ input {
     margin: 0 auto;
     margin-top: -46px;
     display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+}
+
+@media (max-width: 480px) {
+    .policies {
+        margin-top: -30px;
+    }
 }
 
 .policies>a:last-child {
@@ -104,9 +129,8 @@ input {
 }
 
 a {
-    padding: 0 8px;
-    color: rgb(101, 101, 101);
-    font-size: 12px;
+    text-decoration: none;
+    color: rgb(0, 0, 0);
 }
 
 .btn-login {
@@ -114,6 +138,8 @@ a {
     background-color: black;
     color: white;
     width: 100%;
+    padding: 10px;
+    border-radius: 7px;
 }
 
 .btn-login:hover {

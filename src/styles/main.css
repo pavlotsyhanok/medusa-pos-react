@@ -1,5 +1,5 @@
 div.main-page {
-    height: 100vh;
+    min-height: 100vh;
     width: 100%;
     padding: 0;
     margin: 0;
@@ -11,8 +11,7 @@ div.main-page {
 header,
 ul,
 .main-page,
-.main-menu a,
-a {
+.main-menu a {
     flex-direction: column;
     display: flex;
     flex-wrap: wrap;
@@ -21,37 +20,17 @@ a {
 }
 
 .page-name {
-    font-size: 20px;
+    font-size: clamp(16px, 4vw, 20px);
     font-weight: 600;
-    margin: 40px;
-}
-
-header p {
-    margin: 40px;
-    padding: 10px 25px 10px 25px;
-    border: 2px dashed rgba(0, 165, 16, 1)
+    margin: clamp(20px, 5vw, 40px);
 }
 
 ul {
-    margin-top: 100px;
-    width: 465px;
-    gap: 25px;
+    margin-top: clamp(50px, 10vw, 100px);
+    width: min(465px, 95%);
+    gap: clamp(15px, 3vw, 25px);
     flex-direction: row;
-}
-
-nav ul a {
-    text-decoration: none;
-    display: flex;
-    margin: 0;
-    width: 215px;
-    height: 55px;
-    background-color: rgba(206, 206, 206, 1);
-    border-radius: 10px;
-}
-
-nav ul a li {
-    margin: 0;
-    color: black;
+    padding: 0 10px;
 }
 
 .color {
@@ -76,23 +55,26 @@ li {
 .draft-orders-list {
     width: 100%;
     display: flex;
-    gap: 35px;
+    gap: clamp(20px, 4vw, 35px);
     flex-direction: column;
     flex-wrap: nowrap;
     justify-content: center;
     align-items: center;
     align-content: center;
+    padding: 0 15px;
+    box-sizing: border-box;
 }
 
 .list-draft-orders {
-    padding: 20px 25px;
+    padding: clamp(15px, 3vw, 20px) clamp(20px, 4vw, 25px);
     box-sizing: border-box;
     display: flex;
-    gap: 15px;
+    gap: clamp(10px, 2vw, 15px);
     flex-direction: column;
     align-items: center;
     border: 2px solid transparent;
     transition: 0.5s ease;
+    width: min(500px, 100%);
 }
 
 .list-draft-orders:hover {
@@ -102,6 +84,14 @@ li {
 
 .list-draft-orders p,
 button {
-    margin-top: 11px;
+    margin-top: clamp(8px, 2vw, 11px);
     font-weight: 500;
+    word-break: break-word;
+}
+
+@media (max-width: 480px) {
+    ul {
+        flex-direction: column;
+    }
+
 }

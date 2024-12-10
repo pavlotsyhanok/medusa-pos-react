@@ -1,26 +1,19 @@
-.back-menu a,
 main.terminals {
     margin: 25px 18px;
 }
 
-.back-menu a,
 main .stripe-terminal {
-    background-color: rgba(206, 206, 206, 1);
-    padding: 10px 25px;
-    border-radius: 10px;
     display: flex;
     justify-content: center;
     align-items: center;
-    font-weight: 600;
+
     font-size: 15px;
     line-height: 18.15px;
 }
 
 .back-menu a {
-    width: 215px;
-    height: 55px;
     text-decoration: none;
-    color: black;
+    color: rgb(109, 109, 109);
 }
 
 main.terminals {
@@ -32,12 +25,4 @@ main.terminals {
 main .stripe-terminal {
     width: 215px;
     height: 289px;
-}
-
-main .stripe-terminal:hover,
-.back-menu a:hover,
-nav ul a:hover,
-.checkout-options .btn-option:hover {
-    cursor: pointer;
-    border: 1px solid black;
 }

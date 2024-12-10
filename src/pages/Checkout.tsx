@@ -233,6 +233,7 @@ const Checkout = ({ client, setClient, newOrder }: { newOrder: boolean, setClien
       navigate("/credit-card");
     }
   }
+
   const alertMessage = () => {
     alert("Please select the payment method or save it as a Draft Order");
   }
@@ -263,4 +264,5 @@ const Checkout = ({ client, setClient, newOrder }: { newOrder: boolean, setClien
     </div>
   );
 };
+
 export default Checkout;

@@ -5,6 +5,8 @@ import { medusa } from "../lib/medusa-provider";
 import Cookies from "js-cookie";
 import "../styles/index.css";
 import "../styles/login.css";
+import Logotype from "../assets/Logotype.svg";
+import IconButton from "../assets/IconButton.png";
 
 const Login = ({ setIsLogged, isLogged }: { isLogged: boolean, setIsLogged: (isLogged: boolean) => void }) => {
 
@@ -32,7 +34,11 @@ const Login = ({ setIsLogged, isLogged }: { isLogged: boolean, setIsLogged: (isL
             queryClient.invalidateQueries({ queryKey: ['admin'] });
         },
         onError: () => {
-            setErrorMsg("Invalid credentials");
+            setErrorMsg("Invalid email or password. Please try again.");
+            setLoginPassword({
+                login: "",
+                password: ""
+            });
         },
     });
 
@@ -45,22 +51,36 @@ const Login = ({ setIsLogged, isLogged }: { isLogged: boolean, setIsLogged: (isL
             }).then(({ access_token }) => {
                 const setCookie = Cookies.set("token", access_token, { expires: 7, });
                 setIsLogged(!!setCookie);
+                if (!!setCookie) {
+                    navigate("/main");
+                }
             })
         } catch (error) {
-            setErrorMsg("failed to create token");
+            setErrorMsg("Failed to authenticate. Please try again.");
+            setLoginPassword({
+                login: "",
+                password: ""
+            });
         }
     }
     const showPassword = () => {
         setVisiability(!visiability);
     };
 
-    const handleLogin = (e: React.FormEvent) => {
+    const handleLogin = async (e: React.FormEvent) => {
         e.preventDefault();
-        mutation.mutate({
-            email: loginPassword.login,
-            password: loginPassword.password,
-        });
-        navigate("/main");
+        if (!loginPassword.login || !loginPassword.password) {
+            setErrorMsg("Please enter both email and password");
+            return;
+        }
+        try {
+            await mutation.mutateAsync({
+                email: loginPassword.login,
+                password: loginPassword.password,
+            });
+        } catch (error) {
+            return;
+        }
     };
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -69,6 +89,7 @@ const Login = ({ setIsLogged, isLogged }: { isLogged: boolean, setIsLogged: (isL
             ...prevValue,
             [name]: value,
         }));
+        // setErrorMsg("");
     };
 
     return (
@@ -76,13 +97,13 @@ const Login = ({ setIsLogged, isLogged }: { isLogged: boolean, setIsLogged: (isL
             <div className="left-side">
                 <h1>Medusa POS Application</h1>
                 <div className="square"></div>
-                <img src="/src/assets/Logotype.svg" alt="medusa-logo" />
+                <img src={Logotype} alt="medusa-logo" />
             </div>
             <div className="right-side">
                 <div className="login-form">
                     <h2>Admin Login</h2>
                     <form className="form" onSubmit={handleLogin}>
-                        <span>{errorMsg}</span>
+                        {errorMsg && <span style={{ color: 'black' }}>{errorMsg}</span>}
                         <input
                             type="text"
                             placeholder="www.example.com"
@@ -101,7 +122,7 @@ const Login = ({ setIsLogged, isLogged }: { isLogged: boolean, setIsLogged: (isL
                             />
                             <span onClick={showPassword}>
                                 <img
-                                    src="/src/assets/IconButton.png"
+                                    src={IconButton}
                                     alt="eye icon"
                                     className="icon-toggle-eye"
                                 />

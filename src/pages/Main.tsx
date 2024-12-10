@@ -3,6 +3,7 @@ import StripeTerminals from "../components/StripeTerminals"
 import { medusa } from "../lib/medusa-provider";
 import Cookies from "js-cookie";
 import "../styles/main.css"
+// import { Button } from "@medusajs/ui"
 
 const Main = ({ setEnable, setClient, detectTerminal, disable, setIsLogged }: { setEnable: (disable: boolean) => void, setClient: any, detectTerminal: string, disable: boolean, setIsLogged: (isLogged: any) => void }) => {
 
@@ -14,7 +15,9 @@ const Main = ({ setEnable, setClient, detectTerminal, disable, setIsLogged }: { 
             </header>
             <nav>
                 <ul>
+                    {/*<Button>button</Button> */}
                     {!disable ? (<Link to="/shopping-panel"><li>Continue Order</li></Link>) : (<Link to="#" id="disable"><li id="disable">Continue Order</li></Link>)}
+                    {/* {!disable ? (<Link to="/shopping-panel"><li>Continue Order</li></Link>) : (<Button><li id="disable">Continue Order</li></Button>)} */}
                     <Link to="/register-customer"><li>Register New Customer</li></Link>
                     <Link to="/terminal"><li>Connect Terminal</li></Link>
                     <Link to="/new-order"><li>Select Customer (new order)</li></Link>

@@ -7,7 +7,6 @@ main.select-customer-menu {
     gap: 25px
 }
 
-.search-bar input,
 .search-results .customer-results {
     width: 429px;
     border: 2px solid rgba(206, 206, 206, 1);
@@ -21,25 +20,7 @@ main.select-customer-menu {
     align-items: center;
 }
 
-.search-bar input {
-    margin: 0;
-    height: 55px;
-}
-
-.search-bar input::placeholder {
-    text-align: center;
-}
-
-.search-bar p,
-.search-results p {
-    margin: 3px;
-    font-weight: 400;
-    font-size: 12px;
-    line-height: 14.52px;
-    color: rgba(114, 114, 114, 1);
-}
-
-.customer {
+/* .customer {
     width: 379px;
     height: 38px;
     background-color: rgba(206, 206, 206, 1);
@@ -58,4 +39,4 @@ main.select-customer-menu {
 
 .customer:hover {
     cursor: pointer;
-}
+} */

@@ -2,8 +2,10 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import customers from '../assets/customers';
-import '../styles/register.css';
 import { medusa } from '../lib/medusa-provider';
+import { ArrowDownLeftMini, Plus } from '@medusajs/icons';
+import { Button } from '@medusajs/ui';
+import { Input } from '@medusajs/ui';
 
 const Register = () => {
   const navigate = useNavigate();
@@ -66,31 +68,40 @@ const Register = () => {
   }
 
   return (
-    <div className='registration'>
-      <header>
-        <h1 className='page-name'>Connect Stripe Terminal</h1>
-      </header>
-      <nav className='back-menu'>
-        <Link to={".."} onClick={() => navigate(-1)}>← Back to Menu</Link>
+    <>
+      <nav className="w-full px-[25px] h-[80px] flex flex-row flex-nowrap justify-between items-center border">
+        <Link className="flex flex-row flex-nowrap justify-center items-center text-black text-[14px]" to={".."} onClick={() => navigate(-1)}>
+          <ArrowDownLeftMini className="mr-[5px]" /> Go Back
+        </Link>
+        <Link className="flex flex-row flex-nowrap justify-center items-center text-black text-[14px]" to={"/select-customer"}>
+          Existing Customer <Plus className="ml-[5px]" />
+        </Link>
       </nav>
+      <header className="p-[15px] self-start border">
+        <p className="text-[15px] text-gray-400">Add New Customer</p>
+      </header>
       <main>
-        <div className='form-register'>
-          <h2 className='page-subname'>Mandatory Fields</h2>
+        <div className='flex flex-col flex-nowrap justify-center items-center'>
           <form onSubmit={registerCustomer}>
-            <input type="text" placeholder="First Name" value={form.fName} onChange={handleChange} name="fName" />
-            <input type="text" placeholder="Last Name" value={form.lName} onChange={handleChange} name="lName" />
-            <input type="email" placeholder="Email" value={form.email} onChange={handleChange} name="email" />
-            <input type="text" placeholder="Password" value={form.password} onChange={handleChange} name="password" />
-            <h2 className='page-subname'>Custom Fields</h2>
-            <input type="text" placeholder="Company Name" value={form.companyName} onChange={handleChange} name="companyName" />
-            <input type="text" placeholder="Website" value={form.website} onChange={handleChange} name="website" />
-            <button disabled={newCustomerMutation.isSuccess} className='btn-register' type='submit'>
-              {newCustomerMutation.isSuccess ? "Loading..." : "Register Customer"}
-            </button>
+            <div className='flex flex-col flex-nowrap justify-center items-center mt-[25px] gap-[10px]'>
+              <h2>Mandatory Fields</h2>
+              <Input className="h-[60px] w-[370px]" type="text" placeholder="First Name" value={form.fName} onChange={handleChange} name="fName" />
+              <Input className="h-[60px] w-[370px]" type="text" placeholder="Last Name" value={form.lName} onChange={handleChange} name="lName" />
+              <Input className="h-[60px] w-[370px]" type="email" placeholder="Email" value={form.email} onChange={handleChange} name="email" />
+              <Input className="h-[60px] w-[370px]" type="text" placeholder="Password" value={form.password} onChange={handleChange} name="password" />
+            </div>
+            <div className='flex flex-col flex-nowrap justify-center items-center mt-[25px] gap-[10px]'>
+              <h2>Custom Fields</h2>
+              <Input className="h-[60px] w-[370px]" type="text" placeholder="Company Name" value={form.companyName} onChange={handleChange} name="companyName" />
+              <Input className="h-[60px] w-[370px]" type="text" placeholder="Website" value={form.website} onChange={handleChange} name="website" />
+            </div>
+            <Button disabled={newCustomerMutation.isSuccess} className='mt-[20px] h-[60px] w-[370px]' type='submit'>
+              {newCustomerMutation.isSuccess ? "Loading..." : "Save Customer"}
+            </Button>
           </form>
         </div>
       </main>
-    </div>
+    </>
   );
 };
 export default Register;

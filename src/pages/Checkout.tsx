@@ -1,10 +1,11 @@
-import "../styles/checkout.css";
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { medusa } from "../lib/medusa-provider"
-
+import { ArrowDownLeftMini } from "@medusajs/icons";
+import { Button, RadioGroup, Label, Container } from "@medusajs/ui";
 const Checkout = ({ client, setClient, newOrder }: { newOrder: boolean, setClient: (client: any) => void, client: any }) => {
 
+  const [isLoading, setIsLoading] = useState(false);
   const [select, setSelecte] = useState(4);
   const navigate = useNavigate();
 
@@ -15,6 +16,7 @@ const Checkout = ({ client, setClient, newOrder }: { newOrder: boolean, setClien
   const submitCheckout = async () => {
     if (select === 2) {
       if (newOrder) {
+        setIsLoading(true);
         // select to use the API-based draft order PUT request
         const regionsResponse = await medusa.admin.regions.list();
         const regions = regionsResponse.regions;
@@ -67,7 +69,9 @@ const Checkout = ({ client, setClient, newOrder }: { newOrder: boolean, setClien
           ],
         })
         setClient(createDraftOrder.draft_order.cart);
+        setIsLoading(false);
       } else {
+        setIsLoading(true);
         const draftOrderId = client.id;
         try {
           // Retrieve the current draft order
@@ -115,15 +119,17 @@ const Checkout = ({ client, setClient, newOrder }: { newOrder: boolean, setClien
           }
           setClient(response.draft_order.cart);
           console.log('Draft order updated successfully.');
+          setIsLoading(false);
         } catch (error) {
           console.error('Error updating draft order:', error);
+          setIsLoading(false);
         }
       }
-
       // Navigate to Stripe 
       navigate("/main");
     } else if (select === 1) {
       if (newOrder) {
+        setIsLoading(true);
         // select to use the API-based draft order PUT request
         const regionsResponse = await medusa.admin.regions.list();
         const regions = regionsResponse.regions;
@@ -176,8 +182,10 @@ const Checkout = ({ client, setClient, newOrder }: { newOrder: boolean, setClien
           ],
         })
         setClient(createDraftOrder.draft_order.cart);
+        setIsLoading(false);
       } else {
         const draftOrderId = client.id;
+        setIsLoading(true);
         try {
           // Retrieve the current draft order
           const response = await medusa.admin.draftOrders.retrieve(draftOrderId);
@@ -224,8 +232,10 @@ const Checkout = ({ client, setClient, newOrder }: { newOrder: boolean, setClien
           }
           setClient(response.draft_order.cart);
           console.log('Draft order updated successfully.');
+          setIsLoading(false);
         } catch (error) {
           console.error('Error updating draft order:', error);
+          setIsLoading(false);
         }
       }
 
@@ -234,32 +244,38 @@ const Checkout = ({ client, setClient, newOrder }: { newOrder: boolean, setClien
     }
   }
 
-  const alertMessage = () => {
-    alert("Please select the payment method or save it as a Draft Order");
-  }
-
   return (
     <div>
-      <header>
-        <h1 className='page-name'>Checkout</h1>
+      <nav className="w-full px-[25px] h-[80px] flex flex-row flex-nowrap justify-between items-center border">
+        <Link className="flex flex-row flex-nowrap justify-center items-center text-black text-[14px]" to={".."} onClick={() => navigate(-1)}>
+          <ArrowDownLeftMini className="mr-[5px]" /> Go Back
+        </Link>
+      </nav>
+      <header className="p-[15px] self-start border-b border-b-[rgba(206,206,206,1)]">
+        <p className="text-[15px] text-gray-400">Checkout section</p>
       </header>
-      <nav className='back-menu'>
-        <Link to={".."} onClick={() => {
-          navigate(-1);
-        }}>← Back to Catalog</Link>
-      </nav>
-      <nav className="checkout-options">
-        <ul className="checkout-options">
-          <li><button id="disable" className="btn-option"> Credit/Debit Card (Terminal)</button></li>
-          {/* <li><button onClick={() => handleClick(0)} className={selecte === 0 ? "btn-option selected" : "btn-option"}> Credit/Debit Card (Terminal)</button></li> */}
-          <li><button onClick={() => handleClick(1)} className={select === 1 ? "btn-option selected" : "btn-option"}>Credit/Debit Card (Digital)</button></li>
-          <li><button onClick={() => handleClick(2)} className={select === 2 ? "btn-option selected" : "btn-option"}>Draft Order</button></li>
-        </ul>
-      </nav>
-      <nav className="checkout-options">
-        <ul className="checkout-options">
-          <li><button className="btn-option" id={select === 4 ? "disable" : "continue"} onClick={select !== 4 ? submitCheckout : alertMessage}>{select === 2 ? "Save as a Draft Order" : "Continue"}</button></li>
-        </ul>
+      <nav className="flex flex-col flex-nowrap justify-center items-center gap-[40px]">
+        <RadioGroup className="flex flex-col flex-nowrap justify-start items-center gap-y-[10px] w-[300px] h-[200px] mt-[25px]">
+          <Container className="flex items-center gap-x-3 mb-[10px] h-[60px] w-[370px]">
+            <RadioGroup.Item value="3" id="radio_3_disabled" disabled={true} />
+            <Label className=" cursor-not-allowed text-gray-400 text-[18px]" htmlFor="radio_3_disabled" weight="plus">
+              Credit/Debit Card (Terminal)
+            </Label>
+          </Container>
+          <Container className="flex items-center gap-x-3 mb-[10px] h-[60px] w-[370px]">
+            <RadioGroup.Item value="1" id="radio_1_disabled" onClick={() => handleClick(1)} />
+            <Label className="cursor-pointer text-black text-[18px]" htmlFor="radio_1_disabled" weight="plus" onClick={() => handleClick(1)}>
+              Credit/Debit Card (Digital)
+            </Label>
+          </Container>
+          <Container className="flex items-center gap-x-3 mb-[10px] h-[60px] w-[370px]">
+            <RadioGroup.Item value="2" id="radio_2_disabled" onClick={() => handleClick(2)} />
+            <Label className="cursor-pointer text-black text-[18px]" htmlFor="radio_2_disabled" weight="plus" onClick={() => handleClick(2)}>
+              {newOrder ? "Draft Order" : "Update the Draft Order"}
+            </Label>
+          </Container>
+        </RadioGroup>
+        <Button isLoading={isLoading} className=" h-[60px] w-[370px] text-[16px] transition-all duration-900" disabled={select === 4 ? true : false} onClick={submitCheckout}>{select === 2 ? "Save as a Draft Order" : "Continue"}</Button>
       </nav>
     </div>
   );

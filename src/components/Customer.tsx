@@ -8,8 +8,8 @@ const Customer = (props: any) => {
 
 
     return (
-        <Container onClick={() => props.handleClick(id)} className="flex flex-row justify-between items-center gap-[10px] cursor-pointer">
-            <div className="flex flex-col justify-start gap-[10px]">
+        <Container onClick={() => props.handleClick(id)} className="flex flex-row justify-between items-center cursor-pointer">
+            <div className="flex flex-col justify-start">
                 <h2 className="text-[15px] leading-[18.15px] font-semibold text-start">{name} {surname}</h2>
                 <p className="text-[12px] leading-[14.52px] font-normal text-start">{email}</p>
             </div>

@@ -1,9 +1,0 @@
-.main-menu ul {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    height: 75vh;
-    gap: 25px;
-    margin: 0;
-}

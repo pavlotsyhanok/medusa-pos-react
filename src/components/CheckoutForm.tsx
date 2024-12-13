@@ -2,7 +2,10 @@ import { useStripe, useElements, CardElement } from "@stripe/react-stripe-js";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { medusa } from "../lib/medusa-provider";
+import { Button, Container } from "@medusajs/ui";
 const CheckoutForm = (props: any) => {
+
+    const [isLoading, setIsLoading] = useState(false);
     const stripe = useStripe();
     const elements = useElements();
     const navigate = useNavigate();
@@ -12,7 +15,7 @@ const CheckoutForm = (props: any) => {
 
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-
+        setIsLoading(true);
         if (!stripe || !elements) {
             setErrorMessage("Stripe or elements not properly loaded.");
             return;
@@ -54,6 +57,7 @@ const CheckoutForm = (props: any) => {
                         console.log(client.id)
                         localStorage.removeItem("cart_id");
                         navigate("/success");
+                        setIsLoading(false);
                     })
                     .catch(completeError => {
                         setErrorMessage("Error completing order: " + completeError.message);
@@ -63,19 +67,21 @@ const CheckoutForm = (props: any) => {
         }))
     }
     return (
-        <form onSubmit={handleSubmit} className="form-element">
+        <form onSubmit={handleSubmit} className="flex flex-col flex-nowrap justify-around gap-[20px] items-center">
             <p>Enter payment details below:</p>
-            <div className="payment">
+            <Container className="h-[60px] w-[370px]">
                 <CardElement />
-            </div>
+            </Container>
             {errorMessage && <p className="error-message">{errorMessage}</p>}
-            <button
+            <Button
+                isLoading={isLoading}
+                className="h-[60px] w-[370px]"
                 disabled={!stripe || isProcessing}
-                className="btn-option"
                 id="continue"
             >
                 {isProcessing ? "Processing..." : "Submit"}
-            </button>
+            </Button>
+
         </form>
     );
 };

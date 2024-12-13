@@ -1,17 +1,41 @@
+import { Button, toast, Container, Toaster } from "@medusajs/ui";
+
 export default function DraftOrderCard(props: any) {
     const { id, status, deleteOrder, changeOrder, email, price } = props;
     return (
-        <li className="list-draft-orders">
-            <div>
-                <p>Draft-order ID: <b>{id}</b></p>
-                <p>Draft-order email: <b>{email}</b></p>
-                <p>Draft-order Status: <b>{status}</b></p>
-                <p>Draft-order Price: <b>{price} $</b></p>
+        <Container className="flex flex-col flex-nowrap justify-between items-center w-[450px] h-[170px] p-[15px] border border-[rgba(206,206,206,1)] rounded-[10px] hover:shadow-md transition-shadow">
+            <div className="w-full">
+                <p className="text-[14px] leading-[18.15px] font-normal text-gray-600 mb-[5px]">Draft-order ID: <b className="text-black">{id}</b></p>
+                <p className="text-[14px] leading-[18.15px] font-normal text-gray-600 mb-[5px]">Draft-order email: <b className="text-black">{email}</b></p>
+                <p className="text-[14px] leading-[18.15px] font-normal text-gray-600 mb-[5px]">Draft-order Status: <b className="text-black">{status}</b></p>
+                <p className="text-[14px] leading-[18.15px] font-normal text-gray-600">Draft-order Price: <b className="text-black">{price} $</b></p>
             </div>
-            <div>
-                <button className="btn-register" onClick={deleteOrder}>Delete</button>
-                <button className="btn-register" onClick={changeOrder}>Change the Draft Order</button>
+            <div className="flex flex-row gap-[10px]">
+                <Button
+                    onClick={deleteOrder}
+                    variant="danger"
+                    className="w-[100px] h-[35px] text-[14px]"
+                    disabled={status === "completed" || status === "paid"}
+                >
+                    Delete
+                </Button>
+                <Toaster />
+                <Button
+                    onClick={() => {
+                        if (status === "completed" || status === "paid") {
+                            toast.warning("Warning", {
+                                description: "The draft order is completed or paid, you can't select it.",
+                                duration: 3000,
+                            })
+                        } else {
+                            changeOrder(id);
+                        }
+                    }}
+                    className="w-[100px] h-[35px] text-[14px]"
+                >
+                    Select
+                </Button>
             </div>
-        </li>
+        </Container>
     );
 }

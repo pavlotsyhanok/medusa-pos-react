@@ -3,7 +3,8 @@ import { useState } from "react";
 import Customer from "../components/Customer";
 import { useQuery } from "@tanstack/react-query";
 import { medusa } from "../lib/medusa-provider";
-import "../styles/selectCustome.css";
+import { Input } from "@medusajs/ui";
+import { ArrowDownLeftMini, Plus } from "@medusajs/icons";
 
 
 const SelectCustomer = ({ setClient, setEnable, setDraftOrder }: { setDraftOrder: (newOrder: boolean) => void; setClient: any, setEnable: (enable: boolean) => void }) => {
@@ -18,8 +19,7 @@ const SelectCustomer = ({ setClient, setEnable, setDraftOrder }: { setDraftOrder
             const response = await medusa.admin.customers.list();
             return response.customers;
         },
-        staleTime: 60000, // 1 minute
-        // cacheTime: 300000, // 5 minutes
+        staleTime: 60000,
     });
 
     if (isLoading) return <h1>Loading...</h1>;
@@ -28,10 +28,12 @@ const SelectCustomer = ({ setClient, setEnable, setDraftOrder }: { setDraftOrder
         return <pre>Error:{typedError.message}</pre>
     }
 
-    // Filter customers based on search query
+    // Filter customers based on search query (name or email)
     const filteredCustomers = data?.filter((customer: any) => {
         const fullName = `${customer.first_name} ${customer.last_name}`.toLowerCase();
-        return fullName.includes(searchQuery.toLowerCase());
+        const email = customer.email.toLowerCase();
+        const query = searchQuery.toLowerCase();
+        return fullName.includes(query) || email.includes(query);
     });
 
     function handleClick(id: string) {
@@ -47,38 +49,46 @@ const SelectCustomer = ({ setClient, setEnable, setDraftOrder }: { setDraftOrder
 
     return (
         <div>
-            <header>
-                <h1 className='page-name'>New Order → Select Customer</h1>
-            </header>
-            <nav className='back-menu'>
-                <Link to='..' onClick={() => navigate(-1)}>← Back to Menu</Link>
-            </nav>
-            <main className='select-customer-menu'>
-                <div className='search-bar'>
-                    <p>Search</p>
-                    <input type="text"
-                        placeholder="Search Customer Name"
-                        value={searchQuery}
-                        onChange={handleSearchChange} />
-                </div>
-                <div className='search-results'>
-                    <p>Search Results</p>
-                    <div className='customer-results'>
-                        {filteredCustomers?.length > 0 ? (
-                            filteredCustomers.map((customer: any) => (
-                                <Customer
-                                    handleClick={handleClick}
-                                    name={customer.first_name}
-                                    surname={customer.last_name}
-                                    key={customer.id}
-                                    id={customer.id}
-                                />
-                            ))
-                        ) : (
-                            <p>No customers found.</p>
-                        )}
+            <nav className="w-full px-[25px] h-[80px] flex flex-row flex-nowrap justify-between items-center border">
+                <Link className="flex flex-row flex-nowrap justify-center items-center text-black text-[14px]" to={".."} onClick={() => navigate(-1)}>
+                    <ArrowDownLeftMini className="mr-[5px]" /> Go Back
+                </Link>
+                <div className="flex flex-row justify-center items-center flex-1">
+                    <div className="relative w-[550px]">
+                        <Input
+                            className="w-full text-black rounded-[100px] pl-[35px] focus:text-black shadow-none bg-white focus:bg-white hover:bg-white"
+                            placeholder="Search..."
+                            id="search-input"
+                            type="search"
+                            value={searchQuery}
+                            onChange={handleSearchChange}
+                        />
                     </div>
                 </div>
+                <Link className="flex flex-row flex-nowrap justify-center items-center text-black text-[14px] w-[120px]" to={"/register-customer"}>
+                    New Customer <Plus className="ml-[5px]" />
+                </Link>
+            </nav>
+            <header className="p-[15px] self-start border">
+                <p className="text-[15px] text-gray-400">New Order → Select Customer</p>
+            </header>
+            <main className='my-[25px] flex flex-col flex-nowrap justify-center items-center gap-[1px]'>
+                {filteredCustomers?.length > 0 ? (
+                    filteredCustomers.map((customer: any) => (
+                        <div className="h-[90px] w-[400px] flex flex-row flex-nowrap justify-center items-center">
+                            <Customer
+                                email={customer.email}
+                                handleClick={handleClick}
+                                name={customer.first_name}
+                                surname={customer.last_name}
+                                key={customer.key}
+                                id={customer.id}
+                            />
+                        </div>
+                    ))
+                ) : (
+                    <p>No customers found.</p>
+                )}
             </main>
         </div>
     );

@@ -105,6 +105,7 @@ const ShoppingPanel = ({ client, disable, setClient, setEnable, newOrder, setDra
                 return { ...prevInfo, customerOrder: updatedOrder };
             });
         } else {
+            console.log(uniqueId);
             setClient((prevInfo: any) => {
                 const updatedOrder = prevInfo.cart.items.filter((product: any) => product.id !== uniqueId);
                 return { ...prevInfo, cart: { ...prevInfo.cart, items: updatedOrder } };
@@ -127,7 +128,7 @@ const ShoppingPanel = ({ client, disable, setClient, setEnable, newOrder, setDra
             <nav className="flex flex-row flex-nowrap justify-around items-center py-[25px] border-b border-[rgba(206,206,206,1)]">
                 {!disable ? (
                     <Link className="flex flex-row flex-nowrap justify-center items-center text-black text-[14px]" to={".."} onClick={() => navigate(-1)}>
-                        <ArrowDownLeftMini /> Main Menu
+                        <ArrowDownLeftMini className="mr-[5px]" /> Main Menu
                     </Link>
                 ) : (
                     <Link to={"/main"} className="flex flex-row justify-center items-center gap-[5px] text-grey-100"><ArrowDownLeftMini /> Main Menu</Link>
@@ -144,12 +145,12 @@ const ShoppingPanel = ({ client, disable, setClient, setEnable, newOrder, setDra
                         />
                     </div>
                 </div>
-                {client.email ? (newOrder ?
+                {client.id ? (newOrder ?
                     <Link to="/customer-order-note" className="flex flex-row justify-center items-center gap-[5px] text-black text-[14px]">
                         Order Note <PencilSquareSolid />
                     </Link>
                     :
-                    <Link to="/draft-order-note" className="flex flex-row justify-center items-center gap-[5px] text-gray-400 text-[14px]">
+                    <Link to="/draft-order-note" className="flex flex-row justify-center items-center gap-[5px] text-black text-[14px]">
                         Order Note <PencilSquareSolid />
                     </Link>
                 ) : (
@@ -160,10 +161,10 @@ const ShoppingPanel = ({ client, disable, setClient, setEnable, newOrder, setDra
             </nav>
             <main className="flex flex-row flex-nowrap align-content-start justify-around items-stretch gap-[0px]">
                 <div className="flex-[2]">
-                    <div className="search-bar border border-b-0 border-r-0 border-[rgba(206,206,206,1)] p-[15px] mt-[15px]">
+                    <div className="border border-b-0 border-r-0 border-[rgba(206,206,206,1)] p-[15px] mt-[15px]">
                         <p className="text-[14px] text-gray-400">Main Category</p>
                     </div>
-                    <div className="flex flex-wrap gap-[10px] border border-[rgba(206,206,206,1)] p-[10px_25px] border-r-0 overflow-y-scroll max-h-[660px] max-[1618px]:[&::-webkit-scrollbar]:block max-[1618px]:[&::-webkit-scrollbar]:w-2 max-[1618px]:[&::-webkit-scrollbar-thumb]:bg-gray-400 max-[1618px]:[&::-webkit-scrollbar-track]:bg-gray-100">
+                    <div className="flex flex-wrap gap-[10px] py-[15px] border border-r-0 overflow-y-scroll min-h-[760px] max-[1618px]:[&::-webkit-scrollbar]:block max-[1618px]:[&::-webkit-scrollbar]:w-2 max-[1618px]:[&::-webkit-scrollbar-thumb]:bg-gray-400 max-[1618px]:[&::-webkit-scrollbar-track]:bg-gray-100">
                         {!disable ? (
                             productIsLoading ? (
                                 <h2>Loading Products...</h2>
@@ -188,35 +189,58 @@ const ShoppingPanel = ({ client, disable, setClient, setEnable, newOrder, setDra
                                 )
                             )
                         ) : (
-                            <h2>Select the customer first</h2>
+                            <div className="flex flex-col justify-center items-start border-b h-[50px] w-full">
+                                <h2 className="text-[24px] font-semibold text-center ml-[15px]">Select the customer first</h2>
+                            </div>
                         )}
                     </div>
                 </div>
                 <div className="flex-[1.2] border border-[rgba(206,206,206,1)] py-[10px] mt-[15px]">
-                    <div className="search-bar">
+                    <div>
                         {!disable ? (client.order === null ?
-                            (
-                                <div className="summery">
-                                    <div className="summery-customer">
-                                        <h2>🗂️ Managing draft order for {client.cart.customer.first_name} {client.cart.customer.last_name}</h2>
+                            (<div>
+                                <Container className="flex flex-row justify-between items-center cursor-pointer mb-[10px]">
+                                    <div className="flex flex-col justify-start">
+                                        <h2 className="text-[15px] leading-[18.15px] font-semibold text-start mb-[5px]">{client.cart.customer.first_name} {client.cart.customer.last_name} (Draft Order)</h2>
+                                        <p className="text-[12px] leading-[14.52px] font-normal text-start">{client.cart.email}</p>
                                     </div>
-                                    <div className="border-2 border-[rgba(206,206,206,1)] rounded-[10px] flex flex-col justify-start items-center gap-[10px] w-full p-[10px_15px] h-full overflow-scroll">
-                                        {client.cart.items?.map((e: any) => (
-                                            <div key={e.id} className="flex items-center w-[350px] h-[55px] mb-[10px] bg-[rgba(206,206,206,1)] rounded-[10px]">
-                                                <Products
-                                                    title={e.title}
-                                                    selectProduct={() => deleteProduct(e.id)}
-                                                />
-                                            </div>
-                                        ))}
-                                    </div>
-                                    <div className="border-2 border-[rgba(206,206,206,1)] rounded-[10px] flex flex-col justify-start items-center gap-[10px] w-full p-[10px_15px] h-full overflow-scroll">
-                                        <div className="h-[200px] bg-[rgba(206,206,206,1)] rounded-[10px] w-full flex justify-center items-center">
-                                            <p className="no-underline text-black text-[15px] leading-[18.15px] font-semibold">Cart Totals</p>
+                                </Container>
+                                <div className="border-t min-h-[550px] max-h-[550px] flex flex-col justify-start items-start gap-[10px] w-full p-[10px_10px] overflow-y-scroll overflow-x-hidden [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-gray-500 [&::-webkit-scrollbar-track]:bg-gray-200 [&::-webkit-scrollbar-thumb]:hover:bg-gray-600">
+                                    {client.cart.items?.map((e: any) => (
+                                        <div className="w-full h-[105px] relative">
+                                            <Products
+                                                className={`h-[105px] hover:cursor-pointer p-2 m-0 flex align-center justify-start gap-[15px] min-w-[335px]`}
+                                                classNameImage={`w-[90px]`}
+                                                title={e.title}
+                                                image={e.thumbnail}
+                                                price={e.unit_price ? calculatePrice(e.unit_price) : calculatePrice(e.variants[0].prices[0].amount)}
+                                            />
+                                            <Button
+                                                onClick={() => deleteProduct(e.id)}
+                                                variant="danger"
+                                                className="absolute top-1/2 right-4 transform -translate-y-1/2 w-[60px] sm:w-[50px] md:w-[70px]"
+                                            >
+                                                Delete
+                                            </Button>
                                         </div>
-                                    </div>
-                                    <button className="w-full h-[115px] bg-black text-white no-underline rounded-[10px]" onClick={handleCheckout}>Checkout</button>
+                                    ))}
                                 </div>
+                                <div className="border-t border-[rgba(206,206,206,1)] flex flex-col justify-end items-start gap-[10px] w-full p-[20px_25px] h-full">
+                                    <div className="flex flex-row justify-between items-center w-full">
+                                        <p className="text-[14px] leading-[18.15px] font-semibold text-gray-400">Total:</p>
+                                        <p className="text-[14px] leading-[18.15px] font-semibold">CA
+                                            {calculatePrice(client.cart.items?.reduce((acc: any, item: any) => {
+                                                if (item.unit_price) {
+                                                    return acc + item.unit_price;
+                                                } else {
+                                                    return acc + item.variants[0].prices[0].amount;
+                                                }
+                                            }, 0))}
+                                        </p>
+                                    </div>
+                                    <Button className="w-full h-[55px] cursor-pointer" onClick={handleCheckout}>Checkout</Button>
+                                </div>
+                            </div>
                             )
                             : (
                                 <div className="h-full flex flex-col justify-start items-center gap-[10px]">
@@ -228,29 +252,36 @@ const ShoppingPanel = ({ client, disable, setClient, setEnable, newOrder, setDra
                                             </div>
                                         </Container>
                                     </div>
-                                    <div className="min-h-[450px] max-h-[450px] flex flex-col justify-start items-start gap-[10px] w-full p-[10px_10px] overflow-y-scroll overflow-x-hidden [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-gray-500 [&::-webkit-scrollbar-track]:bg-gray-200 [&::-webkit-scrollbar-thumb]:hover:bg-gray-600">
+                                    <div className="min-h-[550px] max-h-[550px] flex flex-col justify-start items-start gap-[10px] w-full p-[10px_10px] overflow-y-scroll overflow-x-hidden [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-gray-500 [&::-webkit-scrollbar-track]:bg-gray-200 [&::-webkit-scrollbar-thumb]:hover:bg-gray-600">
                                         {client.customerOrder?.map((e: any) => (
-                                            <Products
-                                                className={`h-[105px] hover:cursor-pointer p-2 m-0 flex align-center justify-start gap-[15px]`}
-                                                classNameImage={`w-[90px]`}
-                                                title={e.title}
-                                                image={e.thumbnail}
-                                                price={calculatePrice(e.variants[0].prices[0].amount)}
-                                                selectProduct={() => deleteProduct(e.uniqueId)}
-                                            />
+                                            <div className="w-full h-[105px] relative">
+                                                <Products
+                                                    className={`h-[105px] hover:cursor-pointer p-2 m-0 flex align-center justify-start gap-[15px] min-w-[335px]`}
+                                                    classNameImage={`w-[90px]`}
+                                                    title={e.title}
+                                                    image={e.thumbnail}
+                                                    price={calculatePrice(e.variants[0].prices[0].amount)}
+                                                />
+                                                <Button
+                                                    onClick={() => deleteProduct(e.uniqueId)}
+                                                    variant="danger"
+                                                    className="absolute top-1/2 right-4 transform -translate-y-1/2 w-[60px] sm:w-[50px] md:w-[70px]"
+                                                >
+                                                    Delete
+                                                </Button>
+                                            </div>
                                         ))}
                                     </div>
                                     <div className="border-t border-[rgba(206,206,206,1)] flex flex-col justify-end items-start gap-[10px] w-full p-[20px_25px] h-full">
                                         <div className="flex flex-row justify-between items-center w-full">
                                             <p className="text-[14px] leading-[18.15px] font-semibold text-gray-400">Total:</p>
-                                            <p className="text-[14px] leading-[18.15px] font-semibold">CA{calculatePrice(client.customerOrder.reduce((acc: any, item: any) => acc + item.variants[0].prices[0].amount, 0))}</p>
+                                            <p className="text-[14px] leading-[18.15px] font-semibold">CA{calculatePrice(client.customerOrder?.reduce((acc: any, item: any) => acc + item.variants[0].prices[0].amount, 0) || 0)}</p>
                                         </div>
                                         <Button className="w-full h-[55px] cursor-pointer" onClick={handleCheckout}>Checkout</Button>
                                     </div>
                                 </div>
-
                             )) : (
-                            <div className="flex flex-col justify-start items-center gap-[10px]">
+                            <div className="flex flex-col justify-start items-center gap-[8px]">
                                 {customersData.map((e: any) => (
                                     <Customer
                                         handleClick={handleClickClient}

@@ -2,7 +2,9 @@ import { Link, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { useQueryClient, useMutation, useQuery } from "@tanstack/react-query";
 import Note from "../components/Notes";
-import "../styles/OrderNote.css";
+import { Input } from "@medusajs/ui";
+import { Button } from "@medusajs/ui";
+import { ArrowDownLeftMini } from "@medusajs/icons";
 
 const DraftOrderNote = ({ setClient, client }: { setDraftOrder: (newOrder: boolean) => void; newOrder: boolean; client: any, setClient: (client: any) => void }) => {
     const navigate = useNavigate();
@@ -101,23 +103,23 @@ const DraftOrderNote = ({ setClient, client }: { setDraftOrder: (newOrder: boole
     }
     return (
         <>
-            <header>
-                <h1 className='page-name'>Product Page</h1>
-            </header>
-            <nav className='back-menu back-checkout'>
-                <Link to={".."} onClick={() => navigate(-1)}>← Back to Catalog</Link>
+            <nav className="w-full px-[25px] h-[80px] flex flex-row flex-nowrap justify-between items-center border">
+                <Link className="flex flex-row flex-nowrap justify-center items-center text-black text-[14px]" to={".."} onClick={() => navigate(-1)}>
+                    <ArrowDownLeftMini className="mr-[5px]" /> Back to Catalog
+                </Link>
             </nav>
-            <main className="order-note">
-                <div className="input-note">
-                    <input type="text" placeholder="Order Notes" onChange={handleChange} value={note} />
-                    <button type="submit" className="btn-order-note" onClick={() => handleSubmit({ title: note })}>Submit</button>
+            <header className="p-[15px] self-start border-b border-b-[rgba(206,206,206,1)]">
+                <p className="text-[15px] text-gray-400">Draft Order Notes</p>
+            </header>
+            <main className="flex flex-col flex-nowrap justify-center items-center gap-[20px] my-[20px]">
+                <div className="flex flex-col flex-nowrap justify-center items-center gap-[10px]">
+                    <Input type="text" placeholder="Order Notes" onChange={handleChange} value={note} className="h-[50px] w-[400px]" />
+                    <Button type="submit" className="btn-order-note" onClick={() => handleSubmit({ title: note })}>Submit</Button>
                 </div>
-                <div className="notes">
-                    <ul>
-                        {draftsData?.notes.map((e: any, index: any) => (
-                            <Note id={index} key={index} note={e.title} deleteNote={deleteNote} />
-                        ))}
-                    </ul>
+                <div className="flex flex-row flex-wrap justify-start items-center gap-[15px] self-start mx-[20px]">
+                    {draftsData?.notes.map((e: any, index: any) => (
+                        <Note id={index} key={index} note={e.title} deleteNote={deleteNote} />
+                    ))}
                 </div>
             </main>
         </>

@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useNavigate, Link } from "react-router-dom";
-import { medusa } from "../lib/medusa-provider";
+import { medusa } from "../../lib/medusa-provider";
 import Cookies from "js-cookie";
-import Logotype from "../assets/Logotype.svg";
+import Logotype from "/Logotype.svg"
 import { Button, Heading, Input } from "@medusajs/ui";
 
 const Login = ({ setIsLogged, isLogged }: { isLogged: boolean, setIsLogged: (isLogged: boolean) => void }) => {

@@ -1,16 +1,12 @@
-import {
-    CardElement,
-    useElements,
-    useStripe,
-} from "@stripe/react-stripe-js"
+import { CardElement, useElements, useStripe, } from "@stripe/react-stripe-js"
 
-export default function Form({ clientSecret, cartId }) {
+export default function Form({ clientSecret, cartId }: { clientSecret: string, cartId: string }) {
     const stripe = useStripe()
     const elements = useElements()
 
-    async function handlePayment(e) {
+    async function handlePayment(e: any) {
         e.preventDefault()
-        // TODO handle payment
+        console.log(clientSecret, cartId)
     }
 
     return (

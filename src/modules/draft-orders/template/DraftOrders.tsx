@@ -1,7 +1,7 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { medusa } from "../lib/medusa-provider";
-import DraftOrderCard from "../components/DraftOrderCard";
+import { medusa } from "../../../lib/medusa-provider";
+import DraftOrderCard from "../../../modules/draft-orders/components/DraftOrderCard";
 import { Input } from "@medusajs/ui";
 import { ArrowDownLeftMini } from "@medusajs/icons";
 import { useState } from "react";

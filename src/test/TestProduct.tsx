@@ -1,5 +1,5 @@
 import { useState } from "react"
-import Form from "./Components/Form"
+// import Form from "../modules/checkout/components/Form"
 import { Elements } from "@stripe/react-stripe-js"
 import { loadStripe } from "@stripe/stripe-js"
 

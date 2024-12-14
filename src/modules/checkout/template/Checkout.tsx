@@ -1,6 +1,6 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
-import { medusa } from "../lib/medusa-provider"
+import { medusa } from "../../../lib/medusa-provider"
 import { ArrowDownLeftMini } from "@medusajs/icons";
 import { Button, RadioGroup, Label, Container } from "@medusajs/ui";
 const Checkout = ({ client, setClient, newOrder, setEnable }: { newOrder: boolean, setClient: (client: any) => void, client: any, setEnable: (enable: boolean) => void }) => {

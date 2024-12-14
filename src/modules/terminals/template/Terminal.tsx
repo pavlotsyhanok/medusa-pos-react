@@ -1,6 +1,6 @@
 import { Link, useNavigate } from 'react-router-dom';
-import StripeTerminals from "../components/StripeTerminals";
-import stripeTerminals from "../assets/stripeTerminals";
+import StripeTerminals from "../component/StripeTerminals";
+import stripeTerminals from "../../../assets/stripeTerminals";
 import { useQuery } from "@tanstack/react-query";
 import { ArrowDownLeftMini } from '@medusajs/icons';
 import { Input } from '@medusajs/ui';

@@ -1,8 +1,8 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
-import Customer from "../components/Customer";
+import Customer from "../../../components/Customer";
 import { useQuery } from "@tanstack/react-query";
-import { medusa } from "../lib/medusa-provider";
+import { medusa } from "../../../lib/medusa-provider";
 import { Input } from "@medusajs/ui";
 import { ArrowDownLeftMini, Plus } from "@medusajs/icons";
 

@@ -1,7 +1,7 @@
 import { useStripe, useElements, CardElement } from "@stripe/react-stripe-js";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
-import { medusa } from "../lib/medusa-provider";
+import { medusa } from "../../../lib/medusa-provider";
 import { Button, Container } from "@medusajs/ui";
 const CheckoutForm = (props: any) => {
 

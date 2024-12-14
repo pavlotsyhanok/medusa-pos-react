@@ -1,8 +1,7 @@
 import { Link, useNavigate } from 'react-router-dom';
-import { useState } from 'react';
+import { useState, useId } from 'react';
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import customers from '../assets/customers';
-import { medusa } from '../lib/medusa-provider';
+import { medusa } from '../../../lib/medusa-provider';
 import { ArrowDownLeftMini, Plus } from '@medusajs/icons';
 import { Button } from '@medusajs/ui';
 import { Input } from '@medusajs/ui';
@@ -12,7 +11,7 @@ const Register = () => {
   const queryCustomer = useQueryClient();
 
   const [form, setForm] = useState({
-    id: customers.length + 1,
+    id: useId(),
     fName: "",
     lName: "",
     email: "",

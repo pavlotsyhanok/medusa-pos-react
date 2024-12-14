@@ -1,10 +1,12 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { useQueryClient, useMutation, useQuery } from "@tanstack/react-query";
-import Note from "../components/Notes";
+import Note from "../../../components/Notes";
+import { Input } from "@medusajs/ui";
+import { Button } from "@medusajs/ui";
 import { ArrowDownLeftMini } from "@medusajs/icons";
-import { Button, Input } from "@medusajs/ui";
-const OrderNote = ({ setClient, client, setEnable }: { setDraftOrder: (newOrder: boolean) => void; newOrder: boolean; setEnable: any, client: any, setClient: (client: any) => void }) => {
+
+const DraftOrderNote = ({ setClient, client }: { setDraftOrder: (newOrder: boolean) => void; newOrder: boolean; client: any, setClient: (client: any) => void }) => {
     const navigate = useNavigate();
     const [note, setNote] = useState("");
     const queryClient = useQueryClient();
@@ -13,28 +15,30 @@ const OrderNote = ({ setClient, client, setEnable }: { setDraftOrder: (newOrder:
         const storedClient = localStorage.getItem("client");
         if (storedClient) {
             setClient(JSON.parse(storedClient));
-            setEnable(false);
         }
-    }, [setClient, setEnable]);
+    }, [setClient]);
 
     const { isLoading: draftsIsLoading, isError: draftsIsError, data: draftsData, error: draftsError } = useQuery(
-        ["notes", client?.id],
+        ["draftNotes", client?.cart.id],
         async () => {
-            if (!client?.id) throw new Error("Client ID is not defined");
-            const response = await fetch(`http://localhost:9000/admin/custom/customer/${client.id}`, {
+            if (!client?.cart.id) throw new Error("Client ID is not defined");
+            const response = await fetch(`http://localhost:9000/admin/custom/cartOrderNote/${client.cart.id}`, {
                 method: "GET",
                 credentials: 'include',
             });
+
             if (!response.ok) {
                 throw new Error("Failed to fetch data");
             }
             return response.json();
+        },
+        {
+            enabled: !!client?.cart?.id, // Runs only when client.id is defined
         }
     );
-
     const submitNoteMutation = useMutation({
         mutationFn: async (bodyNote: { title: string }) => {
-            const response = await fetch(`http://localhost:9000/admin/custom/customer/${client.id}`, {
+            const response = await fetch(`http://localhost:9000/admin/custom/cartOrderNote/${client.cart.id}`, {
                 method: "PUT",
                 credentials: "include",
                 body: JSON.stringify({ bodyNote }),
@@ -49,15 +53,14 @@ const OrderNote = ({ setClient, client, setEnable }: { setDraftOrder: (newOrder:
             }
             return response.json();
         },
-        onSuccess: (data) => {
-            queryClient.invalidateQueries(["notes", client.id]);
+        onSuccess: () => {
             setNote("");
-            console.log("Note added:", data);
-        },
+            queryClient.invalidateQueries(["draftNotes", client.cart.id]);
+        }
     });
     const deleteNotes = useMutation({
         mutationFn: async (noteId) => {
-            const response = await fetch(`http://localhost:9000/admin/custom/customer/${client.id}`, {
+            const response = await fetch(`http://localhost:9000/admin/custom/cartOrderNote/${client.cart.id}`, {
                 method: "DELETE",
                 body: JSON.stringify({ noteId }),
                 headers: {
@@ -73,7 +76,7 @@ const OrderNote = ({ setClient, client, setEnable }: { setDraftOrder: (newOrder:
             return response.json();
         },
         onSuccess: ((data) => {
-            queryClient.invalidateQueries({ queryKey: ["notes", client.id] });
+            queryClient.invalidateQueries({ queryKey: ["draftNotes", client.cart.id] });
             console.log("Note Deleted:", data);
         }),
         onError: (error) => {
@@ -98,7 +101,6 @@ const OrderNote = ({ setClient, client, setEnable }: { setDraftOrder: (newOrder:
     const deleteNote = (noteId: any) => {
         deleteNotes.mutate(noteId);
     }
-
     return (
         <>
             <nav className="w-full px-[25px] h-[80px] flex flex-row flex-nowrap justify-between items-center border">
@@ -107,11 +109,11 @@ const OrderNote = ({ setClient, client, setEnable }: { setDraftOrder: (newOrder:
                 </Link>
             </nav>
             <header className="p-[15px] self-start border-b border-b-[rgba(206,206,206,1)]">
-                <p className="text-[15px] text-gray-400">Customer Notes</p>
+                <p className="text-[15px] text-gray-400">Draft Order Notes</p>
             </header>
             <main className="flex flex-col flex-nowrap justify-center items-center gap-[20px] my-[20px]">
                 <div className="flex flex-col flex-nowrap justify-center items-center gap-[10px]">
-                    <Input type="text" placeholder="New Note..." onChange={handleChange} value={note} className="h-[50px] w-[400px]" />
+                    <Input type="text" placeholder="Order Notes" onChange={handleChange} value={note} className="h-[50px] w-[400px]" />
                     <Button type="submit" className="btn-order-note" onClick={() => handleSubmit({ title: note })}>Submit</Button>
                 </div>
                 <div className="flex flex-row flex-wrap justify-start items-center gap-[15px] self-start mx-[20px]">
@@ -124,4 +126,4 @@ const OrderNote = ({ setClient, client, setEnable }: { setDraftOrder: (newOrder:
     );
 };
 
-export default OrderNote;
+export default DraftOrderNote;

@@ -1,18 +1,18 @@
-import Main from '../pages/Main';
-import Layout from '../pages/Layout';
-import Register from '../pages/Registration';
-import Checkout from '../pages/Checkout';
-import Login from '../pages/Login';
-import Terminal from "../pages/Terminal";
-import SelectCustomer from "../pages/SelectCustomer";
-import NotFound from '../components/NotFound';
-import ShoppingPanel from '../pages/ShoppingPannel';
-import CreditCard from '../pages/CreditCard';
-import Success from '../pages/Success';
-import OrderNote from '../pages/CustomerOrderNote';
+import Main from '../modules/main-page/template/Main';
+import Layout from '../modules/type-of-customers/template/TypeOfCustomer';
+import Register from '../modules/registration/template/Registration';
+import Checkout from '../modules/checkout/template/Checkout';
+import Login from '../modules/login/template/Login';
+import Terminal from "../modules/terminals/template/Terminal";
+import SelectCustomer from "../modules/existing-customers/template/ExistingCustomer";
+import NotFound from '../app/NotFound';
+import ShoppingPanel from '../modules/shopping-pannel/template/ShoppingPannel';
+import CreditCard from '../modules/credit-card/CreditCard';
+import Success from '../modules/success/Success';
+import CustomerOrderNote from '../modules/customer-order-notes/template/CustomerOrderNote';
 import TestProduct from '../test/TestProduct';
-import DraftOrders from '../pages/DraftOrders';
-import DraftOrderNote from '../pages/DraftOrderNote';
+import DraftOrders from '../modules/draft-orders/template/DraftOrders';
+import DraftOrderNotes from '../modules/draft-orders-notes/template/DraftOrderNote';
 
 export const appRoutes = [
     {
@@ -72,7 +72,7 @@ export const appRoutes = [
     },
     {
         path: "/customer-order-note",
-        component: OrderNote,
+        component: CustomerOrderNote,
         requiresAuth: true,
     },
     {
@@ -87,7 +87,7 @@ export const appRoutes = [
     },
     {
         path: "/draft-order-note",
-        component: DraftOrderNote,
+        component: DraftOrderNotes,
         requiresAuth: true,
     }
 ]

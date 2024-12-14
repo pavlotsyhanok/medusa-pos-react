@@ -2,8 +2,8 @@ import { Link, useNavigate } from "react-router-dom";
 import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
 import { useState, useEffect } from "react";
-import { medusa } from "../lib/medusa-provider";
-import CheckoutForm from "../components/CheckoutForm";
+import { medusa } from "../../lib/medusa-provider";
+import CheckoutForm from "../checkout/components/CheckoutForm";
 import { ArrowDownLeftMini } from "@medusajs/icons";
 import { Heading } from "@medusajs/ui";
 

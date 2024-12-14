@@ -75,13 +75,13 @@ const SelectCustomer = ({ setClient, setEnable, setDraftOrder }: { setDraftOrder
             <main className='my-[25px] flex flex-col flex-nowrap justify-center items-center gap-[1px]'>
                 {filteredCustomers?.length > 0 ? (
                     filteredCustomers.map((customer: any) => (
-                        <div className="h-[90px] w-[400px] flex flex-row flex-nowrap justify-center items-center">
+                        <div className="h-[90px] w-[400px] flex flex-row flex-nowrap justify-center items-center" key={customer.id}>
                             <Customer
                                 email={customer.email}
                                 handleClick={handleClick}
                                 name={customer.first_name}
                                 surname={customer.last_name}
-                                key={customer.key}
+                                key={customer.id}
                                 id={customer.id}
                             />
                         </div>

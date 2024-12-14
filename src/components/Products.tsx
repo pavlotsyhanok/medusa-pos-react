@@ -9,7 +9,7 @@ export default function Product(props: any) {
       className={className}>
       <img src={image} alt={title} className={classNameImage} />
       <div className="flex flex-col justify-evenly items-start">
-        <p className="text-lg mb-[10px]">{title}</p>
+        <p className="text-lg mb-[10px] mt-[5px]">{title}</p>
         <p className="text-sm">CA{price}</p>
       </div>
     </Container>

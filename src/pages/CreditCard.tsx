@@ -1,15 +1,34 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
 import { useState, useEffect } from "react";
 import { medusa } from "../lib/medusa-provider";
 import CheckoutForm from "../components/CheckoutForm";
 import { ArrowDownLeftMini } from "@medusajs/icons";
+import { Heading } from "@medusajs/ui";
+
 const STRIPE_KEY = import.meta.env.VITE_PUBLIC_STRIPE_API_KEY;
 const stripePromise = loadStripe(STRIPE_KEY);
 
-const CreditCard = ({ client, setClient }: { setClient: (client: any) => void, client: any }) => {
+const CreditCard = ({ client, setClient, setEnable }: { setClient: (client: any) => void, client: any, setEnable: (enable: boolean) => void }) => {
     const [clientSecret, setClientSecret] = useState<string | null>(null);
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        const pushMain = () => {
+            setEnable(true);
+            setClient("");
+            localStorage.clear();
+            navigate("/main", { replace: true });
+        };
+
+        window.history.pushState(null, "", window.location.href);
+        window.addEventListener("popstate", pushMain);
+
+        return () => {
+            window.removeEventListener("popstate", pushMain);
+        };
+    }, [navigate]);
 
     useEffect(() => {
         const setupCart = async () => {
@@ -85,7 +104,7 @@ const CreditCard = ({ client, setClient }: { setClient: (client: any) => void, c
             </header>
             <main className="flex flex-col flex-nowrap justify-start items-center gap-[10px] my-[25px] w-[800px] h-[500px]">
                 <div className="mt-[25px]">
-                    <p className="text-[15px] text-black">Card Details:</p>
+                    <Heading level="h2" className="text-[18px] text-black">Card Details:</Heading>
                 </div>
                 {clientSecret && (
                     <Elements stripe={stripePromise} options={{ clientSecret, appearance: { theme: 'stripe' } }}>

@@ -53,7 +53,6 @@ const ShoppingPanel = ({ client, disable, setClient, setEnable, newOrder, setDra
     // Update selectProduct to use the API-based draft order mutation
     function selectProduct(productId: string) {
         const selectedProduct = productQuery?.find((product: any) => product.id === productId);
-        console.log(selectedProduct);
         if (!newOrder) {
             const updatedCart = client.cart.items ? [...client.cart.items, selectedProduct] : [selectedProduct];
             const orderLength = updatedCart.length;
@@ -125,14 +124,10 @@ const ShoppingPanel = ({ client, disable, setClient, setEnable, newOrder, setDra
 
     return (
         <div>
-            <nav className="flex flex-row flex-nowrap justify-around items-center py-[25px] border-b border-[rgba(206,206,206,1)]">
-                {!disable ? (
-                    <Link className="flex flex-row flex-nowrap justify-center items-center text-black text-[14px]" to={".."} onClick={() => navigate(-1)}>
-                        <ArrowDownLeftMini className="mr-[5px]" /> Main Menu
-                    </Link>
-                ) : (
-                    <Link to={"/main"} className="flex flex-row justify-center items-center gap-[5px] text-grey-100"><ArrowDownLeftMini /> Main Menu</Link>
-                )}
+            <nav className="flex flex-row flex-nowrap justify-around items-center py-[25px]">
+                <Link to={"/main"} className="flex flex-row justify-center items-center gap-[5px] text-grey-100">
+                    <ArrowDownLeftMini /> Main Menu
+                </Link>
                 <div className="flex flex-row justify-center items-center relative">
                     <div className="relative w-[550px]">
                         <Input
@@ -159,12 +154,13 @@ const ShoppingPanel = ({ client, disable, setClient, setEnable, newOrder, setDra
                     </div>
                 )}
             </nav>
-            <main className="flex flex-row flex-nowrap align-content-start justify-around items-stretch gap-[0px]">
-                <div className="flex-[2]">
-                    <div className="border border-b-0 border-r-0 border-[rgba(206,206,206,1)] p-[15px] mt-[15px]">
-                        <p className="text-[14px] text-gray-400">Main Category</p>
+            <main className="flex flex-row flex-nowrap align-content-start justify-around items-stretch gap-[0px] border-none">
+                <div className="flex-[2] border border-[rgba(206,206,206,1)] max-h-[850px] overflow-y-scroll">
+                    <div className="border border-none p-[15px]">
+                        <p className="text-[14px] text-gray-400">Main Category → {newOrder ? " New Order" : " Draft Order"}</p>
                     </div>
-                    <div className="flex flex-wrap gap-[10px] py-[15px] border border-r-0 overflow-y-scroll min-h-[760px] max-[1618px]:[&::-webkit-scrollbar]:block max-[1618px]:[&::-webkit-scrollbar]:w-2 max-[1618px]:[&::-webkit-scrollbar-thumb]:bg-gray-400 max-[1618px]:[&::-webkit-scrollbar-track]:bg-gray-100">
+                    {/* <div className="flex flex-wrap gap-[10px] py-[15px] border border-r-0 overflow-y-scroll min-h-[760px] max-[1618px]:[&::-webkit-scrollbar]:block max-[1618px]:[&::-webkit-scrollbar]:w-2 max-[1618px]:[&::-webkit-scrollbar-thumb]:bg-gray-400 max-[1618px]:[&::-webkit-scrollbar-track]:bg-gray-100"> */}
+                    <div className="flex flex-wrap gap-[10px] py-[15px] border border-r-0 border-b-0 overflow-y-scroll min-h-[760px] max-h-[760px]">
                         {!disable ? (
                             productIsLoading ? (
                                 <h2>Loading Products...</h2>
@@ -173,13 +169,14 @@ const ShoppingPanel = ({ client, disable, setClient, setEnable, newOrder, setDra
                             ) : (
                                 filteredProducts.length > 0 ? (
                                     filteredProducts?.map((product: any) => (
-                                        <div className="flex justify-start items-center hover:cursor-pointer">
-                                            <Product key={product.id}
+                                        <div className="flex justify-start items-center hover:cursor-pointer pl-[12px]" key={product.id}>
+                                            <Product
+                                                uniqueId={product.uniqueId}
                                                 className={`h-full w-[230px] hover:cursor-pointer`}
                                                 title={product.title}
                                                 selectProduct={() => selectProduct(product.id)}
                                                 image={product.thumbnail}
-                                                classNameImage={`bg-non`}
+                                                classNameImage={`bg-non mt-[5px]`}
                                                 price={calculatePrice(product.variants[0].prices[0].amount)}
                                             />
                                         </div>
@@ -195,24 +192,26 @@ const ShoppingPanel = ({ client, disable, setClient, setEnable, newOrder, setDra
                         )}
                     </div>
                 </div>
-                <div className="flex-[1.2] border border-[rgba(206,206,206,1)] py-[10px] mt-[15px]">
+                <div className="flex-[1.2] border-t border-b border-[rgba(206,206,206,1)] py-[10px]">
                     <div>
                         {!disable ? (client.order === null ?
                             (<div>
-                                <Container className="flex flex-row justify-between items-center cursor-pointer mb-[10px]">
-                                    <div className="flex flex-col justify-start">
-                                        <h2 className="text-[15px] leading-[18.15px] font-semibold text-start mb-[5px]">{client.cart.customer.first_name} {client.cart.customer.last_name} (Draft Order)</h2>
-                                        <p className="text-[12px] leading-[14.52px] font-normal text-start">{client.cart.email}</p>
-                                    </div>
-                                </Container>
-                                <div className="border-t min-h-[550px] max-h-[550px] flex flex-col justify-start items-start gap-[10px] w-full p-[10px_10px] overflow-y-scroll overflow-x-hidden [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-gray-500 [&::-webkit-scrollbar-track]:bg-gray-200 [&::-webkit-scrollbar-thumb]:hover:bg-gray-600">
+                                <div className="cursor-pointer w-full  border-b border-[rgba(206,206,206,1)] p-[5px_10px_5px_10px]">
+                                    <Container className="flex flex-row justify-between items-center cursor-pointer mb-[10px]">
+                                        <div className="flex flex-col justify-start">
+                                            <h2 className="text-[15px] leading-[18.15px] font-semibold text-start mb-[5px]">{client.cart.customer.first_name} {client.cart.customer.last_name} (Draft Order)</h2>
+                                            <p className="text-[12px] leading-[14.52px] font-normal text-start">{client.cart.email}</p>
+                                        </div>
+                                    </Container>
+                                </div>
+                                <div className="border-[rgba(206,206,206,1)] min-h-[550px] max-h-[550px] flex flex-col justify-start items-start gap-[10px] w-full p-[10px_10px] overflow-y-scroll overflow-x-hidden">
                                     {client.cart.items?.map((e: any) => (
-                                        <div className="w-full h-[105px] relative">
+                                        <div className="w-full h-[105px] relative" key={e.id}>
                                             <Products
                                                 className={`h-[105px] hover:cursor-pointer p-2 m-0 flex align-center justify-start gap-[15px] min-w-[335px]`}
                                                 classNameImage={`w-[90px]`}
                                                 title={e.title}
-                                                image={e.thumbnail}
+                                                image={e.thumbnail ? e.thumbnail : e.metadata.thumbnail}
                                                 price={e.unit_price ? calculatePrice(e.unit_price) : calculatePrice(e.variants[0].prices[0].amount)}
                                             />
                                             <Button
@@ -254,7 +253,7 @@ const ShoppingPanel = ({ client, disable, setClient, setEnable, newOrder, setDra
                                     </div>
                                     <div className="min-h-[550px] max-h-[550px] flex flex-col justify-start items-start gap-[10px] w-full p-[10px_10px] overflow-y-scroll overflow-x-hidden [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-gray-500 [&::-webkit-scrollbar-track]:bg-gray-200 [&::-webkit-scrollbar-thumb]:hover:bg-gray-600">
                                         {client.customerOrder?.map((e: any) => (
-                                            <div className="w-full h-[105px] relative">
+                                            <div className="w-full h-[105px] relative" key={e.uniqueId}>
                                                 <Products
                                                     className={`h-[105px] hover:cursor-pointer p-2 m-0 flex align-center justify-start gap-[15px] min-w-[335px]`}
                                                     classNameImage={`w-[90px]`}

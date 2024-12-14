@@ -3,7 +3,7 @@ import { useState } from "react";
 import { medusa } from "../lib/medusa-provider"
 import { ArrowDownLeftMini } from "@medusajs/icons";
 import { Button, RadioGroup, Label, Container } from "@medusajs/ui";
-const Checkout = ({ client, setClient, newOrder }: { newOrder: boolean, setClient: (client: any) => void, client: any }) => {
+const Checkout = ({ client, setClient, newOrder, setEnable }: { newOrder: boolean, setClient: (client: any) => void, client: any, setEnable: (enable: boolean) => void }) => {
 
   const [isLoading, setIsLoading] = useState(false);
   const [select, setSelecte] = useState(4);
@@ -27,6 +27,9 @@ const Checkout = ({ client, setClient, newOrder }: { newOrder: boolean, setClien
           title: product.title,
           quantity: 1,
           unit_price: product.variants[0].prices[0].amount,
+          metadata: {
+            thumbnail: product.thumbnail,
+          },
         }));
 
         const region_id = regions[0].id;
@@ -69,6 +72,9 @@ const Checkout = ({ client, setClient, newOrder }: { newOrder: boolean, setClien
           ],
         })
         setClient(createDraftOrder.draft_order.cart);
+        setEnable(true);
+        setClient("");
+        localStorage.clear();
         setIsLoading(false);
       } else {
         setIsLoading(true);
@@ -90,7 +96,12 @@ const Checkout = ({ client, setClient, newOrder }: { newOrder: boolean, setClien
 
           const itemsToAdd = client.cart.items.map((product: any) => {
             let unitPrice;
-
+            let thumbnail;
+            if (product.thumbnail === null) {
+              thumbnail = product.metadata.thumbnail;
+            } else {
+              thumbnail = product.thumbnail;
+            }
             if (product.total) {
               unitPrice = product.total;
             } else if (product.variants[0]?.prices[0]?.amount) {
@@ -101,6 +112,7 @@ const Checkout = ({ client, setClient, newOrder }: { newOrder: boolean, setClien
               title: product.title,
               quantity: 1,
               unit_price: unitPrice,
+              thumbnail: thumbnail,
             };
           });
 
@@ -111,20 +123,24 @@ const Checkout = ({ client, setClient, newOrder }: { newOrder: boolean, setClien
                 title: item.title,
                 unit_price: item.unit_price,
                 quantity: item.quantity,
+                metadata: {
+                  thumbnail: item.thumbnail,
+                }
               }).then((response) => console.log(response));
               console.log(`Added item with variant ID: ${item.variant_id}`);
             } catch (error) {
               console.error(`Failed to add item with variant ID ${item.variant_id}:, error`);
             }
           }
-          setClient(response.draft_order.cart);
           console.log('Draft order updated successfully.');
-          setIsLoading(false);
         } catch (error) {
           console.error('Error updating draft order:', error);
-          setIsLoading(false);
         }
       }
+      setEnable(true);
+      setClient("");
+      localStorage.clear();
+      setIsLoading(false);
       // Navigate to Stripe 
       navigate("/main");
     } else if (select === 1) {
@@ -140,6 +156,9 @@ const Checkout = ({ client, setClient, newOrder }: { newOrder: boolean, setClien
           title: product.title,
           quantity: 1,
           unit_price: product.variants[0].prices[0].amount,
+          metadata: {
+            thumbnail: product.thumbnail,
+          },
         }));
 
         const region_id = regions[0].id;
@@ -203,7 +222,12 @@ const Checkout = ({ client, setClient, newOrder }: { newOrder: boolean, setClien
 
           const itemsToAdd = client.cart.items.map((product: any) => {
             let unitPrice;
-
+            let thumbnail;
+            if (product.thumbnail === null) {
+              thumbnail = product.metadata.thumbnail;
+            } else {
+              thumbnail = product.thumbnail;
+            }
             if (product.total) {
               unitPrice = product.total;
             } else if (product.variants[0]?.prices[0]?.amount) {
@@ -214,6 +238,7 @@ const Checkout = ({ client, setClient, newOrder }: { newOrder: boolean, setClien
               title: product.title,
               quantity: 1,
               unit_price: unitPrice,
+              thumbnail: thumbnail,
             };
           });
 
@@ -224,6 +249,9 @@ const Checkout = ({ client, setClient, newOrder }: { newOrder: boolean, setClien
                 title: item.title,
                 unit_price: item.unit_price,
                 quantity: item.quantity,
+                metadata: {
+                  thumbnail: item.thumbnail,
+                }
               }).then((response) => console.log(response));
               console.log(`Added item with variant ID: ${item.variant_id}`);
             } catch (error) {

@@ -43,6 +43,9 @@ export default function DraftOrders({ setClient, setDraftOrder, setEnable }: { s
 
     const deleteOrder = (draftOrderId: string) => {
         deleteOrderMutation.mutate(draftOrderId)
+        setEnable(true);
+        setClient("");
+        localStorage.clear();
     };
 
     const changeOrder = (draftOrderId: string) => {

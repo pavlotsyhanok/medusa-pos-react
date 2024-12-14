@@ -1,10 +1,10 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
-import Products from "../../../components/Products";
+import Products from "../component/Products";
 import Customer from "../../../components/Customer";
 import { medusa } from "../../../lib/medusa-provider";
 import { useEffect, useState } from "react";
-import Product from "../../../components/Products";
+import Product from "../component/Products";
 import { ArrowDownLeftMini, PencilSquareSolid } from "@medusajs/icons";
 import { Button, Container, Input } from "@medusajs/ui"
 

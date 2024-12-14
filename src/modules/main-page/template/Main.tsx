@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
-import StripeTerminals from "../terminals/component/StripeTerminals"
-import { medusa } from "../../lib/medusa-provider";
+import StripeTerminals from "../../terminals/component/StripeTerminals"
+import { medusa } from "../../../lib/medusa-provider";
 import Cookies from "js-cookie";
 import { Container, Heading } from '@medusajs/ui';
 import { ArchiveBox, DocumentTextSolid, OpenRectArrowOut, Plus, Shopping, ShoppingBag, Users } from '@medusajs/icons';

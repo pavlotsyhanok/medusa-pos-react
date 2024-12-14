@@ -1,21 +1,52 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Main from '../pages/Main';
-import Layout from '../pages/Layout';
-import Register from '../pages/Register';
-import Settings from '../pages/Settings';
-import Checkout from '../pages/Checkout';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { useState } from 'react';
+import { appRoutes } from './Routes';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
+import Cookies from 'js-cookie';
+import { useEffect } from 'react';
+
+const queryClient = new QueryClient();
 
 const AppRoutes = () => {
+    const [isLogged, setIsLogged] = useState(() => !!Cookies.get('token'));
+    const [detectTerminal, setDetectTerminal] = useState("Please select the terminal");
+    const [disable, setEnable] = useState(true);
+    const [client, setClient] = useState(() => {
+        const storedClient = localStorage.getItem('client');
+        return storedClient ? JSON.parse(storedClient) : {};
+    });
+    const [newOrder, setDraftOrder] = useState(true);
+    useEffect(() => {
+        if (client && Object.keys(client).length !== 0) {
+            localStorage.setItem('client', JSON.stringify(client));
+            if (client.cart) {
+                setDraftOrder(false);
+            }
+        } else {
+            localStorage.removeItem('client');
+        }
+    }, [client, setDraftOrder]);
+
+    useEffect(() => {
+        const token = Cookies.get('token');
+        setIsLogged(!!token);
+    }, []);
+
     return (
-        <Router>
-            <Routes>
-                <Route path="/" element={<Main />} />
-                <Route path="/new-order" element={<Layout />} />
-                <Route path="/register-customer" element={<Register />} />
-                <Route path="/settings" element={<Settings />} />
-                <Route path="/checkout" element={<Checkout />} />
-            </Routes>
-        </Router>
+        <QueryClientProvider client={queryClient}>
+            <Router>
+                <Routes>
+                    {appRoutes.map((route) => (
+                        route.requiresAuth && !isLogged ? (
+                            <Route key={route.path} path={route.path} element={<Navigate replace to="/login" />} />
+                        ) : (
+                            <Route key={route.path} path={route.path} element={<route.component isLogged={isLogged} newOrder={newOrder} setDraftOrder={setDraftOrder} setEnable={setEnable} setClient={setClient} disable={disable} setIsLogged={setIsLogged} detectTerminal={detectTerminal} setDetectTerminal={setDetectTerminal} client={client} />} />)
+                    ))}
+                </Routes>
+            </Router>
+            <ReactQueryDevtools initialIsOpen={false} />
+        </QueryClientProvider>
     );
 };
 

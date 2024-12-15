@@ -11,10 +11,13 @@
     "start": "vite"
   },
   "devDependencies": {
+    "@tanstack/router-plugin": "^1.87.13",
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
-    "@tanstack/router-plugin": "^1.87.13",
     "@vitejs/plugin-react": "^4.3.2",
+    "autoprefixer": "^10.4.20",
+    "postcss": "^8.4.49",
+    "tailwindcss": "^3.4.16",
     "vite": "^6.0.3"
   },
   "dependencies": {

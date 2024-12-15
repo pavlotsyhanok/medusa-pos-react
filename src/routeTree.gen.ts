@@ -14,6 +14,11 @@ import { Route as rootRoute } from './routes/__root'
 import { Route as BlogPostImport } from './routes/blog-post'
 import { Route as AboutImport } from './routes/about'
 import { Route as IndexImport } from './routes/index'
+import { Route as StoreIndexImport } from './routes/store/index'
+import { Route as LoginIndexImport } from './routes/login/index'
+import { Route as StoreStoreImport } from './routes/store/store'
+import { Route as StoreProductsImport } from './routes/store/products'
+import { Route as StoreOrdersIndexImport } from './routes/store/orders/index'
 
 // Create/Update Routes
 
@@ -32,6 +37,36 @@ const AboutRoute = AboutImport.update({
 const IndexRoute = IndexImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const StoreIndexRoute = StoreIndexImport.update({
+  id: '/store/',
+  path: '/store/',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const LoginIndexRoute = LoginIndexImport.update({
+  id: '/login/',
+  path: '/login/',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const StoreStoreRoute = StoreStoreImport.update({
+  id: '/store/store',
+  path: '/store/store',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const StoreProductsRoute = StoreProductsImport.update({
+  id: '/store/products',
+  path: '/store/products',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const StoreOrdersIndexRoute = StoreOrdersIndexImport.update({
+  id: '/store/orders/',
+  path: '/store/orders/',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -60,6 +95,41 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof BlogPostImport
       parentRoute: typeof rootRoute
     }
+    '/store/products': {
+      id: '/store/products'
+      path: '/store/products'
+      fullPath: '/store/products'
+      preLoaderRoute: typeof StoreProductsImport
+      parentRoute: typeof rootRoute
+    }
+    '/store/store': {
+      id: '/store/store'
+      path: '/store/store'
+      fullPath: '/store/store'
+      preLoaderRoute: typeof StoreStoreImport
+      parentRoute: typeof rootRoute
+    }
+    '/login/': {
+      id: '/login/'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginIndexImport
+      parentRoute: typeof rootRoute
+    }
+    '/store/': {
+      id: '/store/'
+      path: '/store'
+      fullPath: '/store'
+      preLoaderRoute: typeof StoreIndexImport
+      parentRoute: typeof rootRoute
+    }
+    '/store/orders/': {
+      id: '/store/orders/'
+      path: '/store/orders'
+      fullPath: '/store/orders'
+      preLoaderRoute: typeof StoreOrdersIndexImport
+      parentRoute: typeof rootRoute
+    }
   }
 }
 
@@ -69,12 +139,22 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/blog-post': typeof BlogPostRoute
+  '/store/products': typeof StoreProductsRoute
+  '/store/store': typeof StoreStoreRoute
+  '/login': typeof LoginIndexRoute
+  '/store': typeof StoreIndexRoute
+  '/store/orders': typeof StoreOrdersIndexRoute
 }
 
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/blog-post': typeof BlogPostRoute
+  '/store/products': typeof StoreProductsRoute
+  '/store/store': typeof StoreStoreRoute
+  '/login': typeof LoginIndexRoute
+  '/store': typeof StoreIndexRoute
+  '/store/orders': typeof StoreOrdersIndexRoute
 }
 
 export interface FileRoutesById {
@@ -82,14 +162,44 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/blog-post': typeof BlogPostRoute
+  '/store/products': typeof StoreProductsRoute
+  '/store/store': typeof StoreStoreRoute
+  '/login/': typeof LoginIndexRoute
+  '/store/': typeof StoreIndexRoute
+  '/store/orders/': typeof StoreOrdersIndexRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/about' | '/blog-post'
+  fullPaths:
+    | '/'
+    | '/about'
+    | '/blog-post'
+    | '/store/products'
+    | '/store/store'
+    | '/login'
+    | '/store'
+    | '/store/orders'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/about' | '/blog-post'
-  id: '__root__' | '/' | '/about' | '/blog-post'
+  to:
+    | '/'
+    | '/about'
+    | '/blog-post'
+    | '/store/products'
+    | '/store/store'
+    | '/login'
+    | '/store'
+    | '/store/orders'
+  id:
+    | '__root__'
+    | '/'
+    | '/about'
+    | '/blog-post'
+    | '/store/products'
+    | '/store/store'
+    | '/login/'
+    | '/store/'
+    | '/store/orders/'
   fileRoutesById: FileRoutesById
 }
 
@@ -97,12 +207,22 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
   BlogPostRoute: typeof BlogPostRoute
+  StoreProductsRoute: typeof StoreProductsRoute
+  StoreStoreRoute: typeof StoreStoreRoute
+  LoginIndexRoute: typeof LoginIndexRoute
+  StoreIndexRoute: typeof StoreIndexRoute
+  StoreOrdersIndexRoute: typeof StoreOrdersIndexRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
   BlogPostRoute: BlogPostRoute,
+  StoreProductsRoute: StoreProductsRoute,
+  StoreStoreRoute: StoreStoreRoute,
+  LoginIndexRoute: LoginIndexRoute,
+  StoreIndexRoute: StoreIndexRoute,
+  StoreOrdersIndexRoute: StoreOrdersIndexRoute,
 }
 
 export const routeTree = rootRoute
@@ -117,7 +237,12 @@ export const routeTree = rootRoute
       "children": [
         "/",
         "/about",
-        "/blog-post"
+        "/blog-post",
+        "/store/products",
+        "/store/store",
+        "/login/",
+        "/store/",
+        "/store/orders/"
       ]
     },
     "/": {
@@ -128,6 +253,21 @@ export const routeTree = rootRoute
     },
     "/blog-post": {
       "filePath": "blog-post.tsx"
+    },
+    "/store/products": {
+      "filePath": "store/products.tsx"
+    },
+    "/store/store": {
+      "filePath": "store/store.tsx"
+    },
+    "/login/": {
+      "filePath": "login/index.tsx"
+    },
+    "/store/": {
+      "filePath": "store/index.tsx"
+    },
+    "/store/orders/": {
+      "filePath": "store/orders/index.tsx"
     }
   }
 }

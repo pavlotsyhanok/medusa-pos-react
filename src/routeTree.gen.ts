@@ -13,12 +13,10 @@
 import { Route as rootRoute } from './routes/__root'
 import { Route as BlogPostImport } from './routes/blog-post'
 import { Route as AboutImport } from './routes/about'
+import { Route as AuthenticatedImport } from './routes/_authenticated'
 import { Route as IndexImport } from './routes/index'
-import { Route as StoreIndexImport } from './routes/store/index'
 import { Route as LoginIndexImport } from './routes/login/index'
-import { Route as StoreStoreImport } from './routes/store/store'
-import { Route as StoreProductsImport } from './routes/store/products'
-import { Route as StoreOrdersIndexImport } from './routes/store/orders/index'
+import { Route as AuthenticatedStoreImport } from './routes/_authenticated/store'
 
 // Create/Update Routes
 
@@ -34,15 +32,14 @@ const AboutRoute = AboutImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
-const IndexRoute = IndexImport.update({
-  id: '/',
-  path: '/',
+const AuthenticatedRoute = AuthenticatedImport.update({
+  id: '/_authenticated',
   getParentRoute: () => rootRoute,
 } as any)
 
-const StoreIndexRoute = StoreIndexImport.update({
-  id: '/store/',
-  path: '/store/',
+const IndexRoute = IndexImport.update({
+  id: '/',
+  path: '/',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -52,22 +49,10 @@ const LoginIndexRoute = LoginIndexImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
-const StoreStoreRoute = StoreStoreImport.update({
-  id: '/store/store',
-  path: '/store/store',
-  getParentRoute: () => rootRoute,
-} as any)
-
-const StoreProductsRoute = StoreProductsImport.update({
-  id: '/store/products',
-  path: '/store/products',
-  getParentRoute: () => rootRoute,
-} as any)
-
-const StoreOrdersIndexRoute = StoreOrdersIndexImport.update({
-  id: '/store/orders/',
-  path: '/store/orders/',
-  getParentRoute: () => rootRoute,
+const AuthenticatedStoreRoute = AuthenticatedStoreImport.update({
+  id: '/store',
+  path: '/store',
+  getParentRoute: () => AuthenticatedRoute,
 } as any)
 
 // Populate the FileRoutesByPath interface
@@ -79,6 +64,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexImport
+      parentRoute: typeof rootRoute
+    }
+    '/_authenticated': {
+      id: '/_authenticated'
+      path: ''
+      fullPath: ''
+      preLoaderRoute: typeof AuthenticatedImport
       parentRoute: typeof rootRoute
     }
     '/about': {
@@ -95,19 +87,12 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof BlogPostImport
       parentRoute: typeof rootRoute
     }
-    '/store/products': {
-      id: '/store/products'
-      path: '/store/products'
-      fullPath: '/store/products'
-      preLoaderRoute: typeof StoreProductsImport
-      parentRoute: typeof rootRoute
-    }
-    '/store/store': {
-      id: '/store/store'
-      path: '/store/store'
-      fullPath: '/store/store'
-      preLoaderRoute: typeof StoreStoreImport
-      parentRoute: typeof rootRoute
+    '/_authenticated/store': {
+      id: '/_authenticated/store'
+      path: '/store'
+      fullPath: '/store'
+      preLoaderRoute: typeof AuthenticatedStoreImport
+      parentRoute: typeof AuthenticatedImport
     }
     '/login/': {
       id: '/login/'
@@ -116,113 +101,81 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LoginIndexImport
       parentRoute: typeof rootRoute
     }
-    '/store/': {
-      id: '/store/'
-      path: '/store'
-      fullPath: '/store'
-      preLoaderRoute: typeof StoreIndexImport
-      parentRoute: typeof rootRoute
-    }
-    '/store/orders/': {
-      id: '/store/orders/'
-      path: '/store/orders'
-      fullPath: '/store/orders'
-      preLoaderRoute: typeof StoreOrdersIndexImport
-      parentRoute: typeof rootRoute
-    }
   }
 }
 
 // Create and export the route tree
 
+interface AuthenticatedRouteChildren {
+  AuthenticatedStoreRoute: typeof AuthenticatedStoreRoute
+}
+
+const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
+  AuthenticatedStoreRoute: AuthenticatedStoreRoute,
+}
+
+const AuthenticatedRouteWithChildren = AuthenticatedRoute._addFileChildren(
+  AuthenticatedRouteChildren,
+)
+
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '': typeof AuthenticatedRouteWithChildren
   '/about': typeof AboutRoute
   '/blog-post': typeof BlogPostRoute
-  '/store/products': typeof StoreProductsRoute
-  '/store/store': typeof StoreStoreRoute
+  '/store': typeof AuthenticatedStoreRoute
   '/login': typeof LoginIndexRoute
-  '/store': typeof StoreIndexRoute
-  '/store/orders': typeof StoreOrdersIndexRoute
 }
 
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '': typeof AuthenticatedRouteWithChildren
   '/about': typeof AboutRoute
   '/blog-post': typeof BlogPostRoute
-  '/store/products': typeof StoreProductsRoute
-  '/store/store': typeof StoreStoreRoute
+  '/store': typeof AuthenticatedStoreRoute
   '/login': typeof LoginIndexRoute
-  '/store': typeof StoreIndexRoute
-  '/store/orders': typeof StoreOrdersIndexRoute
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
+  '/_authenticated': typeof AuthenticatedRouteWithChildren
   '/about': typeof AboutRoute
   '/blog-post': typeof BlogPostRoute
-  '/store/products': typeof StoreProductsRoute
-  '/store/store': typeof StoreStoreRoute
+  '/_authenticated/store': typeof AuthenticatedStoreRoute
   '/login/': typeof LoginIndexRoute
-  '/store/': typeof StoreIndexRoute
-  '/store/orders/': typeof StoreOrdersIndexRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths:
-    | '/'
-    | '/about'
-    | '/blog-post'
-    | '/store/products'
-    | '/store/store'
-    | '/login'
-    | '/store'
-    | '/store/orders'
+  fullPaths: '/' | '' | '/about' | '/blog-post' | '/store' | '/login'
   fileRoutesByTo: FileRoutesByTo
-  to:
-    | '/'
-    | '/about'
-    | '/blog-post'
-    | '/store/products'
-    | '/store/store'
-    | '/login'
-    | '/store'
-    | '/store/orders'
+  to: '/' | '' | '/about' | '/blog-post' | '/store' | '/login'
   id:
     | '__root__'
     | '/'
+    | '/_authenticated'
     | '/about'
     | '/blog-post'
-    | '/store/products'
-    | '/store/store'
+    | '/_authenticated/store'
     | '/login/'
-    | '/store/'
-    | '/store/orders/'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AuthenticatedRoute: typeof AuthenticatedRouteWithChildren
   AboutRoute: typeof AboutRoute
   BlogPostRoute: typeof BlogPostRoute
-  StoreProductsRoute: typeof StoreProductsRoute
-  StoreStoreRoute: typeof StoreStoreRoute
   LoginIndexRoute: typeof LoginIndexRoute
-  StoreIndexRoute: typeof StoreIndexRoute
-  StoreOrdersIndexRoute: typeof StoreOrdersIndexRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AuthenticatedRoute: AuthenticatedRouteWithChildren,
   AboutRoute: AboutRoute,
   BlogPostRoute: BlogPostRoute,
-  StoreProductsRoute: StoreProductsRoute,
-  StoreStoreRoute: StoreStoreRoute,
   LoginIndexRoute: LoginIndexRoute,
-  StoreIndexRoute: StoreIndexRoute,
-  StoreOrdersIndexRoute: StoreOrdersIndexRoute,
 }
 
 export const routeTree = rootRoute
@@ -236,17 +189,20 @@ export const routeTree = rootRoute
       "filePath": "__root.tsx",
       "children": [
         "/",
+        "/_authenticated",
         "/about",
         "/blog-post",
-        "/store/products",
-        "/store/store",
-        "/login/",
-        "/store/",
-        "/store/orders/"
+        "/login/"
       ]
     },
     "/": {
       "filePath": "index.tsx"
+    },
+    "/_authenticated": {
+      "filePath": "_authenticated.tsx",
+      "children": [
+        "/_authenticated/store"
+      ]
     },
     "/about": {
       "filePath": "about.tsx"
@@ -254,20 +210,12 @@ export const routeTree = rootRoute
     "/blog-post": {
       "filePath": "blog-post.tsx"
     },
-    "/store/products": {
-      "filePath": "store/products.tsx"
-    },
-    "/store/store": {
-      "filePath": "store/store.tsx"
+    "/_authenticated/store": {
+      "filePath": "_authenticated/store.tsx",
+      "parent": "/_authenticated"
     },
     "/login/": {
       "filePath": "login/index.tsx"
-    },
-    "/store/": {
-      "filePath": "store/index.tsx"
-    },
-    "/store/orders/": {
-      "filePath": "store/orders/index.tsx"
     }
   }
 }

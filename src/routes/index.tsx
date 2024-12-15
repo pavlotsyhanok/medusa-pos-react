@@ -1,7 +1,21 @@
 import * as React from 'react'
-import { createFileRoute } from '@tanstack/react-router'
+import { createFileRoute, redirect } from '@tanstack/react-router'
 import { Button } from '@medusajs/ui'
+import { isAuthenticated } from '../lib/hooks/auth'
+
 export const Route = createFileRoute('/')({
+  beforeLoad: () => {
+    // Check if authenticated from root route
+    if (isAuthenticated) {
+      throw redirect({
+        to: '/store'
+      })
+    } else {
+      throw redirect({
+        to: '/login'
+      })
+    }
+  },
   component: HomeComponent,
 })
 

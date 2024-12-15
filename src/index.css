@@ -1,3 +1,15 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
+html {
+  color-scheme: light dark;
+}
+* {
+  @apply border-ui-border-base dark:border-ui-border-base;
+}
+
+body {
+  @apply bg-ui-bg-base text-ui-fg-base dark:bg-ui-bg-base dark:text-ui-fg-base;
+}

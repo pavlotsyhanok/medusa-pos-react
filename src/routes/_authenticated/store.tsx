@@ -1,9 +1,15 @@
-import { createFileRoute } from '@tanstack/react-router'
+import { createFileRoute } from "@tanstack/react-router";
+import StoreLayout from "../../modules/main-menu/StoreLayout";
+import StoreDataArea from "../../modules/main-menu/StoreDataArea";
 
-export const Route = createFileRoute('/_authenticated/store')({
+export const Route = createFileRoute("/_authenticated/store")({
   component: RouteComponent,
-})
+});
 
 function RouteComponent() {
-  return <div>Hello "/_authed/store"!</div>
+  return (
+    <StoreLayout>
+      <StoreDataArea />
+    </StoreLayout>
+  );
 }

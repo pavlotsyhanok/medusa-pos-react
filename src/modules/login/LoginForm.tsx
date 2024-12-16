@@ -6,7 +6,7 @@ function LoginForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   return (
-    <Container className="max-w-fit flex flex-col gap-4 min-w-[350px] py-8">
+    <Container className="max-w-fit flex flex-col gap-4 sm:min-w-[350px] min-w-[80vw] py-8">
       <div className="flex w-full items-center flex-col justify-center gap-4">
         <Avatar
           size="xlarge"
@@ -43,7 +43,7 @@ function LoginForm() {
           <Text size="small" className="text-ui-fg-muted">
             Forgot password?
           </Text>
-          <Link to="/forgot-password">
+          <Link to={`${import.meta.env.VITE_PUBLIC_MEDUSA_BASE_URL}/app/reset-password`}>
             <Text
               size="small"
               className="text-ui-fg-interactive hover:text-ui-fg-interactive-hover transition-colors duration-200">

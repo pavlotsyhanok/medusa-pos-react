@@ -17,6 +17,7 @@ import { Route as AuthenticatedImport } from './routes/_authenticated'
 import { Route as IndexImport } from './routes/index'
 import { Route as LoginIndexImport } from './routes/login/index'
 import { Route as AuthenticatedStoreImport } from './routes/_authenticated/store'
+import { Route as AuthenticatedCatalogImport } from './routes/_authenticated/catalog'
 
 // Create/Update Routes
 
@@ -55,6 +56,12 @@ const AuthenticatedStoreRoute = AuthenticatedStoreImport.update({
   getParentRoute: () => AuthenticatedRoute,
 } as any)
 
+const AuthenticatedCatalogRoute = AuthenticatedCatalogImport.update({
+  id: '/catalog',
+  path: '/catalog',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
+
 // Populate the FileRoutesByPath interface
 
 declare module '@tanstack/react-router' {
@@ -87,6 +94,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof BlogPostImport
       parentRoute: typeof rootRoute
     }
+    '/_authenticated/catalog': {
+      id: '/_authenticated/catalog'
+      path: '/catalog'
+      fullPath: '/catalog'
+      preLoaderRoute: typeof AuthenticatedCatalogImport
+      parentRoute: typeof AuthenticatedImport
+    }
     '/_authenticated/store': {
       id: '/_authenticated/store'
       path: '/store'
@@ -107,10 +121,12 @@ declare module '@tanstack/react-router' {
 // Create and export the route tree
 
 interface AuthenticatedRouteChildren {
+  AuthenticatedCatalogRoute: typeof AuthenticatedCatalogRoute
   AuthenticatedStoreRoute: typeof AuthenticatedStoreRoute
 }
 
 const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
+  AuthenticatedCatalogRoute: AuthenticatedCatalogRoute,
   AuthenticatedStoreRoute: AuthenticatedStoreRoute,
 }
 
@@ -123,6 +139,7 @@ export interface FileRoutesByFullPath {
   '': typeof AuthenticatedRouteWithChildren
   '/about': typeof AboutRoute
   '/blog-post': typeof BlogPostRoute
+  '/catalog': typeof AuthenticatedCatalogRoute
   '/store': typeof AuthenticatedStoreRoute
   '/login': typeof LoginIndexRoute
 }
@@ -132,6 +149,7 @@ export interface FileRoutesByTo {
   '': typeof AuthenticatedRouteWithChildren
   '/about': typeof AboutRoute
   '/blog-post': typeof BlogPostRoute
+  '/catalog': typeof AuthenticatedCatalogRoute
   '/store': typeof AuthenticatedStoreRoute
   '/login': typeof LoginIndexRoute
 }
@@ -142,21 +160,30 @@ export interface FileRoutesById {
   '/_authenticated': typeof AuthenticatedRouteWithChildren
   '/about': typeof AboutRoute
   '/blog-post': typeof BlogPostRoute
+  '/_authenticated/catalog': typeof AuthenticatedCatalogRoute
   '/_authenticated/store': typeof AuthenticatedStoreRoute
   '/login/': typeof LoginIndexRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '' | '/about' | '/blog-post' | '/store' | '/login'
+  fullPaths:
+    | '/'
+    | ''
+    | '/about'
+    | '/blog-post'
+    | '/catalog'
+    | '/store'
+    | '/login'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '' | '/about' | '/blog-post' | '/store' | '/login'
+  to: '/' | '' | '/about' | '/blog-post' | '/catalog' | '/store' | '/login'
   id:
     | '__root__'
     | '/'
     | '/_authenticated'
     | '/about'
     | '/blog-post'
+    | '/_authenticated/catalog'
     | '/_authenticated/store'
     | '/login/'
   fileRoutesById: FileRoutesById
@@ -201,6 +228,7 @@ export const routeTree = rootRoute
     "/_authenticated": {
       "filePath": "_authenticated.tsx",
       "children": [
+        "/_authenticated/catalog",
         "/_authenticated/store"
       ]
     },
@@ -209,6 +237,10 @@ export const routeTree = rootRoute
     },
     "/blog-post": {
       "filePath": "blog-post.tsx"
+    },
+    "/_authenticated/catalog": {
+      "filePath": "_authenticated/catalog.tsx",
+      "parent": "/_authenticated"
     },
     "/_authenticated/store": {
       "filePath": "_authenticated/store.tsx",

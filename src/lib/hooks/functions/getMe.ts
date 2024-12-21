@@ -16,6 +16,6 @@ interface MeResponse {
   user: User
 }
 
-export function getMe() {
-  return medusaClient.get<MeResponse>('/admin/users/me')
+export async function getMe() {
+  return await medusaClient.get<MeResponse>('/admin/users/me')
 }

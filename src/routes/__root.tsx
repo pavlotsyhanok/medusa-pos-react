@@ -6,6 +6,7 @@ import { Button } from '@medusajs/ui'
 interface RouterContext {
   auth: {
     isAuthenticated: boolean;
+    isLoading: boolean;
     login: () => void;
     logout: () => void;
   }
@@ -14,7 +15,13 @@ interface RouterContext {
 export const Route = createRootRouteWithContext<RouterContext>()({
   component: RootComponent,
   beforeLoad: ({ context, location }) => {
+    console.log('Root beforeLoad - Auth state:', context.auth.isAuthenticated)
+    console.log('Root beforeLoad - Loading state:', context.auth.isLoading)
     const isLoginRoute = location.pathname === '/login'
+
+    if (context.auth.isLoading) {
+      return // Don't redirect while auth is loading
+    }
 
     if (context.auth.isAuthenticated) {
       // If authenticated and trying to access login, redirect to store

@@ -3,11 +3,7 @@ import { AuthProvider } from "./lib/hooks/AuthProvider";
 import { router } from "./router";
 
 function App() {
-  return (
-    <AuthProvider>
-      <RouterProvider router={router} context={{ auth: undefined }} />
-    </AuthProvider>
-  );
+  return <RouterProvider router={router} context={{ auth: undefined }} />;
 }
 
 export default App;

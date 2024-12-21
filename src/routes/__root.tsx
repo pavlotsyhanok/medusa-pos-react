@@ -18,7 +18,6 @@ interface RouterContext {
 export const Route = createRootRouteWithContext<RouterContext>()({
   component: RootComponent,
   beforeLoad: ({ context, location }) => {
-    const isAuthRoute = location.pathname.startsWith('/_authed')
     const isLoginRoute = location.pathname === '/login'
 
     if (context.auth.isAuthenticated) {
@@ -29,8 +28,8 @@ export const Route = createRootRouteWithContext<RouterContext>()({
         })
       }
     } else {
-      // If not authenticated and trying to access auth routes, redirect to login
-      if (isAuthRoute) {
+      // If not authenticated, redirect to login unless already on login page
+      if (!isLoginRoute) {
         throw redirect({
           to: '/login'
         })

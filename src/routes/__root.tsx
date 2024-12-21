@@ -2,10 +2,6 @@ import * as React from 'react'
 import { Link, Outlet, createRootRouteWithContext, redirect } from '@tanstack/react-router'
 import { TanStackRouterDevtools } from '@tanstack/router-devtools'
 import { Button } from '@medusajs/ui'
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
-
-const queryClient = new QueryClient()
 
 interface RouterContext {
   auth: {
@@ -40,10 +36,9 @@ export const Route = createRootRouteWithContext<RouterContext>()({
 
 function RootComponent() {
   return (
-    <QueryClientProvider client={queryClient}>
+    <>
         <Outlet />
         <TanStackRouterDevtools position="bottom-left" />
-        <ReactQueryDevtools initialIsOpen={false} />
-    </QueryClientProvider>
+    </>
   )
 }

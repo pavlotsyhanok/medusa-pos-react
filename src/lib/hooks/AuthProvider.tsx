@@ -1,9 +1,12 @@
-import { createContext, useContext, ReactNode, useState } from 'react';
+import { createContext, useContext, ReactNode } from 'react';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { getMe } from './functions/getMe';
 
-interface AuthContextType {
+export interface AuthContextType {
   isAuthenticated: boolean;
   login: () => void;
   logout: () => void;
+  isLoading: boolean;
 }
 
 const AuthContext = createContext<AuthContextType | null>(null);
@@ -21,21 +24,37 @@ interface AuthProviderProps {
 }
 
 export function AuthProvider({ children }: AuthProviderProps) {
-  // const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const isAuthenticated = true; // Always authenticated for testing
+  const queryClient = useQueryClient();
+  
+  // Use React Query to manage auth state
+  const { data, isLoading } = useQuery({
+    queryKey: ['auth'],
+    queryFn: async () => {
+      try {
+        const response = await getMe();
+        return true; // If we get here, the API call was successful and user is authenticated
+      } catch (error) {
+        console.log('Authentication check failed:', error);
+        return false;
+      }
+    },
+  });
 
-  const login = () => {
-    // setIsAuthenticated(true);
-    console.log('Login called - always authenticated for testing');
+  const login = async () => {
+    console.log('Attempting login...');
+    // Invalidate and refetch auth query
+    await queryClient.invalidateQueries({ queryKey: ['auth'] });
   };
 
   const logout = () => {
-    // setIsAuthenticated(false);
-    console.log('Logout called - always authenticated for testing');
+    // Set auth query data to false
+    queryClient.setQueryData(['auth'], false);
+    console.log('User logged out');
   };
 
   const value = {
-    isAuthenticated,
+    isAuthenticated: !!data,
+    isLoading,
     login,
     logout,
   };

@@ -2,8 +2,14 @@ import medusaClient from "@/lib/utils/axios.config";
 import { LoginCredentials, LoginResponse } from "../types/Login";
 
 export async function login(credentials: LoginCredentials) {
-  return await medusaClient.post<LoginResponse>(
+  const response = await medusaClient.post<LoginResponse>(
     "/auth/user/emailpass",
     credentials
   );
+
+  if (response.data.token) {
+    document.cookie = `medusa_jwt_token=${response.data.token}; path=/`;
+  }
+
+  return response;
 }

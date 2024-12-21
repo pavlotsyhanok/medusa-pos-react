@@ -1,10 +1,12 @@
 import { createContext, useContext, ReactNode } from 'react';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { getMe } from './functions/getMe';
+import { login as loginFn } from './functions/login';
+import { LoginCredentials } from './types/Login';
 
 export interface AuthContextType {
   isAuthenticated: boolean;
-  login: () => void;
+  login: (credentials: LoginCredentials) => Promise<void>;
   logout: () => void;
   isLoading: boolean;
 }
@@ -40,10 +42,17 @@ export function AuthProvider({ children }: AuthProviderProps) {
     },
   });
 
-  const login = async () => {
+  const login = async (credentials: LoginCredentials) => {
     console.log('Attempting login...');
-    // Invalidate and refetch auth query
-    await queryClient.invalidateQueries({ queryKey: ['auth'] });
+    try {
+      await loginFn(credentials);
+      // Invalidate and refetch auth query after successful login
+      await queryClient.invalidateQueries({ queryKey: ['auth'] });
+      // Redirect handled by the login form component instead
+    } catch (error) {
+      console.error('Login failed:', error);
+      throw error;
+    }
   };
 
   const logout = () => {

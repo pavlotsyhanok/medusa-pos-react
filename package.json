@@ -13,6 +13,7 @@
   "devDependencies": {
     "@medusajs/ui-preset": "^2.1.1",
     "@tanstack/router-plugin": "^1.87.13",
+    "@types/node": "^22.10.2",
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
     "@vitejs/plugin-react": "^4.3.2",

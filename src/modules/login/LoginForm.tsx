@@ -1,10 +1,26 @@
 import { Avatar, Button, Container, Input, Label, Text } from "@medusajs/ui";
 import { Link } from "@tanstack/react-router";
 import { useState } from "react";
+import { useAuth } from "@/lib/hooks/auth/AuthProvider";
+import { ExclamationCircleSolid } from "@medusajs/icons";
 
 function LoginForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState<string | null>(null);
+  const { login } = useAuth();
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      setError(null);
+      await login({ email, password });
+    } catch (error) {
+      console.error("Login failed:", error);
+      setError("Invalid email or password");
+    }
+  };
+
   return (
     <Container className="max-w-fit flex flex-col gap-4 sm:min-w-[350px] min-w-[80vw] py-8">
       <div className="flex w-full items-center flex-col justify-center gap-4">
@@ -23,7 +39,7 @@ function LoginForm() {
           </Text>
         </div>
       </div>
-      <div className="flex flex-col gap-4 w-full">
+      <form onSubmit={handleSubmit} className="flex flex-col gap-4 w-full">
         <Input
           placeholder="Email"
           type="email"
@@ -38,12 +54,22 @@ function LoginForm() {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
-        <Button className="w-full mt-6">Login</Button>
+        {error && (
+          <div className="flex items-center justify-center w-full">
+            <Text size="small" className="text-ui-fg-error text-center flex items-center gap-2">
+              <ExclamationCircleSolid /> {error}
+            </Text>
+          </div>
+        )}
+        <Button type="submit" className="w-full mt-2">
+          Login
+        </Button>
         <div className="flex gap-2 items-center justify-center w-full mt-4">
           <Text size="small" className="text-ui-fg-muted">
             Forgot password?
           </Text>
-          <Link to={`${import.meta.env.VITE_PUBLIC_MEDUSA_BASE_URL}/app/reset-password`}>
+          <Link
+            to={`${import.meta.env.VITE_PUBLIC_MEDUSA_BASE_URL}/app/reset-password`}>
             <Text
               size="small"
               className="text-ui-fg-interactive hover:text-ui-fg-interactive-hover transition-colors duration-200">
@@ -51,7 +77,7 @@ function LoginForm() {
             </Text>
           </Link>
         </div>
-      </div>
+      </form>
     </Container>
   );
 }

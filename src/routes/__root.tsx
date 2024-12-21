@@ -1,22 +1,27 @@
 import * as React from 'react'
-import { Link, Outlet, createRootRoute, redirect } from '@tanstack/react-router'
+import { Link, Outlet, createRootRouteWithContext, redirect } from '@tanstack/react-router'
 import { TanStackRouterDevtools } from '@tanstack/router-devtools'
 import { Button } from '@medusajs/ui'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 
-// Simple toggle for auth status
-let isAuthenticated = false;
-
 const queryClient = new QueryClient()
 
-export const Route = createRootRoute({
+interface RouterContext {
+  auth: {
+    isAuthenticated: boolean;
+    login: () => void;
+    logout: () => void;
+  }
+}
+
+export const Route = createRootRouteWithContext<RouterContext>()({
   component: RootComponent,
-  beforeLoad: ({ location }) => {
+  beforeLoad: ({ context, location }) => {
     const isAuthRoute = location.pathname.startsWith('/_authed')
     const isLoginRoute = location.pathname === '/login'
 
-    if (isAuthenticated) {
+    if (context.auth.isAuthenticated) {
       // If authenticated and trying to access login, redirect to store
       if (isLoginRoute) {
         throw redirect({

@@ -1,8 +1,8 @@
-import React from 'react'
-import ReactDOM from 'react-dom/client'
 import { RouterProvider } from '@tanstack/react-router'
-import { router } from './router'
+
 import { AuthProvider, useAuth } from './lib/hooks/AuthProvider'
+
+import { router } from './router'
 
 function InnerApp() {
   const auth = useAuth()
@@ -15,11 +15,4 @@ function App() {
       <InnerApp />
     </AuthProvider>
   )
-}
-
-const rootElement = document.getElementById('app')!
-
-if (!rootElement.innerHTML) {
-  const root = ReactDOM.createRoot(rootElement)
-  root.render(<App />)
 }

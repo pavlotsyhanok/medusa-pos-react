@@ -1,6 +1,6 @@
 import { createRouter, createRoute, redirect } from '@tanstack/react-router'
 import { routeTree } from './routeTree.gen'
-import { AuthContextType } from './lib/hooks/AuthProvider'
+import { AuthContextType } from '@/lib/hooks/auth/AuthProvider'
 
 const notFoundRoute = createRoute({
   getParentRoute: () => routeTree,

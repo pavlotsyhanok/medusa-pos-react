@@ -8,6 +8,9 @@ import {
   Adjustments,
   BuildingStorefront,
 } from "@medusajs/icons";
+import { useAuthQuery } from "@/lib/hooks/auth/AuthProvider";
+import { useNavigate } from "@tanstack/react-router";
+import { useState } from "react";
 
 type MenuItem = {
   label: string;
@@ -24,6 +27,33 @@ const menuItems: MenuItem[] = [
 ];
 
 function StoreMenu() {
+  const { logout } = useAuthQuery();
+  const navigate = useNavigate();
+  const [isLoggingOut, setIsLoggingOut] = useState(false);
+
+  const handleLogout = async () => {
+    if (isLoggingOut) return; // Prevent double-clicks
+    
+    setIsLoggingOut(true);
+    try {
+      await logout({
+        onSuccess: () => {
+          navigate({ to: "/" });
+        },
+        onError: (error) => {
+          console.error("Logout failed:", error);
+          setIsLoggingOut(false);
+        },
+        onSettled: () => {
+          setIsLoggingOut(false);
+        }
+      });
+    } catch (error) {
+      console.error("Logout failed:", error);
+      setIsLoggingOut(false);
+    }
+  };
+
   return (
     <div className="flex flex-col gap-2 lg:min-w-[300px] lg:w-fit w-full">
       <div className="relative">
@@ -50,7 +80,10 @@ function StoreMenu() {
       <Button
         size="large"
         variant="danger"
-        className="w-full justify-between items-center">
+        className="w-full justify-between items-center"
+        onClick={handleLogout}
+        isLoading={isLoggingOut}
+        disabled={isLoggingOut}>
         Logout <OpenRectArrowOut />
       </Button>
     </div>

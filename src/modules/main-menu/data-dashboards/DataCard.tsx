@@ -37,9 +37,9 @@ function DataCard({ variant = "sales" }: DataCardProps) {
             }`}>
             {variant === "sales" ? "My Sales" : "My New Accounts"}
           </Text>
-          <div className="scale-75 sm:scale-100">
+          {/* <div className="scale-75 sm:scale-100">
             <ChevronRight />
-          </div>
+          </div> */}
         </div>
       </div>
       <div className="flex justify-start items-end gap-1 sm:gap-2 mt-1 sm:mt-2">

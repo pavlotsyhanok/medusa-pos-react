@@ -16,8 +16,9 @@ import { Route as AboutImport } from './routes/about'
 import { Route as AuthenticatedImport } from './routes/_authenticated'
 import { Route as IndexImport } from './routes/index'
 import { Route as LoginIndexImport } from './routes/login/index'
-import { Route as AuthenticatedStoreImport } from './routes/_authenticated/store'
-import { Route as AuthenticatedCatalogImport } from './routes/_authenticated/catalog'
+import { Route as AuthenticatedLayoutImport } from './routes/_authenticated/_layout'
+import { Route as AuthenticatedLayoutStoreImport } from './routes/_authenticated/_layout/store'
+import { Route as AuthenticatedLayoutCatalogImport } from './routes/_authenticated/_layout/catalog'
 
 // Create/Update Routes
 
@@ -50,17 +51,24 @@ const LoginIndexRoute = LoginIndexImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
-const AuthenticatedStoreRoute = AuthenticatedStoreImport.update({
-  id: '/store',
-  path: '/store',
+const AuthenticatedLayoutRoute = AuthenticatedLayoutImport.update({
+  id: '/_layout',
   getParentRoute: () => AuthenticatedRoute,
 } as any)
 
-const AuthenticatedCatalogRoute = AuthenticatedCatalogImport.update({
-  id: '/catalog',
-  path: '/catalog',
-  getParentRoute: () => AuthenticatedRoute,
+const AuthenticatedLayoutStoreRoute = AuthenticatedLayoutStoreImport.update({
+  id: '/store',
+  path: '/store',
+  getParentRoute: () => AuthenticatedLayoutRoute,
 } as any)
+
+const AuthenticatedLayoutCatalogRoute = AuthenticatedLayoutCatalogImport.update(
+  {
+    id: '/catalog',
+    path: '/catalog',
+    getParentRoute: () => AuthenticatedLayoutRoute,
+  } as any,
+)
 
 // Populate the FileRoutesByPath interface
 
@@ -94,18 +102,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof BlogPostImport
       parentRoute: typeof rootRoute
     }
-    '/_authenticated/catalog': {
-      id: '/_authenticated/catalog'
-      path: '/catalog'
-      fullPath: '/catalog'
-      preLoaderRoute: typeof AuthenticatedCatalogImport
-      parentRoute: typeof AuthenticatedImport
-    }
-    '/_authenticated/store': {
-      id: '/_authenticated/store'
-      path: '/store'
-      fullPath: '/store'
-      preLoaderRoute: typeof AuthenticatedStoreImport
+    '/_authenticated/_layout': {
+      id: '/_authenticated/_layout'
+      path: ''
+      fullPath: ''
+      preLoaderRoute: typeof AuthenticatedLayoutImport
       parentRoute: typeof AuthenticatedImport
     }
     '/login/': {
@@ -115,19 +116,44 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LoginIndexImport
       parentRoute: typeof rootRoute
     }
+    '/_authenticated/_layout/catalog': {
+      id: '/_authenticated/_layout/catalog'
+      path: '/catalog'
+      fullPath: '/catalog'
+      preLoaderRoute: typeof AuthenticatedLayoutCatalogImport
+      parentRoute: typeof AuthenticatedLayoutImport
+    }
+    '/_authenticated/_layout/store': {
+      id: '/_authenticated/_layout/store'
+      path: '/store'
+      fullPath: '/store'
+      preLoaderRoute: typeof AuthenticatedLayoutStoreImport
+      parentRoute: typeof AuthenticatedLayoutImport
+    }
   }
 }
 
 // Create and export the route tree
 
+interface AuthenticatedLayoutRouteChildren {
+  AuthenticatedLayoutCatalogRoute: typeof AuthenticatedLayoutCatalogRoute
+  AuthenticatedLayoutStoreRoute: typeof AuthenticatedLayoutStoreRoute
+}
+
+const AuthenticatedLayoutRouteChildren: AuthenticatedLayoutRouteChildren = {
+  AuthenticatedLayoutCatalogRoute: AuthenticatedLayoutCatalogRoute,
+  AuthenticatedLayoutStoreRoute: AuthenticatedLayoutStoreRoute,
+}
+
+const AuthenticatedLayoutRouteWithChildren =
+  AuthenticatedLayoutRoute._addFileChildren(AuthenticatedLayoutRouteChildren)
+
 interface AuthenticatedRouteChildren {
-  AuthenticatedCatalogRoute: typeof AuthenticatedCatalogRoute
-  AuthenticatedStoreRoute: typeof AuthenticatedStoreRoute
+  AuthenticatedLayoutRoute: typeof AuthenticatedLayoutRouteWithChildren
 }
 
 const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
-  AuthenticatedCatalogRoute: AuthenticatedCatalogRoute,
-  AuthenticatedStoreRoute: AuthenticatedStoreRoute,
+  AuthenticatedLayoutRoute: AuthenticatedLayoutRouteWithChildren,
 }
 
 const AuthenticatedRouteWithChildren = AuthenticatedRoute._addFileChildren(
@@ -136,22 +162,22 @@ const AuthenticatedRouteWithChildren = AuthenticatedRoute._addFileChildren(
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '': typeof AuthenticatedRouteWithChildren
+  '': typeof AuthenticatedLayoutRouteWithChildren
   '/about': typeof AboutRoute
   '/blog-post': typeof BlogPostRoute
-  '/catalog': typeof AuthenticatedCatalogRoute
-  '/store': typeof AuthenticatedStoreRoute
   '/login': typeof LoginIndexRoute
+  '/catalog': typeof AuthenticatedLayoutCatalogRoute
+  '/store': typeof AuthenticatedLayoutStoreRoute
 }
 
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '': typeof AuthenticatedRouteWithChildren
+  '': typeof AuthenticatedLayoutRouteWithChildren
   '/about': typeof AboutRoute
   '/blog-post': typeof BlogPostRoute
-  '/catalog': typeof AuthenticatedCatalogRoute
-  '/store': typeof AuthenticatedStoreRoute
   '/login': typeof LoginIndexRoute
+  '/catalog': typeof AuthenticatedLayoutCatalogRoute
+  '/store': typeof AuthenticatedLayoutStoreRoute
 }
 
 export interface FileRoutesById {
@@ -160,9 +186,10 @@ export interface FileRoutesById {
   '/_authenticated': typeof AuthenticatedRouteWithChildren
   '/about': typeof AboutRoute
   '/blog-post': typeof BlogPostRoute
-  '/_authenticated/catalog': typeof AuthenticatedCatalogRoute
-  '/_authenticated/store': typeof AuthenticatedStoreRoute
+  '/_authenticated/_layout': typeof AuthenticatedLayoutRouteWithChildren
   '/login/': typeof LoginIndexRoute
+  '/_authenticated/_layout/catalog': typeof AuthenticatedLayoutCatalogRoute
+  '/_authenticated/_layout/store': typeof AuthenticatedLayoutStoreRoute
 }
 
 export interface FileRouteTypes {
@@ -172,20 +199,21 @@ export interface FileRouteTypes {
     | ''
     | '/about'
     | '/blog-post'
+    | '/login'
     | '/catalog'
     | '/store'
-    | '/login'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '' | '/about' | '/blog-post' | '/catalog' | '/store' | '/login'
+  to: '/' | '' | '/about' | '/blog-post' | '/login' | '/catalog' | '/store'
   id:
     | '__root__'
     | '/'
     | '/_authenticated'
     | '/about'
     | '/blog-post'
-    | '/_authenticated/catalog'
-    | '/_authenticated/store'
+    | '/_authenticated/_layout'
     | '/login/'
+    | '/_authenticated/_layout/catalog'
+    | '/_authenticated/_layout/store'
   fileRoutesById: FileRoutesById
 }
 
@@ -228,8 +256,7 @@ export const routeTree = rootRoute
     "/_authenticated": {
       "filePath": "_authenticated.tsx",
       "children": [
-        "/_authenticated/catalog",
-        "/_authenticated/store"
+        "/_authenticated/_layout"
       ]
     },
     "/about": {
@@ -238,16 +265,24 @@ export const routeTree = rootRoute
     "/blog-post": {
       "filePath": "blog-post.tsx"
     },
-    "/_authenticated/catalog": {
-      "filePath": "_authenticated/catalog.tsx",
-      "parent": "/_authenticated"
-    },
-    "/_authenticated/store": {
-      "filePath": "_authenticated/store.tsx",
-      "parent": "/_authenticated"
+    "/_authenticated/_layout": {
+      "filePath": "_authenticated/_layout.tsx",
+      "parent": "/_authenticated",
+      "children": [
+        "/_authenticated/_layout/catalog",
+        "/_authenticated/_layout/store"
+      ]
     },
     "/login/": {
       "filePath": "login/index.tsx"
+    },
+    "/_authenticated/_layout/catalog": {
+      "filePath": "_authenticated/_layout/catalog.tsx",
+      "parent": "/_authenticated/_layout"
+    },
+    "/_authenticated/_layout/store": {
+      "filePath": "_authenticated/_layout/store.tsx",
+      "parent": "/_authenticated/_layout"
     }
   }
 }

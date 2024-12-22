@@ -7,22 +7,25 @@ import {
   Stripe,
   Adjustments,
   BuildingStorefront,
+  ShoppingCart,
 } from "@medusajs/icons";
 import { useAuthQuery } from "@/lib/hooks/auth/AuthProvider";
-import { useNavigate } from "@tanstack/react-router";
+import { useNavigate, Link } from "@tanstack/react-router";
 
 type MenuItem = {
   label: string;
   icon: JSX.Element;
+  to: string;
   variant: "primary" | "danger" | "transparent" | "secondary";
 };
 
 const menuItems: MenuItem[] = [
-  { label: "New Order", icon: <PlusMini />, variant: "secondary" },
-  { label: "Register New Customer", icon: <User />, variant: "secondary" },
-  { label: "Browse Catalog", icon: <BuildingStorefront />, variant: "secondary" },
-  { label: "Settings", icon: <Adjustments />, variant: "secondary" },
-  { label: "Connect Terminal", icon: <Stripe />, variant: "secondary" },
+  { label: "New Order", icon: <PlusMini />, to: "/_authenticated/_layout/store/new", variant: "secondary" },
+  { label: "Register New Customer", icon: <User />, to: "/_authenticated/_layout/store/customers/new", variant: "secondary" },
+  { label: "Browse Catalog", icon: <BuildingStorefront />, to: "/_authenticated/_layout/catalog", variant: "secondary" },
+  { label: "Orders", icon: <ShoppingCart />, to: "/_authenticated/_layout/store/orders", variant: "secondary" },
+  { label: "Settings", icon: <Adjustments />, to: "/_authenticated/_layout/store/settings", variant: "secondary" },
+  { label: "Connect Terminal", icon: <Stripe />, to: "/_authenticated/_layout/store/terminal", variant: "secondary" },
 ];
 
 function StoreMenu() {
@@ -39,28 +42,33 @@ function StoreMenu() {
   };
 
   return (
-    <div className="flex flex-col gap-2 lg:min-w-[300px] lg:w-fit w-full">
-      <div className="relative">
-        <div className="absolute -top-3 -right-3 h-5 w-5 flex items-center justify-center text-xs text-white font-medium rounded-full bg-ui-button-danger  z-10">
-          3
+    <div className="flex flex-col gap-2 lg:min-w-[300px] lg:w-fit w-full justify-between h-full pb-1">
+      <div className="flex flex-col gap-2 relative">
+        <div className="relative">
+          <div className="absolute -top-3 -right-3 h-5 w-5 flex items-center justify-center text-xs text-white font-medium rounded-full bg-ui-button-danger z-10">
+            3
+          </div>
+          <Link to="/catalog">
+            <Button
+              size="large"
+              variant="secondary"
+              className="w-full justify-between items-center">
+              Continue Order <ShoppingBag />
+            </Button>
+          </Link>
         </div>
-        <Button
-          size="large"
-          variant="secondary"
-          className="w-full justify-between items-center">
-          Continue Order <ShoppingBag />
-        </Button>
+        {menuItems.map((item) => (
+          <Link key={item.label} to={item.to}>
+            <Button
+              size="large"
+              variant={item.variant}
+              className="w-full justify-between items-center">
+              {item.label} {item.icon}
+            </Button>
+          </Link>
+        ))}
       </div>
-      {menuItems.map((item) => (
-        <Button
-          key={item.label}
-          size="large"
-          variant={item.variant}
-          className="w-full justify-between items-center">
-          {item.label} {item.icon}
-        </Button>
-      ))}
-      <div className="w-full border-t border-ui-border-muted my-4"></div>
+      <div className="w-full border-t border-ui-border-muted"></div>
       <Button
         size="large"
         variant="danger"

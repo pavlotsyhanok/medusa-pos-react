@@ -5,7 +5,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { router } from "./router";
 import { useAuthQuery } from "./lib/hooks/auth/AuthProvider";
-import PageLoader from "./lib/ui/PageLoader";
+import PageLoader from "./lib/ui/loaders/PageLoader";
 
 const queryClient = new QueryClient();
 

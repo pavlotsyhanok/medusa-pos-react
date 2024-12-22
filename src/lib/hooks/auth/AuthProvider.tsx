@@ -1,19 +1,16 @@
-import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { useQuery, useQueryClient, useMutation } from '@tanstack/react-query';
 import { getMe } from './functions/getMe';
 import { login as loginFn } from './functions/login';
 import { logout as logoutFn } from './functions/logout';
 import { LoginCredentials } from './types/Login';
-import { User } from './types/User';
 
-interface LoginCallbacks {
-  onSuccess?: () => void;
-  onError?: (error: unknown) => void;
-  onSettled?: () => void;
-}
+// useAuthQuery is a hook that provides authentication state and login/logout functionality
 
 export function useAuthQuery() {
   const queryClient = useQueryClient();
   
+  // 1. Check for user authentication
+
   const { data: isAuthenticated, isLoading } = useQuery({
     queryKey: ['auth'],
     queryFn: async () => {
@@ -27,51 +24,38 @@ export function useAuthQuery() {
     },
   });
 
-  const login = async (credentials: LoginCredentials, callbacks?: LoginCallbacks) => {
-    console.log('Attempting login...');
-    try {
-      const response = await loginFn(credentials);
-      
-      // Set the auth state immediately
-      queryClient.setQueryData(['auth'], true);
-      
-      // Then invalidate to trigger a background refresh
-      await queryClient.invalidateQueries({ queryKey: ['auth'] });
-      
-      console.log('Login successful!');
-      callbacks?.onSuccess?.();
-    } catch (error) {
-      console.error('Login failed:', error);
-      callbacks?.onError?.(error);
-      throw error;
-    } finally {
-      callbacks?.onSettled?.();
-    }
-  };
+  // 2. Login
 
-  const logout = async (callbacks?: LoginCallbacks) => {
-    try {
-      // First, update the cache to ensure UI updates immediately
+  const { mutateAsync: login } = useMutation({
+    mutationFn: (credentials: LoginCredentials) => loginFn(credentials),
+    onSuccess: async () => {
+      queryClient.setQueryData(['auth'], true);
+      await queryClient.invalidateQueries({ queryKey: ['auth'] });
+      console.log('Login successful!');
+    },
+    onError: (error) => {
+      console.error('Login failed:', error);
+      throw error;
+    }
+  });
+
+  // 3. Logout
+
+  const { mutateAsync: logout } = useMutation({
+    mutationFn: () => logoutFn(),
+    onMutate: async () => {
       queryClient.setQueryData(['auth'], false);
-      
-      // Then perform the actual logout
-      await logoutFn();
-      
-      // Clear all queries from the cache
+    },
+    onSuccess: async () => {
       await queryClient.resetQueries();
-      
       console.log('User logged out');
-      callbacks?.onSuccess?.();
-    } catch (error) {
-      // If logout fails, revert the cache
+    },
+    onError: (error) => {
       queryClient.setQueryData(['auth'], true);
       console.error('Logout failed:', error);
-      callbacks?.onError?.(error);
       throw error;
-    } finally {
-      callbacks?.onSettled?.();
     }
-  };
+  });
 
   return {
     isAuthenticated: !!isAuthenticated,

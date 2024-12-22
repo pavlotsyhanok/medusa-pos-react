@@ -23,8 +23,7 @@ function LoginForm() {
             console.log("success!");
             navigate({ to: "/store" });
           },
-          onError: (error) => {
-            console.error("Login error:", error);
+          onError: () => {
             setError("Invalid email or password");
           }
         }

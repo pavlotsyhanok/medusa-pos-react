@@ -6,7 +6,7 @@ export const LoginLayout = ({ children }: { children: React.ReactNode }) => {
   const [imageLoaded, setImageLoaded] = useState(false);
 
   return (
-    <div className="relative h-screen w-full overflow-hidden">
+    <div className="relative h-[100svh] w-full overflow-hidden">
       <div className="absolute inset-0 overflow-hidden">
         <div className="absolute inset-0 overflow-hidden" />
         <div className="absolute inset-0" onLoad={() => setImageLoaded(true)}>

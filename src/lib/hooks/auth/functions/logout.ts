@@ -11,7 +11,7 @@ export async function logout() {
     // Clear local storage if you're using it
     localStorage.removeItem('medusa_jwt_token');
 
-    // Optional: Call backend to invalidate the session
+    // Call backend to invalidate the session
     // await medusaClient.delete("/auth/session");
 
     return true;

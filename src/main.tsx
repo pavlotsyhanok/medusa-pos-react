@@ -16,7 +16,17 @@ function InnerApp() {
     return <PageLoader />;
   }
 
-  return <RouterProvider router={router} context={{ auth }} />;
+  // Create a wrapper object that matches the RouterContext auth type
+  const routerAuth = {
+    isAuthenticated: auth.isAuthenticated,
+    isLoading: auth.isLoading,
+    login: () => {
+      throw new Error("Direct login() call not supported - use auth.login() with credentials instead");
+    },
+    logout: auth.logout
+  };
+
+  return <RouterProvider router={router} context={{ auth: routerAuth }} />;
 }
 
 function App() {

@@ -8,6 +8,13 @@ interface LoginCallbacks {
   onSettled?: () => void;
 }
 
+interface RouterAuthHookResult {
+  isAuthenticated: boolean;
+  isLoading: boolean;
+  login: () => void;
+  logout: () => void;
+}
+
 type AuthHookResult = {
   isAuthenticated: boolean;
   isLoading: boolean;
@@ -30,7 +37,7 @@ const notFoundRoute = createRoute({
 export const router = createRouter({
   routeTree,
   context: {
-    auth: {} as AuthHookResult,
+    auth: {} as RouterAuthHookResult,
   },
   notFoundRoute,
 })
@@ -40,6 +47,6 @@ declare module '@tanstack/react-router' {
     router: typeof router
   }
   interface RouterContext {
-    auth: AuthHookResult
+    auth: RouterAuthHookResult
   }
 }

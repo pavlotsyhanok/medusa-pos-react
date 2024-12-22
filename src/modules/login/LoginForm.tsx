@@ -1,7 +1,7 @@
 import { Avatar, Button, Container, Input, Label, Text } from "@medusajs/ui";
 import { Link } from "@tanstack/react-router";
 import { useState } from "react";
-import { useAuth } from "@/lib/hooks/auth/AuthProvider";
+import { useAuthQuery } from "@/lib/hooks/auth/AuthProvider";
 import { ExclamationCircleSolid } from "@medusajs/icons";
 import { useNavigate } from "@tanstack/react-router";
 
@@ -9,7 +9,7 @@ function LoginForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
-  const { login } = useAuth();
+  const { login } = useAuthQuery();
   const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent) => {

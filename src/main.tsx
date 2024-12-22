@@ -3,14 +3,14 @@ import ReactDOM from "react-dom/client";
 import { RouterProvider } from "@tanstack/react-router";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { router } from "./router";
-import { AuthProvider, useAuth } from "./lib/hooks/auth/AuthProvider";
+import { useAuthQuery } from "./lib/hooks/auth/AuthProvider";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import PageLoader from "./lib/ui/PageLoader";
 
 const queryClient = new QueryClient();
 
 function InnerApp() {
-  const auth = useAuth();
+  const auth = useAuthQuery();
 
   if (auth.isLoading) {
     return <PageLoader />;
@@ -22,9 +22,7 @@ function InnerApp() {
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
-      <AuthProvider>
-        <InnerApp />
-      </AuthProvider>
+      <InnerApp />
       <ReactQueryDevtools initialIsOpen={false} />
     </QueryClientProvider>
   );

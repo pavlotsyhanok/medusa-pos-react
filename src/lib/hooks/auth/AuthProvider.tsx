@@ -1,8 +1,8 @@
-import { createContext, useContext, ReactNode } from 'react';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { getMe } from './functions/getMe';
 import { login as loginFn } from './functions/login';
 import { LoginCredentials } from './types/Login';
+import { User } from './types/User';
 
 interface LoginCallbacks {
   onSuccess?: () => void;
@@ -10,31 +10,10 @@ interface LoginCallbacks {
   onSettled?: () => void;
 }
 
-export interface AuthContextType {
-  isAuthenticated: boolean;
-  login: (credentials: LoginCredentials, callbacks?: LoginCallbacks) => Promise<void>;
-  logout: () => void;
-  isLoading: boolean;
-}
-
-const AuthContext = createContext<AuthContextType | null>(null);
-
-export function useAuth() {
-  const context = useContext(AuthContext);
-  if (!context) {
-    throw new Error('useAuth must be used within an AuthProvider');
-  }
-  return context;
-}
-
-interface AuthProviderProps {
-  children: ReactNode;
-}
-
-export function AuthProvider({ children }: AuthProviderProps) {
+export function useAuthQuery() {
   const queryClient = useQueryClient();
   
-  const { data, isLoading } = useQuery({
+  const { data: isAuthenticated, isLoading } = useQuery({
     queryKey: ['auth'],
     queryFn: async () => {
       try {
@@ -75,16 +54,10 @@ export function AuthProvider({ children }: AuthProviderProps) {
     console.log('User logged out');
   };
 
-  const value = {
-    isAuthenticated: !!data,
+  return {
+    isAuthenticated: !!isAuthenticated,
     isLoading,
     login,
     logout,
   };
-
-  return (
-    <AuthContext.Provider value={value}>
-      {children}
-    </AuthContext.Provider>
-  );
 }

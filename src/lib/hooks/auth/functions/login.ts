@@ -9,6 +9,7 @@ export async function login(credentials: LoginCredentials) {
 
   if (response.data.token) {
     document.cookie = `medusa_jwt_token=${response.data.token}; path=/`;
+    medusaClient.defaults.headers.common['Authorization'] = `Bearer ${response.data.token}`;
   }
 
   return response;

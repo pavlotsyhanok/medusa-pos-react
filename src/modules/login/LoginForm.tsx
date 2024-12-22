@@ -3,21 +3,34 @@ import { Link } from "@tanstack/react-router";
 import { useState } from "react";
 import { useAuth } from "@/lib/hooks/auth/AuthProvider";
 import { ExclamationCircleSolid } from "@medusajs/icons";
+import { useNavigate } from "@tanstack/react-router";
 
 function LoginForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
   const { login } = useAuth();
+  const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
       setError(null);
-      await login({ email, password });
+      await login(
+        { email, password },
+        {
+          onSuccess: () => {
+            console.log("success!");
+            navigate({ to: "/store" });
+          },
+          onError: (error) => {
+            console.error("Login error:", error);
+            setError("Invalid email or password");
+          }
+        }
+      );
     } catch (error) {
-      console.error("Login failed:", error);
-      setError("Invalid email or password");
+      // Error is already handled in onError callback
     }
   };
 

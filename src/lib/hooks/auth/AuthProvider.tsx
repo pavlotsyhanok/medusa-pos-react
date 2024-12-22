@@ -4,9 +4,15 @@ import { getMe } from './functions/getMe';
 import { login as loginFn } from './functions/login';
 import { LoginCredentials } from './types/Login';
 
+interface LoginCallbacks {
+  onSuccess?: () => void;
+  onError?: (error: unknown) => void;
+  onSettled?: () => void;
+}
+
 export interface AuthContextType {
   isAuthenticated: boolean;
-  login: (credentials: LoginCredentials) => Promise<void>;
+  login: (credentials: LoginCredentials, callbacks?: LoginCallbacks) => Promise<void>;
   logout: () => void;
   isLoading: boolean;
 }
@@ -28,13 +34,12 @@ interface AuthProviderProps {
 export function AuthProvider({ children }: AuthProviderProps) {
   const queryClient = useQueryClient();
   
-  // Use React Query to manage auth state
   const { data, isLoading } = useQuery({
     queryKey: ['auth'],
     queryFn: async () => {
       try {
         const response = await getMe();
-        return true; // If we get here, the API call was successful and user is authenticated
+        return true;
       } catch (error) {
         console.log('Authentication check failed:', error);
         return false;
@@ -42,16 +47,25 @@ export function AuthProvider({ children }: AuthProviderProps) {
     },
   });
 
-  const login = async (credentials: LoginCredentials) => {
+  const login = async (credentials: LoginCredentials, callbacks?: LoginCallbacks) => {
     console.log('Attempting login...');
     try {
-      await loginFn(credentials);
-      // Invalidate and refetch auth query after successful login
+      const response = await loginFn(credentials);
+      
+      // Set the auth state immediately
+      queryClient.setQueryData(['auth'], true);
+      
+      // Then invalidate to trigger a background refresh
       await queryClient.invalidateQueries({ queryKey: ['auth'] });
-      // Redirect handled by the login form component instead
+      
+      console.log('Login successful!');
+      callbacks?.onSuccess?.();
     } catch (error) {
       console.error('Login failed:', error);
+      callbacks?.onError?.(error);
       throw error;
+    } finally {
+      callbacks?.onSettled?.();
     }
   };
 

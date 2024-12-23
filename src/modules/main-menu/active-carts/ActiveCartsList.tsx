@@ -5,12 +5,15 @@ function ActiveCartsList() {
   const carts = Array(6).fill(null)
 
   return (
-    <div className="w-[100vw] lg:w-full lg:px-0 overflow-x-auto p-[2px] pb-[3px] lg:px-[1px]">
-      <div className="flex gap-4 w-max">
-        {carts.map((_, index) => (
-          <ActiveCartElement key={index} isActive={index === 0} />
-        ))}
+    <div className="w-full relative">
+      <div className="overflow-x-auto">
+        <div className="flex gap-4 w-max p-[2px]">
+          {carts.map((_, index) => (
+            <ActiveCartElement key={index} isActive={index === 0} />
+          ))}
+        </div>
       </div>
+      <div className="absolute right-0 top-0 h-full w-20 pointer-events-none bg-gradient-to-l from-ui-base to-transparent" />
     </div>
   )
 }

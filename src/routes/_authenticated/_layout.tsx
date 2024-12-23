@@ -8,7 +8,7 @@ export const Route = createFileRoute("/_authenticated/_layout")({
         <div className="border-b border-ui-border-muted p-4">
           <HeaderLayout />
         </div>
-        <div className="flex-1 overflow-auto h-full flex flex-col items-center justify-center">
+        <div className="flex-1 overflow-x-hidden overflow-y-auto h-full">
           <Outlet />
         </div>
       </div>

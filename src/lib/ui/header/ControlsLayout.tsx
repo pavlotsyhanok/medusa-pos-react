@@ -32,7 +32,7 @@ function ControlsLayout() {
   ];
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 border-t border-ui-border-muted bg-ui-bg-base z-40">
+    <div className="fixed bottom-0 left-0 right-0 border-t border-ui-border-muted bg-ui-bg-base z-[999]">
       <div className="flex justify-between items-center p-2">
         {controls.map(({ to, icon: Icon, label }) => (
           <Link key={to} to={to}>

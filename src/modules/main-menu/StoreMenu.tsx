@@ -20,12 +20,42 @@ type MenuItem = {
 };
 
 const menuItems: MenuItem[] = [
-  { label: "New Order", icon: <PlusMini />, to: "/_authenticated/_layout/store/new", variant: "secondary" },
-  { label: "Register New Customer", icon: <User />, to: "/_authenticated/_layout/store/customers/new", variant: "secondary" },
-  { label: "Browse Catalog", icon: <BuildingStorefront />, to: "/_authenticated/_layout/catalog", variant: "secondary" },
-  { label: "Orders", icon: <ShoppingCart />, to: "/_authenticated/_layout/store/orders", variant: "secondary" },
-  { label: "Settings", icon: <Adjustments />, to: "/_authenticated/_layout/store/settings", variant: "secondary" },
-  { label: "Connect Terminal", icon: <Stripe />, to: "/_authenticated/_layout/store/terminal", variant: "secondary" },
+  {
+    label: "New Order",
+    icon: <PlusMini />,
+    to: "/_authenticated/_layout/store/new",
+    variant: "secondary",
+  },
+  {
+    label: "Register New Customer",
+    icon: <User />,
+    to: "/_authenticated/_layout/store/customers/new",
+    variant: "secondary",
+  },
+  {
+    label: "Browse Catalog",
+    icon: <BuildingStorefront />,
+    to: "/_authenticated/_layout/catalog",
+    variant: "secondary",
+  },
+  {
+    label: "Orders",
+    icon: <ShoppingCart />,
+    to: "/_authenticated/_layout/store/orders",
+    variant: "secondary",
+  },
+  {
+    label: "Settings",
+    icon: <Adjustments />,
+    to: "/_authenticated/_layout/store/settings",
+    variant: "secondary",
+  },
+  {
+    label: "Connect Terminal",
+    icon: <Stripe />,
+    to: "/_authenticated/_layout/store/terminal",
+    variant: "secondary",
+  },
 ];
 
 function StoreMenu() {

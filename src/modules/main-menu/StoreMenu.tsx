@@ -42,7 +42,7 @@ function StoreMenu() {
   };
 
   return (
-    <div className="flex flex-col gap-2 lg:min-w-[300px] lg:w-fit w-full justify-start h-full pb-1">
+    <div className="flex flex-col gap-2 lg:w-full w-full justify-start h-full flex-1 pb-1">
       <div className="flex flex-col gap-2 relative">
         <div className="relative">
           <div className="absolute -top-3 -right-3 h-5 w-5 flex items-center justify-center text-xs text-white font-medium rounded-full bg-ui-button-danger z-10">

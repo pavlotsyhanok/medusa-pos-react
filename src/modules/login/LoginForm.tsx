@@ -11,9 +11,11 @@ function LoginForm() {
   const [error, setError] = useState<string | null>(null);
   const { login } = useAuthQuery();
   const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setIsLoading(true)
     try {
       setError(null);
       await login(
@@ -21,13 +23,16 @@ function LoginForm() {
         {
           onSuccess: () => {
             console.log("success!");
+            setIsLoading(false)
             navigate({ to: "/store" });
           },
           onError: () => {
             setError("Invalid email or password");
+            setIsLoading(false);
           }
         }
       );
+
     } catch (error) {
       // Error is already handled in onError callback
     }
@@ -73,8 +78,8 @@ function LoginForm() {
             </Text>
           </div>
         )}
-        <Button type="submit" className="w-full mt-2">
-          Login
+        <Button type="submit" className="w-full mt-2 transition-all duration-900" isLoading={isLoading}>
+          {isLoading ? "Loading..." : "Login"}
         </Button>
         <div className="flex gap-2 items-center justify-center w-full mt-4">
           <Text size="small" className="text-ui-fg-muted">

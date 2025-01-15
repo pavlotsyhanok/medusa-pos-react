@@ -60,6 +60,7 @@ export function useAuthQuery() {
     },
     onSuccess: async () => {
       await queryClient.resetQueries();
+      localStorage.clear();
       console.log("User logged out");
     },
     onError: (error) => {

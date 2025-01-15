@@ -1,14 +1,5 @@
 import { Button } from "@medusajs/ui";
-import {
-  PlusMini,
-  ShoppingBag,
-  User,
-  OpenRectArrowOut,
-  Stripe,
-  Adjustments,
-  BuildingStorefront,
-  ShoppingCart,
-} from "@medusajs/icons";
+import { PlusMini, ShoppingBag, User, OpenRectArrowOut, Stripe, Adjustments, BuildingStorefront, ShoppingCart } from "@medusajs/icons";
 import { useAuthQuery } from "@/lib/hooks/auth/AuthProvider";
 import { useNavigate, Link } from "@tanstack/react-router";
 
@@ -23,25 +14,25 @@ const menuItems: MenuItem[] = [
   {
     label: "New Order",
     icon: <PlusMini />,
-    to: "/_authenticated/_layout/store/new",
+    to: "/customers",
     variant: "secondary",
   },
   {
     label: "Register New Customer",
     icon: <User />,
-    to: "/_authenticated/_layout/store/customers/new",
+    to: "/new-customer",
     variant: "secondary",
   },
   {
     label: "Browse Catalog",
     icon: <BuildingStorefront />,
-    to: "/_authenticated/_layout/catalog",
+    to: "/catalog",
     variant: "secondary",
   },
   {
     label: "Orders",
     icon: <ShoppingCart />,
-    to: "/_authenticated/_layout/store/orders",
+    to: "/orders",
     variant: "secondary",
   },
   {
@@ -53,7 +44,7 @@ const menuItems: MenuItem[] = [
   {
     label: "Connect Terminal",
     icon: <Stripe />,
-    to: "/_authenticated/_layout/store/terminal",
+    to: "/stripe-terminals",
     variant: "secondary",
   },
 ];
@@ -82,6 +73,7 @@ function StoreMenu() {
             <Button
               size="large"
               variant="secondary"
+              disabled={true}
               className="w-full justify-between items-center">
               Continue Order <ShoppingBag />
             </Button>

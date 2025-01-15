@@ -30,11 +30,10 @@ function DataCard({ variant = "sales" }: DataCardProps) {
         <div className="flex justify-between items-center">
           <Text
             size="small"
-            className={`text-xs sm:text-sm ${
-              variant === "sales"
+            className={`text-xs sm:text-sm ${variant === "sales"
                 ? "text-ui-tag-green-text"
                 : "text-ui-tag-blue-text"
-            }`}>
+              }`}>
             {variant === "sales" ? "My Sales" : "My New Accounts"}
           </Text>
           {/* <div className="scale-75 sm:scale-100">

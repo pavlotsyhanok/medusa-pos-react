@@ -1,19 +1,13 @@
 /** @type {import('tailwindcss').Config} */
-const path = require("path")
+import uiPreset from "@medusajs/ui-preset"
 
-const uiPath = path.resolve(
-  require.resolve("@medusajs/ui"),
-  "../..",
-  "**/*.{js,jsx,ts,tsx}"
-)
-
-module.exports = {
+export default {
+  presets: [uiPreset],
   content: [
-    "./src/**/*.{js,jsx,ts,tsx}",
+    "./index.html",
+    "./src/**/*.{js,ts,jsx,tsx}",
     "./node_modules/@medusajs/ui/dist/**/*.{js,jsx,ts,tsx}",
-    uiPath
   ],
-  presets: [require("@medusajs/ui-preset")],
   theme: {
     extend: {},
   },

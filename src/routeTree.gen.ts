@@ -17,7 +17,14 @@ import { Route as AuthenticatedImport } from './routes/_authenticated'
 import { Route as IndexImport } from './routes/index'
 import { Route as LoginIndexImport } from './routes/login/index'
 import { Route as AuthenticatedLayoutImport } from './routes/_authenticated/_layout'
+import { Route as AuthenticatedLayoutStripeTerminalsImport } from './routes/_authenticated/_layout/stripe-terminals'
 import { Route as AuthenticatedLayoutStoreImport } from './routes/_authenticated/_layout/store'
+import { Route as AuthenticatedLayoutPaymentSectionImport } from './routes/_authenticated/_layout/payment-section'
+import { Route as AuthenticatedLayoutOrdersImport } from './routes/_authenticated/_layout/orders'
+import { Route as AuthenticatedLayoutOrderNoteImport } from './routes/_authenticated/_layout/orderNote'
+import { Route as AuthenticatedLayoutNewCustomerImport } from './routes/_authenticated/_layout/new-customer'
+import { Route as AuthenticatedLayoutCustomersImport } from './routes/_authenticated/_layout/customers'
+import { Route as AuthenticatedLayoutCheckoutImport } from './routes/_authenticated/_layout/checkout'
 import { Route as AuthenticatedLayoutCatalogImport } from './routes/_authenticated/_layout/catalog'
 
 // Create/Update Routes
@@ -56,11 +63,59 @@ const AuthenticatedLayoutRoute = AuthenticatedLayoutImport.update({
   getParentRoute: () => AuthenticatedRoute,
 } as any)
 
+const AuthenticatedLayoutStripeTerminalsRoute =
+  AuthenticatedLayoutStripeTerminalsImport.update({
+    id: '/stripe-terminals',
+    path: '/stripe-terminals',
+    getParentRoute: () => AuthenticatedLayoutRoute,
+  } as any)
+
 const AuthenticatedLayoutStoreRoute = AuthenticatedLayoutStoreImport.update({
   id: '/store',
   path: '/store',
   getParentRoute: () => AuthenticatedLayoutRoute,
 } as any)
+
+const AuthenticatedLayoutPaymentSectionRoute =
+  AuthenticatedLayoutPaymentSectionImport.update({
+    id: '/payment-section',
+    path: '/payment-section',
+    getParentRoute: () => AuthenticatedLayoutRoute,
+  } as any)
+
+const AuthenticatedLayoutOrdersRoute = AuthenticatedLayoutOrdersImport.update({
+  id: '/orders',
+  path: '/orders',
+  getParentRoute: () => AuthenticatedLayoutRoute,
+} as any)
+
+const AuthenticatedLayoutOrderNoteRoute =
+  AuthenticatedLayoutOrderNoteImport.update({
+    id: '/orderNote',
+    path: '/orderNote',
+    getParentRoute: () => AuthenticatedLayoutRoute,
+  } as any)
+
+const AuthenticatedLayoutNewCustomerRoute =
+  AuthenticatedLayoutNewCustomerImport.update({
+    id: '/new-customer',
+    path: '/new-customer',
+    getParentRoute: () => AuthenticatedLayoutRoute,
+  } as any)
+
+const AuthenticatedLayoutCustomersRoute =
+  AuthenticatedLayoutCustomersImport.update({
+    id: '/customers',
+    path: '/customers',
+    getParentRoute: () => AuthenticatedLayoutRoute,
+  } as any)
+
+const AuthenticatedLayoutCheckoutRoute =
+  AuthenticatedLayoutCheckoutImport.update({
+    id: '/checkout',
+    path: '/checkout',
+    getParentRoute: () => AuthenticatedLayoutRoute,
+  } as any)
 
 const AuthenticatedLayoutCatalogRoute = AuthenticatedLayoutCatalogImport.update(
   {
@@ -123,11 +178,60 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedLayoutCatalogImport
       parentRoute: typeof AuthenticatedLayoutImport
     }
+    '/_authenticated/_layout/checkout': {
+      id: '/_authenticated/_layout/checkout'
+      path: '/checkout'
+      fullPath: '/checkout'
+      preLoaderRoute: typeof AuthenticatedLayoutCheckoutImport
+      parentRoute: typeof AuthenticatedLayoutImport
+    }
+    '/_authenticated/_layout/customers': {
+      id: '/_authenticated/_layout/customers'
+      path: '/customers'
+      fullPath: '/customers'
+      preLoaderRoute: typeof AuthenticatedLayoutCustomersImport
+      parentRoute: typeof AuthenticatedLayoutImport
+    }
+    '/_authenticated/_layout/new-customer': {
+      id: '/_authenticated/_layout/new-customer'
+      path: '/new-customer'
+      fullPath: '/new-customer'
+      preLoaderRoute: typeof AuthenticatedLayoutNewCustomerImport
+      parentRoute: typeof AuthenticatedLayoutImport
+    }
+    '/_authenticated/_layout/orderNote': {
+      id: '/_authenticated/_layout/orderNote'
+      path: '/orderNote'
+      fullPath: '/orderNote'
+      preLoaderRoute: typeof AuthenticatedLayoutOrderNoteImport
+      parentRoute: typeof AuthenticatedLayoutImport
+    }
+    '/_authenticated/_layout/orders': {
+      id: '/_authenticated/_layout/orders'
+      path: '/orders'
+      fullPath: '/orders'
+      preLoaderRoute: typeof AuthenticatedLayoutOrdersImport
+      parentRoute: typeof AuthenticatedLayoutImport
+    }
+    '/_authenticated/_layout/payment-section': {
+      id: '/_authenticated/_layout/payment-section'
+      path: '/payment-section'
+      fullPath: '/payment-section'
+      preLoaderRoute: typeof AuthenticatedLayoutPaymentSectionImport
+      parentRoute: typeof AuthenticatedLayoutImport
+    }
     '/_authenticated/_layout/store': {
       id: '/_authenticated/_layout/store'
       path: '/store'
       fullPath: '/store'
       preLoaderRoute: typeof AuthenticatedLayoutStoreImport
+      parentRoute: typeof AuthenticatedLayoutImport
+    }
+    '/_authenticated/_layout/stripe-terminals': {
+      id: '/_authenticated/_layout/stripe-terminals'
+      path: '/stripe-terminals'
+      fullPath: '/stripe-terminals'
+      preLoaderRoute: typeof AuthenticatedLayoutStripeTerminalsImport
       parentRoute: typeof AuthenticatedLayoutImport
     }
   }
@@ -137,12 +241,28 @@ declare module '@tanstack/react-router' {
 
 interface AuthenticatedLayoutRouteChildren {
   AuthenticatedLayoutCatalogRoute: typeof AuthenticatedLayoutCatalogRoute
+  AuthenticatedLayoutCheckoutRoute: typeof AuthenticatedLayoutCheckoutRoute
+  AuthenticatedLayoutCustomersRoute: typeof AuthenticatedLayoutCustomersRoute
+  AuthenticatedLayoutNewCustomerRoute: typeof AuthenticatedLayoutNewCustomerRoute
+  AuthenticatedLayoutOrderNoteRoute: typeof AuthenticatedLayoutOrderNoteRoute
+  AuthenticatedLayoutOrdersRoute: typeof AuthenticatedLayoutOrdersRoute
+  AuthenticatedLayoutPaymentSectionRoute: typeof AuthenticatedLayoutPaymentSectionRoute
   AuthenticatedLayoutStoreRoute: typeof AuthenticatedLayoutStoreRoute
+  AuthenticatedLayoutStripeTerminalsRoute: typeof AuthenticatedLayoutStripeTerminalsRoute
 }
 
 const AuthenticatedLayoutRouteChildren: AuthenticatedLayoutRouteChildren = {
   AuthenticatedLayoutCatalogRoute: AuthenticatedLayoutCatalogRoute,
+  AuthenticatedLayoutCheckoutRoute: AuthenticatedLayoutCheckoutRoute,
+  AuthenticatedLayoutCustomersRoute: AuthenticatedLayoutCustomersRoute,
+  AuthenticatedLayoutNewCustomerRoute: AuthenticatedLayoutNewCustomerRoute,
+  AuthenticatedLayoutOrderNoteRoute: AuthenticatedLayoutOrderNoteRoute,
+  AuthenticatedLayoutOrdersRoute: AuthenticatedLayoutOrdersRoute,
+  AuthenticatedLayoutPaymentSectionRoute:
+    AuthenticatedLayoutPaymentSectionRoute,
   AuthenticatedLayoutStoreRoute: AuthenticatedLayoutStoreRoute,
+  AuthenticatedLayoutStripeTerminalsRoute:
+    AuthenticatedLayoutStripeTerminalsRoute,
 }
 
 const AuthenticatedLayoutRouteWithChildren =
@@ -167,7 +287,14 @@ export interface FileRoutesByFullPath {
   '/blog-post': typeof BlogPostRoute
   '/login': typeof LoginIndexRoute
   '/catalog': typeof AuthenticatedLayoutCatalogRoute
+  '/checkout': typeof AuthenticatedLayoutCheckoutRoute
+  '/customers': typeof AuthenticatedLayoutCustomersRoute
+  '/new-customer': typeof AuthenticatedLayoutNewCustomerRoute
+  '/orderNote': typeof AuthenticatedLayoutOrderNoteRoute
+  '/orders': typeof AuthenticatedLayoutOrdersRoute
+  '/payment-section': typeof AuthenticatedLayoutPaymentSectionRoute
   '/store': typeof AuthenticatedLayoutStoreRoute
+  '/stripe-terminals': typeof AuthenticatedLayoutStripeTerminalsRoute
 }
 
 export interface FileRoutesByTo {
@@ -177,7 +304,14 @@ export interface FileRoutesByTo {
   '/blog-post': typeof BlogPostRoute
   '/login': typeof LoginIndexRoute
   '/catalog': typeof AuthenticatedLayoutCatalogRoute
+  '/checkout': typeof AuthenticatedLayoutCheckoutRoute
+  '/customers': typeof AuthenticatedLayoutCustomersRoute
+  '/new-customer': typeof AuthenticatedLayoutNewCustomerRoute
+  '/orderNote': typeof AuthenticatedLayoutOrderNoteRoute
+  '/orders': typeof AuthenticatedLayoutOrdersRoute
+  '/payment-section': typeof AuthenticatedLayoutPaymentSectionRoute
   '/store': typeof AuthenticatedLayoutStoreRoute
+  '/stripe-terminals': typeof AuthenticatedLayoutStripeTerminalsRoute
 }
 
 export interface FileRoutesById {
@@ -189,7 +323,14 @@ export interface FileRoutesById {
   '/_authenticated/_layout': typeof AuthenticatedLayoutRouteWithChildren
   '/login/': typeof LoginIndexRoute
   '/_authenticated/_layout/catalog': typeof AuthenticatedLayoutCatalogRoute
+  '/_authenticated/_layout/checkout': typeof AuthenticatedLayoutCheckoutRoute
+  '/_authenticated/_layout/customers': typeof AuthenticatedLayoutCustomersRoute
+  '/_authenticated/_layout/new-customer': typeof AuthenticatedLayoutNewCustomerRoute
+  '/_authenticated/_layout/orderNote': typeof AuthenticatedLayoutOrderNoteRoute
+  '/_authenticated/_layout/orders': typeof AuthenticatedLayoutOrdersRoute
+  '/_authenticated/_layout/payment-section': typeof AuthenticatedLayoutPaymentSectionRoute
   '/_authenticated/_layout/store': typeof AuthenticatedLayoutStoreRoute
+  '/_authenticated/_layout/stripe-terminals': typeof AuthenticatedLayoutStripeTerminalsRoute
 }
 
 export interface FileRouteTypes {
@@ -201,9 +342,30 @@ export interface FileRouteTypes {
     | '/blog-post'
     | '/login'
     | '/catalog'
+    | '/checkout'
+    | '/customers'
+    | '/new-customer'
+    | '/orderNote'
+    | '/orders'
+    | '/payment-section'
     | '/store'
+    | '/stripe-terminals'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '' | '/about' | '/blog-post' | '/login' | '/catalog' | '/store'
+  to:
+    | '/'
+    | ''
+    | '/about'
+    | '/blog-post'
+    | '/login'
+    | '/catalog'
+    | '/checkout'
+    | '/customers'
+    | '/new-customer'
+    | '/orderNote'
+    | '/orders'
+    | '/payment-section'
+    | '/store'
+    | '/stripe-terminals'
   id:
     | '__root__'
     | '/'
@@ -213,7 +375,14 @@ export interface FileRouteTypes {
     | '/_authenticated/_layout'
     | '/login/'
     | '/_authenticated/_layout/catalog'
+    | '/_authenticated/_layout/checkout'
+    | '/_authenticated/_layout/customers'
+    | '/_authenticated/_layout/new-customer'
+    | '/_authenticated/_layout/orderNote'
+    | '/_authenticated/_layout/orders'
+    | '/_authenticated/_layout/payment-section'
     | '/_authenticated/_layout/store'
+    | '/_authenticated/_layout/stripe-terminals'
   fileRoutesById: FileRoutesById
 }
 
@@ -270,7 +439,14 @@ export const routeTree = rootRoute
       "parent": "/_authenticated",
       "children": [
         "/_authenticated/_layout/catalog",
-        "/_authenticated/_layout/store"
+        "/_authenticated/_layout/checkout",
+        "/_authenticated/_layout/customers",
+        "/_authenticated/_layout/new-customer",
+        "/_authenticated/_layout/orderNote",
+        "/_authenticated/_layout/orders",
+        "/_authenticated/_layout/payment-section",
+        "/_authenticated/_layout/store",
+        "/_authenticated/_layout/stripe-terminals"
       ]
     },
     "/login/": {
@@ -280,8 +456,36 @@ export const routeTree = rootRoute
       "filePath": "_authenticated/_layout/catalog.tsx",
       "parent": "/_authenticated/_layout"
     },
+    "/_authenticated/_layout/checkout": {
+      "filePath": "_authenticated/_layout/checkout.tsx",
+      "parent": "/_authenticated/_layout"
+    },
+    "/_authenticated/_layout/customers": {
+      "filePath": "_authenticated/_layout/customers.tsx",
+      "parent": "/_authenticated/_layout"
+    },
+    "/_authenticated/_layout/new-customer": {
+      "filePath": "_authenticated/_layout/new-customer.tsx",
+      "parent": "/_authenticated/_layout"
+    },
+    "/_authenticated/_layout/orderNote": {
+      "filePath": "_authenticated/_layout/orderNote.tsx",
+      "parent": "/_authenticated/_layout"
+    },
+    "/_authenticated/_layout/orders": {
+      "filePath": "_authenticated/_layout/orders.tsx",
+      "parent": "/_authenticated/_layout"
+    },
+    "/_authenticated/_layout/payment-section": {
+      "filePath": "_authenticated/_layout/payment-section.tsx",
+      "parent": "/_authenticated/_layout"
+    },
     "/_authenticated/_layout/store": {
       "filePath": "_authenticated/_layout/store.tsx",
+      "parent": "/_authenticated/_layout"
+    },
+    "/_authenticated/_layout/stripe-terminals": {
+      "filePath": "_authenticated/_layout/stripe-terminals.tsx",
       "parent": "/_authenticated/_layout"
     }
   }

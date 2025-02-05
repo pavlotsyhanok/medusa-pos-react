@@ -1,9 +1,10 @@
 import { createFileRoute, Outlet } from "@tanstack/react-router";
-import HeaderLayout from "@/lib/ui/header/HeaderLayout";
 import ControlsLayout from "@/lib/ui/header/ControlsLayout";
+import HeaderLayout from "@/lib/ui/header/HeaderLayout";
 
 export const Route = createFileRoute("/_authenticated/_layout")({
   component: () => {
+
     return (
       <div className="flex flex-col min-h-[100svh] h-[100svh] w-full">
         <header className="flex-none border-b border-ui-border-muted p-4">

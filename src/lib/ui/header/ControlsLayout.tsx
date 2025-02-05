@@ -1,34 +1,35 @@
 import { Button } from "@medusajs/ui";
-import {
-  PlusMini,
-  ShoppingCart,
-  BuildingStorefront,
-  User,
-} from "@medusajs/icons";
+import { PlusMini, ShoppingCart, BuildingStorefront, User, ComputerDesktopSolid } from "@medusajs/icons";
 import { Link } from "@tanstack/react-router";
 
 function ControlsLayout() {
   const controls = [
     {
-      to: "/_authenticated/_layout/store/new",
+      to: "/new-customer",
       icon: PlusMini,
       label: "New",
     },
     {
-      to: "/_authenticated/_layout/store/orders",
+      to: "/orders",
       icon: ShoppingCart,
       label: "Orders",
     },
     {
-      to: "/_authenticated/_layout/catalog",
+      to: "/catalog",
       icon: BuildingStorefront,
       label: "Catalog",
     },
     {
-      to: "/_authenticated/_layout/store/customers/new",
+      to: "/store",
+      icon: ComputerDesktopSolid,
+      label: "Main menu",
+    },
+    {
+      to: "/customers",
       icon: User,
       label: "Customer",
     },
+
   ];
 
   return (

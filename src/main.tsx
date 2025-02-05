@@ -1,4 +1,3 @@
-import React from "react";
 import ReactDOM from "react-dom/client";
 import { RouterProvider } from "@tanstack/react-router";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
@@ -6,6 +5,7 @@ import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { router } from "./router";
 import { useAuthQuery } from "./lib/hooks/auth/AuthProvider";
 import PageLoader from "./lib/ui/loaders/PageLoader";
+// import { ClientProvider } from "./components/ClientProvider";
 
 const queryClient = new QueryClient();
 
@@ -38,7 +38,9 @@ function Router() {
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
+      {/* <ClientProvider> */}
       <Router />
+      {/* </ClientProvider> */}
       <ReactQueryDevtools initialIsOpen={false} />
     </QueryClientProvider>
   );

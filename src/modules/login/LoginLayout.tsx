@@ -26,7 +26,7 @@ export const LoginLayout = ({ children }: { children: React.ReactNode }) => {
       </AnimatePresence>
       <div className="flex gap-2 items-center absolute bottom-5 left-0 w-full justify-center text-white">
         <img
-          src="/public/icons/Wordmark.svg"
+          src="/icons/Wordmark.svg"
           alt="Medusa POS"
           className="w-20 h-20 lg:w-24 lg:h-24"
         />

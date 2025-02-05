@@ -8,7 +8,6 @@ export const Route = createFileRoute('/_authenticated/_layout/catalog')({
 function RouteComponent() {
   return (
     <CatalogLayout>
-      <div>Hello "/_authenticated/catalog"!</div>
     </CatalogLayout>
   )
 }

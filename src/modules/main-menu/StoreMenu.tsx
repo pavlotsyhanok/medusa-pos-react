@@ -1,16 +1,8 @@
 import { Button } from "@medusajs/ui";
-import {
-  PlusMini,
-  ShoppingBag,
-  User,
-  OpenRectArrowOut,
-  Stripe,
-  Adjustments,
-  BuildingStorefront,
-  ShoppingCart,
-} from "@medusajs/icons";
+import { PlusMini, ShoppingBag, User, OpenRectArrowOut, Stripe, Adjustments, BuildingStorefront, ShoppingCart } from "@medusajs/icons";
 import { useAuthQuery } from "@/lib/hooks/auth/AuthProvider";
 import { useNavigate, Link } from "@tanstack/react-router";
+import { useState, useEffect } from "react";
 
 type MenuItem = {
   label: string;
@@ -23,25 +15,25 @@ const menuItems: MenuItem[] = [
   {
     label: "New Order",
     icon: <PlusMini />,
-    to: "/_authenticated/_layout/store/new",
+    to: "/customers",
     variant: "secondary",
   },
   {
     label: "Register New Customer",
     icon: <User />,
-    to: "/_authenticated/_layout/store/customers/new",
+    to: "/new-customer",
     variant: "secondary",
   },
   {
     label: "Browse Catalog",
     icon: <BuildingStorefront />,
-    to: "/_authenticated/_layout/catalog",
+    to: "/catalog",
     variant: "secondary",
   },
   {
     label: "Orders",
     icon: <ShoppingCart />,
-    to: "/_authenticated/_layout/store/orders",
+    to: "/orders",
     variant: "secondary",
   },
   {
@@ -53,7 +45,7 @@ const menuItems: MenuItem[] = [
   {
     label: "Connect Terminal",
     icon: <Stripe />,
-    to: "/_authenticated/_layout/store/terminal",
+    to: "/stripe-terminals",
     variant: "secondary",
   },
 ];
@@ -61,6 +53,29 @@ const menuItems: MenuItem[] = [
 function StoreMenu() {
   const { logout } = useAuthQuery();
   const navigate = useNavigate();
+
+  const [disable, setDisable] = useState({
+    disable: true,
+    quantity: 0
+  });
+
+  useEffect(() => {
+    const storedClient = localStorage.getItem("client");
+    const storedDraft = localStorage.getItem("draftOrder");
+    if (storedClient) {
+      const client = JSON.parse(storedClient);
+      setDisable({
+        disable: false,
+        quantity: (client?.customerOrder?.length) || 0
+      });
+    } else if (storedDraft) {
+      const client = JSON.parse(storedDraft);
+      setDisable({
+        disable: false,
+        quantity: (client?.items?.length) || 0
+      });
+    }
+  }, []);
 
   const handleLogout = async () => {
     try {
@@ -76,12 +91,13 @@ function StoreMenu() {
       <div className="flex flex-col gap-2 relative">
         <div className="relative">
           <div className="absolute -top-3 -right-3 h-5 w-5 flex items-center justify-center text-xs text-white font-medium rounded-full bg-ui-button-danger z-10">
-            3
+            {disable.quantity}
           </div>
           <Link to="/catalog">
             <Button
               size="large"
               variant="secondary"
+              disabled={disable.disable}
               className="w-full justify-between items-center">
               Continue Order <ShoppingBag />
             </Button>

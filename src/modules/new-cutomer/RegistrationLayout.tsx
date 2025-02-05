@@ -3,7 +3,6 @@ import RegistrationForm from './RegistrationForm';
 
 const RegistrationLayout = () => {
 
-
     return (
         <>
             <NavigationRaw first={"New customer → "} />

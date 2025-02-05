@@ -9,15 +9,6 @@ export interface DraftOrder {
         country_code: string;
         postal_code: string;
     };
-    items: Array<{
-        variant_id: string;
-        title: string;
-        quantity: number;
-        unit_price: number;
-        metadata: {
-            thumbnail: string;
-        };
-    }>;
     shipping_address: {
         first_name: string;
         last_name: string;

@@ -1,36 +1,16 @@
 import type { InputData } from "./types/PaymentCollection";
-// import { useMutation } from "@tanstack/react-query";
-// import { postPaymentCollection } from "./functions/postPaymentCollection";
-
-// export default function PaymentProvider() {
-//     const { mutateAsync: placePaymentCollection } = useMutation({
-
-//         mutationFn: async (newPaymentCollection: InputData) => {
-//             return await postPaymentCollection(newPaymentCollection);
-//         },
-//         onSuccess: (data) => {
-//             console.log("succeed added payment collection", data);
-//         },
-//         onError: (error) => {
-//             console.error("Login failed:", error);
-//             throw error;
-//         },
-//     });
-
-
-//     return {
-//         placePaymentCollection
-//     }
-// }
 import { useMutation } from "@tanstack/react-query";
 import { postPaymentCollection } from "./functions/postPaymentCollection";
 import { createPaymentSession } from "./functions/createPaymentSession"; // Import the new function
-import { postStoreCarts } from "./functions/postStoreCarts";
-import { postStorePayment } from "./functions/postStorePayment";
+// import { postStoreCarts } from "./functions/postStoreCarts";
+import { postOrderPayment } from "./functions/postOrderPayment";
+import { patchUpdateOrder } from "./functions/patchUpdateOrder";
+// import { patchDraftOrder } from "./functions/patchDraftOrder";
 
 export default function PaymentProvider() {
 
     const { mutateAsync: placePaymentCollection } = useMutation({
+
         mutationFn: async (newPaymentCollection: InputData) => {
             return await postPaymentCollection(newPaymentCollection);
         },
@@ -43,9 +23,8 @@ export default function PaymentProvider() {
     });
 
     const { mutateAsync: initiatePaymentSession } = useMutation({
-        mutationFn: async ({ paymentCollectionId, providerId }: {
-            paymentCollectionId: string, providerId: string
-        }) => {
+
+        mutationFn: async ({ paymentCollectionId, providerId }: { paymentCollectionId: string, providerId: string }) => {
             return await createPaymentSession(paymentCollectionId, providerId);
         },
         onSuccess: (data) => {
@@ -56,33 +35,36 @@ export default function PaymentProvider() {
         },
     });
 
-    const { mutateAsync: createStoreCart } = useMutation({
-        mutationFn: async ({ regionId }: { regionId: string }) => {
-            return await postStoreCarts(regionId);
+    const { mutateAsync: completeOrderPayment } = useMutation({
+
+        mutationFn: async ({ orderId }: { orderId: string }) => {
+            return await postOrderPayment(orderId);
         },
         onSuccess: (data) => {
-            console.log("Succeeded in creating store cart:", data);
+            console.log("Successfully completed an order:", data);
         },
         onError: (error) => {
-            console.error("Failed to create store cart:", error);
+            console.error("Failed to complete the order:", error);
         },
     });
-    const { mutateAsync: completeStorePayment } = useMutation({
-        mutationFn: async ({ cartId }: { cartId: string }) => {
-            return await postStorePayment(cartId);
+
+    const { mutateAsync: updateOrder } = useMutation({
+
+        mutationFn: async (id: string) => {
+            return await patchUpdateOrder(id)
         },
         onSuccess: (data) => {
-            console.log("Succeeded in creating store cart:", data);
+            console.log("Succeeded in updating is_draft_order flag:", data);
         },
         onError: (error) => {
-            console.error("Failed to create store cart:", error);
+            console.error("Failed in updating is_draft_order flag:", error);
         },
     });
 
     return {
-        createStoreCart,
+        updateOrder,
         placePaymentCollection,
         initiatePaymentSession,
-        completeStorePayment,
+        completeOrderPayment,
     };
 }

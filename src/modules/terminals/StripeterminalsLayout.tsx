@@ -1,21 +1,10 @@
-import { useState } from 'react';
 import NavigationRaw from '@/components/NavigationRaw';
 import stripeTerminals from '../../lib/data/stripeTerminals';
 import StripeTerminals from './components/StripeTerminals';
 import { useNavigate } from '@tanstack/react-router'
-import { Button } from '@medusajs/ui';
 
 const StripeTerminalsLayout = () => {
     const navigate = useNavigate();
-    const [search, setSearch] = useState("");
-
-    const searchEngine = (e: any) => {
-        setSearch(e.target.value);
-    };
-
-    // const filteredTerminals = terminalQuery.data.filter((terminal) => {
-    //     return terminal.name.toLowerCase().includes(search.toLowerCase());
-    // });
 
     return (
         <>

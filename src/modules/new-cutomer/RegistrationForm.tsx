@@ -49,10 +49,11 @@ export default function RegistrationForm() {
             alert("You need to fill in all Mandatory Fields");
         } else {
             try {
-                await updateCustomer(form);
-                console.log("success!");
-                // Invalidate the customer query to refresh the data
-                queryCustomer.invalidateQueries({ queryKey: ["customer"] });
+                const response = await updateCustomer(form);
+                console.log("success!", response);
+
+                queryCustomer.removeQueries({ queryKey: ["customer"], exact: true });
+                await queryCustomer.refetchQueries({ queryKey: ["customer"], exact: true });
                 navigate({ to: "/customers" });
             } catch (error) {
                 console.log(error);

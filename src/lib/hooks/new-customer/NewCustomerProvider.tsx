@@ -3,20 +3,20 @@ import { useMutation } from "@tanstack/react-query";
 import { postCustomer } from "./functions/postCustomer";
 
 export default function newCustomerProvider() {
-    const { mutateAsync: updateCustomer } = useMutation({
 
+    const { mutateAsync: updateCustomer } = useMutation({
         mutationFn: async (newCustomer: NewCustomer) => {
-            postCustomer(newCustomer);
+            return await postCustomer(newCustomer);
         },
         onSuccess: () => {
-            console.log("succeed added new client");
+            console.log("Succeed added new client");
         },
         onError: (error) => {
-            console.error("Login failed:", error);
+            console.error("Adding new customer has failed:", error);
             throw error;
         },
     });
     return {
         updateCustomer
-    }
+    };
 }

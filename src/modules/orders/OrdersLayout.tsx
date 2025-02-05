@@ -1,48 +1,44 @@
 import { useQueryClient } from "@tanstack/react-query";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import NavigationRaw from "@/components/NavigationRaw";
-import { deleteDraftOrderProvider, useDraftOrdersListQuery } from "@/lib/hooks/draft-order/DraftOrderProvider";
+import { useDraftOrdersListQuery } from "@/lib/hooks/draft-order/DraftOrderProvider";
 import DraftOrderCard from "./components/DraftOrderCard";
+import { useNavigate } from "@tanstack/react-router";
+import { useDraftOrderQuery } from "@/lib/hooks/draft-order/DraftOrderProvider";
 
 export default function OrdersLayout() {
 
+    const navigate = useNavigate();
     const queryClient = useQueryClient();
-    const [search, setSearch] = useState("");
     const { isLoading, isError, draftOrdersList, error } = useDraftOrdersListQuery();
+    console.log(draftOrdersList);
+    console.log(draftOrdersList);
+    const [selectedDraftOrderId, setSelectedDraftOrderId] = useState<string>("");
 
-    console.log(draftOrdersList)
-    const { deletedDraftOrder } = deleteDraftOrderProvider();
+    const { draftOrderData, isLoading: isLoadingDraftOrderData } = useDraftOrderQuery(selectedDraftOrderId || "");
 
-    const deleteOrder = async (draftOrderId: string) => {
-        try {
-            await deletedDraftOrder(draftOrderId);
-            queryClient.invalidateQueries({ queryKey: 'draftOrdersList' });
-        } catch (error) {
-            console.log(error);
+    // Change Order Functionality
+    const changeOrder = async (draftOrderId: string) => {
+        await queryClient.invalidateQueries({ queryKey: ["draftOrder", draftOrderId] });
+        await queryClient.refetchQueries({ queryKey: ["draftOrder", draftOrderId] });
+        setSelectedDraftOrderId(draftOrderId);
+    }
+
+    useEffect(() => {
+        if (!selectedDraftOrderId || isLoadingDraftOrderData) {
+            return;
         }
-    };
 
+        if (!draftOrderData) {
+            console.error("Draft order data is not available.");
+            return;
+        }
+        localStorage.removeItem("client");
+        localStorage.setItem("draftOrder", JSON.stringify(draftOrderData.order));
+        navigate({ to: "/catalog" });
+    }, [draftOrderData, isLoadingDraftOrderData, selectedDraftOrderId]);
 
-    const changeOrder = (draftOrderId: string) => {
-
-    };
-
-    const searchEngine = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setSearch(e.target.value);
-    };
-
-    // const filteredDraftOrders = draftsData.filter((order: any) => {
-    //     const searchLower = search.toLowerCase();
-    //     const price = calculatePrice(order.cart.items);
-    //     const email = order.cart.email?.toLowerCase() || '';
-    //     const id = order.id.toLowerCase();
-    //     const status = order.status.toLowerCase();
-
-    //     return email.includes(searchLower) ||
-    //         id.includes(searchLower) ||
-    //         status.includes(searchLower) ||
-    //         price.includes(searchLower);
-    // });
+    console.log(draftOrdersList);
 
     return (
         <>
@@ -58,25 +54,16 @@ export default function OrdersLayout() {
                             key={order.id}
                             id={order.id}
                             status={order.status}
-                            price={order.summary.current_order_total}
-                            deleteOrder={() => deleteOrder(order.id)}
+                            price={order.items.reduce((total: number, item: any) => total + item.unit_price * item.quantity, 0)}
+                            first_name={order.metadata?.first_name || "null"}
+                            last_name={order.metadata?.last_name || "null"}
+                            email={order.metadata?.email || "null"}
                             changeOrder={() => changeOrder(order.id)}
                         />
                     ))
                 ) : (
                     <p>No orders have been found</p>
                 )}
-                {/* {filteredDraftOrders.map((e: any) => (
-                    <DraftOrderCard
-                        key={e.id}
-                        id={e.id}
-                        status={e.status}
-                        email={e.cart.email}
-                        price={calculatePrice(e.cart.items)}
-                        deleteOrder={() => deleteOrder(e.id)}
-                        changeOrder={() => changeOrder(e.id)}
-                    />
-                ))} */}
             </main>
         </>
     );

@@ -3,7 +3,6 @@ import { getProductsList } from "./function/getProductsList";
 
 export default function useProductQuery() {
 
-    // Fetch customers from Medusa API
     const { isLoading, isError, data: productsList, error } = useQuery({
         queryKey: ['product'],
         queryFn: async () => {

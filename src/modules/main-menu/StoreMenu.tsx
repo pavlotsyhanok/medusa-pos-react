@@ -2,6 +2,7 @@ import { Button } from "@medusajs/ui";
 import { PlusMini, ShoppingBag, User, OpenRectArrowOut, Stripe, Adjustments, BuildingStorefront, ShoppingCart } from "@medusajs/icons";
 import { useAuthQuery } from "@/lib/hooks/auth/AuthProvider";
 import { useNavigate, Link } from "@tanstack/react-router";
+import { useState, useEffect } from "react";
 
 type MenuItem = {
   label: string;
@@ -53,6 +54,29 @@ function StoreMenu() {
   const { logout } = useAuthQuery();
   const navigate = useNavigate();
 
+  const [disable, setDisable] = useState({
+    disable: true,
+    quantity: 0
+  });
+
+  useEffect(() => {
+    const storedClient = localStorage.getItem("client");
+    const storedDraft = localStorage.getItem("draftOrder");
+    if (storedClient) {
+      const client = JSON.parse(storedClient);
+      setDisable({
+        disable: false,
+        quantity: (client?.customerOrder?.length) || 0
+      });
+    } else if (storedDraft) {
+      const client = JSON.parse(storedDraft);
+      setDisable({
+        disable: false,
+        quantity: (client?.items?.length) || 0
+      });
+    }
+  }, []);
+
   const handleLogout = async () => {
     try {
       await logout();
@@ -67,13 +91,13 @@ function StoreMenu() {
       <div className="flex flex-col gap-2 relative">
         <div className="relative">
           <div className="absolute -top-3 -right-3 h-5 w-5 flex items-center justify-center text-xs text-white font-medium rounded-full bg-ui-button-danger z-10">
-            3
+            {disable.quantity}
           </div>
           <Link to="/catalog">
             <Button
               size="large"
               variant="secondary"
-              disabled={true}
+              disabled={disable.disable}
               className="w-full justify-between items-center">
               Continue Order <ShoppingBag />
             </Button>

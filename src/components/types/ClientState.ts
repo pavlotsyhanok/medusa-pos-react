@@ -1,6 +1,7 @@
 export interface ClientState {
     isClientSet: boolean;
     clientData: any;
+    draftOrder: any;
 }
 
 export interface DraftOrderClientState {

@@ -1,14 +1,16 @@
-
 import PaymentProvider from '@/lib/hooks/payment/PaymentProvider';
 import { Button, Container } from '@medusajs/ui';
 import { useStripe, useElements, PaymentElement } from '@stripe/react-stripe-js';
+import { useNavigate } from '@tanstack/react-router';
 
-const CheckoutForm = ({ client, clientSecret, cartId }: { client: any; clientSecret: string; cartId: string }) => {
+const CheckoutForm = ({ client, clientSecret, orderId }: { client: any; clientSecret: string; orderId: string }) => {
+
     const stripe = useStripe();
     const elements = useElements();
     const STRIPE_KEY = import.meta.env.VITE_PUBLISHABLE_API_KEY;
+    const navigate = useNavigate();
 
-    const { completeStorePayment } = PaymentProvider();
+    const { completeOrderPayment } = PaymentProvider();
 
     const handleSubmit = async (event: React.FormEvent) => {
         event.preventDefault();
@@ -25,22 +27,21 @@ const CheckoutForm = ({ client, clientSecret, cartId }: { client: any; clientSec
             const result = await stripe.confirmPayment({
                 elements,
                 confirmParams: {
-                    // Remove the return_url to prevent redirection
                 },
-                redirect: "if_required", // Prevent automatic redirect
+                redirect: "if_required",
             });
 
             if (result.error) {
-                // Handle error during payment confirmation
                 console.error("Payment failed:", result.error.message);
                 alert(`Payment failed: ${result.error.message}`);
             } else {
-                // Payment successful, manually complete the cart
                 console.log("Payment succeeded, completing the cart...");
 
-                // const complete = await completeStorePayment({ cartId });
+                const complete = await completeOrderPayment({ orderId });
+                console.log("Order complete", complete)
 
-                console.log("complete")
+                localStorage.clear();
+                navigate({ to: "/store" })
             }
         } catch (error) {
             console.error("An unexpected error occurred:", error);

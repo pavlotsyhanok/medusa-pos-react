@@ -11,6 +11,7 @@ export interface PaymentCollection {
         }[]
     }
 }
+
 export interface InputData {
     order_id: string,
     amount: number,

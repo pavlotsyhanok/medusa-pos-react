@@ -1,5 +1,4 @@
 import { Container } from "@medusajs/ui"
-import { useState, useEffect } from "react";
 
 export default function (props: any) {
     const { email, first_name, last_name } = props;

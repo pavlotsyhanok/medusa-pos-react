@@ -5,13 +5,21 @@ import useCustomerQuery from "@/lib/hooks/customers/CustomerProvider";
 import Customer from "@/modules/customers/components/Customer";
 import { useNavigate } from "@tanstack/react-router";
 
-export default function RightHandPane({ isClientSet, clientData, handleClickClient, deleteProduct }: { isClientSet: boolean, clientData: any, handleClickClient: (id: string) => void, deleteProduct: (uniqueId: number) => void }) {
+export default function RightHandPane({ amountClick, isClientSet, clientData, handleClickClient, deleteProduct, draftOrder }: { amountClick: any, isClientSet: boolean, clientData: any, draftOrder: any, handleClickClient: (id: string) => void, deleteProduct: (uniqueId: number) => void }) {
     const { customersList, isLoading, isError, error } = useCustomerQuery();
     const navigate = useNavigate();
 
     return (
-        <div className="flex-[1.2] border-b border-[rgba(206,206,206,1)] py-[10px] flex flex-col justify-between h-full">
-            {isClientSet ? (
+        <div className="flex-[1.2] border-b border-[rgba(206,206,206,1)] py-[10px] flex flex-col justify-start h-full">
+            {draftOrder ? (
+                <div className="cursor-pointer w-full border-b border-[rgba(206,206,206,1)] p-[5px_10px_5px_10px]">
+                    <Client
+                        first_name={draftOrder.metadata.first_name}
+                        last_name={draftOrder.metadata.last_name}
+                        email={draftOrder.metadata.email}
+                    />
+                </div>
+            ) : (isClientSet ? (
                 <div className="cursor-pointer w-full border-b border-[rgba(206,206,206,1)] p-[5px_10px_5px_10px]">
                     <Client
                         first_name={clientData?.first_name}
@@ -38,16 +46,18 @@ export default function RightHandPane({ isClientSet, clientData, handleClickClie
                 </div>
             ) : (
                 <p className="ml-10px text-[14px]">No customers found.</p>
+            ))}
+            {isClientSet && (
+                <div className="border-[rgba(206,206,206,1)] flex flex-col justify-start gap-[10px] w-full p-[10px_10px] overflow-x-hidden overflow-y-scroll">
+                    <CartComponent deleteProduct={deleteProduct} amountClick={amountClick} />
+                </div>
             )}
-            <div className="border-[rgba(206,206,206,1)] min-h-[500px] max-h-[450px] flex flex-col justify-start items-start gap-[10px] w-full p-[10px_10px] overflow-y-scroll overflow-x-hidden">
-                <CartComponent deleteProduct={deleteProduct} />
-            </div>
-            <div className="border-t border-[rgba(206,206,206,1)] flex flex-col justify-end items-start gap-[10px] w-full p-[20px_25px]">
+            <div className="mt-auto border-t border-[rgba(206,206,206,1)] flex flex-col justify-end items-start gap-[10px] w-full p-[20px_25px]">
                 <div className="flex flex-row justify-between items-center w-full">
                     <p className="text-[14px] leading-[18.15px] font-semibold text-gray-400">Total:</p>
                     <p className="text-[14px] leading-[18.15px] font-semibold">CA Some price</p>
                 </div>
-                <Button className="w-full h-[55px] cursor-pointer" onClick={() => navigate({ to: "/checkout" })}>
+                <Button className="w-full h-[55px] cursor-pointer" disabled={!isClientSet} onClick={() => navigate({ to: "/checkout" })}>
                     Checkout
                 </Button>
             </div>
